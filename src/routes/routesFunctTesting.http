@@ -1,0 +1,7 @@
+
+### REST CLIENT EXTENSION TEST
+GET https://jsonplaceholder.typicode.com/posts/1
+
+### HEALTH CHECK
+GET http://localhost:3000/api/health
+
