@@ -20,4 +20,4 @@ jobs:
             cd /var/www/fda.fr/api
             git pull origin prod
             npm install
-            pm2 restart api || pm2 start src/index.js --name api
+            /home/deploy/.npm-global/bin/pm2 restart api || /home/deploy/.npm-global/bin/pm2 start src/index.js --name api
