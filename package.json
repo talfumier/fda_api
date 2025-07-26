@@ -4,7 +4,9 @@
   "main": "index.js",
   "scripts": {
     "start": "node src/index.js",
-    "dev": "nodemon src/index.js"
+    "dev": "nodemon src/index.js",
+    "build": "npm run config && npm install",
+    "config": "node src/config/generate-env.js"
   },
   "type": "module",
   "keywords": [],
@@ -12,6 +14,10 @@
   "license": "ISC",
   "description": "Festival des Arts - Merville 31",
   "dependencies": {
-    "express": "^5.1.0"
+    "cors": "^2.8.5",
+    "express": "^5.1.0",
+    "mysql2": "^3.14.2",
+    "sequelize": "^6.37.7",
+    "tunnel-ssh": "^5.2.0"
   }
 }
