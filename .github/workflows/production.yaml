@@ -19,5 +19,5 @@ jobs:
           script: |
             cd /var/www/fda.fr/api
             git pull origin prod
-            npm install
+            npm run build
             /home/deploy/.npm-global/bin/pm2 restart api || /home/deploy/.npm-global/bin/pm2 start src/index.js --name api
