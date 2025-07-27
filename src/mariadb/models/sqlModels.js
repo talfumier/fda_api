@@ -1,6 +1,9 @@
 const modelCache = new WeakMap();
+export function getModels(sequelize) {
+  return modelCache.get(sequelize);
+}
 export const defineSqlModels = (sequelize, DataTypes) => {
-  if (modelCache.has(sequelize)) return modelCache.get(sequelize);
+  if (modelCache.has(sequelize)) return;
 
   const models = {};
 
@@ -364,5 +367,4 @@ export const defineSqlModels = (sequelize, DataTypes) => {
   models.ExpoPrizeUser.belongsTo(models.User, {foreignKey: "idUser"});
 
   modelCache.set(sequelize, models);
-  return models;
 };

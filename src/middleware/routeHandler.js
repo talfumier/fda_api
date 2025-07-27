@@ -10,7 +10,7 @@ export function routeHandler(handler) {
       // }
       await handler(req, res);
     } catch (err) {
-      next(err, req, res, next); //call error handler
+      next(err, req, res, next); //call error handler middleware
     }
   };
 }

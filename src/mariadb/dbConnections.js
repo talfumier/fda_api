@@ -61,16 +61,27 @@ export async function createSshConnection() {
       logging: console.log,
     }
   );
+  let flg = 0;
   try {
     await conn.authenticate();
     console.log(
       `✅ mariaDB ${environment.sql_test_db_name} connection successful via SSH tunnel !`
     );
+    flg += 1;
+    await conn.sync({alter: true}); //tables and models syncing, alter=true means update tables where actual model definition has changed
     return conn;
   } catch (err) {
-    console.log(
-      `❌ SSH connection to mariaDB ${environment.sql_test_db_name} failed: ${err} !`
-    );
+    switch (flg) {
+      case 0:
+        console.log(
+          `❌ SSH connection to mariaDB ${environment.sql_test_db_name} failed: ${err} !`
+        );
+        break;
+      case 1: //connection successful but syncing not
+        console.log(
+          `❌ mariaDB ${environment.sql_test_db_name} sync operation failed: ${err} !`
+        );
+    }
   }
 }
 //Local connection from the API running on the OVH server
@@ -88,16 +99,25 @@ export async function createLocalConnection(dbName) {
         logging: false,
       }
     );
+    let flg = 0;
     try {
       await conn.authenticate();
       console.log(
         `✅ Local connection to mariaDB ${dbName} on OVH server successful !`
       );
+      flg += 1;
+      await conn.sync({alter: true}); //tables and models syncing, alter=true means update tables where actual model definition has changed
       resolve(conn);
     } catch (err) {
-      reject(
-        `❌ Local connection to mariaDB ${dbName} on OVH server failed: ${err} !`
-      );
+      switch (flg) {
+        case 0:
+          reject(
+            `❌ Local connection to mariaDB ${dbName} on OVH server failed: ${err} !`
+          );
+          break;
+        case 1:
+          reject(`❌ mariaDB ${dbName} sync operation failed: ${err} !`);
+      }
     }
   });
 }

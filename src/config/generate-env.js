@@ -33,6 +33,8 @@ const setEnv = () => {
     // google_private_key:'${process.env.NATIONSOUND_GOOGLE_PRIVATE_KEY}',
     // google_client_email:'${process.env.NATIONSOUND_GOOGLE_CLIENT_EMAIL}',
     // google_backup_folder_id:'${process.env.NATIONSOUND_GOOGLE_BACKUP_FOLDER_ID}',
+    
+    api_port:'${process.env.API_PORT}'
     production: true,
   };`;
   writeFile(targetPath, configFile, (err) => {
