@@ -6,12 +6,12 @@ import {invalidPathHandler} from "../middleware/invalidPathHandler.js";
 import {errorHandler} from "../middleware/errorHandler.js";
 
 export function routes(app) {
-  app.use(
-    cors({
-      origin: ["127.0.0.1", "http://your-external-app.com"],
-      allowedHeaders: ["Content-Type", "X-App-Origin"],
-    })
-  );
+  // app.use(
+  //   cors({
+  //     origin: ["127.0.0.1", "http://your-external-app.com"],
+  //     allowedHeaders: ["Content-Type", "X-App-Origin"],
+  //   })
+  // );
 
   app.use(selectDb); // Middleware to select test or prod database per request based on x-app-origin header
 
