@@ -16,8 +16,18 @@ const dbConnections = environment.production
   : [await createSshConnection()];
 n = dbConnections.length;
 if (n >= 1)
-  dbConnections.map((conn) => {
+  dbConnections.map(async (conn) => {
     defineSqlModels(conn, DataTypes);
+    try {
+      if (!environment.production) {
+        await conn.sync({alter: true}); //tables and models syncing, alter=true means update tables where actual model definition has changed
+        console.log(
+          `✅ mariaDB ${conn.config.database} sync operation successful !`
+        );
+      }
+    } catch (error) {
+      console.log(`❌ mariaDB ${conn.config.database} sync operation failed !`);
+    }
   });
 
 /*DEALING WITH EXPRESS*/
