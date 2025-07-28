@@ -58,30 +58,19 @@ export async function createSshConnection() {
       host: tunnel_config.source_host,
       port: tunnel_config.source_port,
       dialect: "mysql",
-      logging: console.log,
+      logging: false,
     }
   );
-  let flg = 0;
   try {
     await conn.authenticate();
     console.log(
       `✅ mariaDB ${environment.sql_test_db_name} connection successful via SSH tunnel !`
     );
-    flg += 1;
-    await conn.sync({alter: true}); //tables and models syncing, alter=true means update tables where actual model definition has changed
     return conn;
   } catch (err) {
-    switch (flg) {
-      case 0:
-        console.log(
-          `❌ SSH connection to mariaDB ${environment.sql_test_db_name} failed: ${err} !`
-        );
-        break;
-      case 1: //connection successful but syncing not
-        console.log(
-          `❌ mariaDB ${environment.sql_test_db_name} sync operation failed: ${err} !`
-        );
-    }
+    console.log(
+      `❌ SSH connection to mariaDB ${environment.sql_test_db_name} failed: ${err} !`
+    );
   }
 }
 //Local connection from the API running on the OVH server
