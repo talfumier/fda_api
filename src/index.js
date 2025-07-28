@@ -5,6 +5,7 @@ import {createLocalConnection} from "./mariadb/dbConnections.js";
 import {defineSqlModels} from "./mariadb/models/sqlModels.js";
 import {routes} from "./routes/routes.js";
 import {environment} from "./config/environment.js";
+import {selectDb} from "./middleware/selectDb.js";
 
 /*DEALING MITH MARIADB*/
 let n = 0;
@@ -18,16 +19,16 @@ n = dbConnections.length;
 if (n >= 1)
   dbConnections.map(async (conn) => {
     defineSqlModels(conn, DataTypes);
-    try {
-      if (!environment.production) {
-        await conn.sync({alter: true}); //tables and models syncing, alter=true means update tables where actual model definition has changed
-        console.log(
-          `✅ mariaDB ${conn.config.database} sync operation successful !`
-        );
-      }
-    } catch (error) {
-      console.log(`❌ mariaDB ${conn.config.database} sync operation failed !`);
-    }
+    // try {
+    //   if (!environment.production) {
+    //     await conn.sync({alter: true}); //tables and models syncing, alter=true means update tables where actual model definition has changed
+    //     console.log(
+    //       `✅ mariaDB ${conn.config.database} sync operation successful !`
+    //     );
+    //   }
+    // } catch (error) {
+    //   console.log(`❌ mariaDB ${conn.config.database} sync operation failed !`);
+    // }
   });
 
 /*DEALING WITH EXPRESS*/
