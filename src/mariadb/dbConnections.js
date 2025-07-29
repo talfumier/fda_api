@@ -6,7 +6,7 @@ const tunnel_config = environment.tunnel_config;
 
 //creates a SSH tunnel between local PC on which the API is running and the remote OVH server (127.0.0.1:3307 >>> 127.0.0.1:3306)
 //used during development for connection with mariaDB fda_test on OVH server from the API on local PC
-async function createSSHTunnel() {
+export async function createSSHTunnel() {
   const ssh_config = environment.ssh_config;
   const tunnelOptions = {
     autoClose: true,
@@ -48,10 +48,10 @@ async function createSSHTunnel() {
 }
 //Connection to mariaDB fda_test using the above SSH tunnel
 //used during development for connection with mariaDB fda_test on OVH server from the API on local PC
-export async function createSshConnection() {
-  await createSSHTunnel();
+export async function createSshConnection(dbName, sync = false) {
+  await createSSHTunnel(); //if tunnel already running, it will be re-used
   const conn = new Sequelize(
-    environment.sql_test_db_name,
+    dbName,
     environment.sql_db_user,
     environment.sql_db_userPwd,
     {
@@ -63,13 +63,11 @@ export async function createSshConnection() {
   );
   try {
     await conn.authenticate();
-    console.log(
-      `✅ mariaDB ${environment.sql_test_db_name} connection successful via SSH tunnel !`
-    );
+    console.log(`✅ mariaDB ${dbName} connection successful via SSH tunnel !`);
     return conn;
   } catch (err) {
     console.log(
-      `❌ SSH connection to mariaDB ${environment.sql_test_db_name} failed: ${err} !`
+      `❌ SSH connection to mariaDB ${dbName} via SSH tunnel failed : ${err} !`
     );
   }
 }
