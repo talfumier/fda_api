@@ -1,13 +1,15 @@
 import * as val from "./validation/input_validation.js";
 
-const modelCache = new WeakMap();
+let modelCache = new WeakMap();
 export function getModels(sequelize, id = null) {
   return !id ? modelCache.get(sequelize) : modelCache.get(sequelize)[id];
 }
-
-export const defineSqlModels = (sequelize, DataTypes) => {
-  if (modelCache.has(sequelize)) return;
-
+export function deleteConnection(sequelize) {
+  modelCache.delete(sequelize);
+}
+export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
+  if (!sync && modelCache.has(sequelize)) return;
+  if (sync && modelCache.has(sequelize)) deleteConnection(sequelize);
   const models = {};
 
   models.booking = {
@@ -495,7 +497,6 @@ export const defineSqlModels = (sequelize, DataTypes) => {
     foreignKey: "idDomainTechMedia",
   });
   models.oeuvre.model.belongsTo(models.image.model, {foreignKey: "idImage"});
-
   // DomainTechMedia relationships
   models.domainTechMedia.model.belongsTo(models.domainTech.model, {
     foreignKey: "idDomainTech",

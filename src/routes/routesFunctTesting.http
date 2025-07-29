@@ -3,9 +3,15 @@
 GET https://jsonplaceholder.typicode.com/posts/1
 
 ### HEALTH CHECK
-GET http://localhost:3000/api/health
+GET http://localhost:3000/api/utilities/health
 ###
 GET https://www.festivaldesarts.merville31.fr/api/health
+###
+
+### DATABASE SYNCING
+GET http://localhost:3000/api/utilities/sync/fda_prod
+###
+GET http://localhost:3000/api/utilities/sync/fda_test
 ###
 
 
