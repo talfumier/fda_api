@@ -47,9 +47,9 @@ export async function createSSHTunnel() {
   }
 }
 //Connection to mariaDB fda_test using the above SSH tunnel
-//used during development for connection with mariaDB fda_test on OVH server from the API on local PC
+//used during development for connection with mariaDB fda_test on OVH server from the API running on local PC
 export async function createSshConnection(dbName, sync = false) {
-  await createSSHTunnel(); //if tunnel already running, it will be re-used
+  // await createSSHTunnel();
   const conn = new Sequelize(
     dbName,
     environment.sql_db_user,

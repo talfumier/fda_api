@@ -4,8 +4,10 @@ GET https://jsonplaceholder.typicode.com/posts/1
 
 ### HEALTH CHECK
 GET http://localhost:3000/api/utilities/health
+X-App-Origin: dev
 ###
-GET https://www.festivaldesarts.merville31.fr/api/health
+GET https://www.festivaldesarts.merville31.fr/api/utilities/health
+X-App-Origin: dev
 ###
 
 ### DATABASE SYNCING
@@ -14,4 +16,24 @@ GET http://localhost:3000/api/utilities/sync/fda_prod
 GET http://localhost:3000/api/utilities/sync/fda_test
 ###
 
+### USER
+POST http://localhost:3000/api/register
+content-type: application/json
+X-App-Origin: dev
 
+{  
+  "email":"henri.talfumier@wanadoo.fr",
+  "idRole":1,
+  "pwd":"644601"
+}
+###
+POST https://www.festivaldesarts.merville31.fr/api/register
+content-type: application/json
+X-App-Origin: dev
+
+{  
+  "email":"henri.talfumier@wanadoo.fr",
+  "idRole":1,
+  "pwd":"644601"
+}
+###
