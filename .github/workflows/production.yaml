@@ -17,7 +17,6 @@ jobs:
           key: ${{ secrets.SSH_PRIVATE_KEY }}
           port: 12496
           script: |
-            cd /var/www/fda.fr/api
-            git pull origin prod
+            rsync -avz --delete --exclude='.git' --exclude='.github'--exclude='.gitignore'--exclude='node_modules' ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/fda.fr/api
             npm run build
             /home/deploy/.npm-global/bin/pm2 restart api || /home/deploy/.npm-global/bin/pm2 start src/index.js --name api
