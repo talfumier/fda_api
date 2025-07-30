@@ -8,12 +8,14 @@ import {BadRequest} from "../../mariadb/models/validation/errors.js";
 import { sendBasicEmail } from "../../mailjet/sendEmail.js";
 import {environment} from "../../config/environment.js";
 import config from "../../config/config.json" with {type: "json"};
+import { textTranslate } from "../../mariadb/models/utilityFunctions.js";
 
 const router = express.Router();
 
 router.post(
   "/",
   routeHandler(async (req, res) => {
+    const lang=req.headers["accept-language"];
     req.body = bodyCleanUp(req.body);
     if (req.body.role && req.body.role === 6)   //6 >> admin
       return res.send(
@@ -38,21 +40,18 @@ router.post(
 
     usr = await user.model.create({...(_.omit(req.body, ["idRole"])),pwd:await bcrypt.hash(req.body.pwd, environment.salt_rounds)});
     await userRole.model.create({idUser:usr.idUser,idRole:req.body.idRole});
-    console.log(usr.idUser);
 
     usr.pwd = undefined; //does not return the password
     const role_desc=(await role.model.findByPk(req.body.idRole)).role_fr;
     sendBasicEmail(
       usr.email,
-      "FestivalDesArts: nouvel utilisateur enregistré",
-      `Le compte <b>${usr.email}</b> avec le rôle '${role_desc}' a été enregistré avec succès.
-      Le compte est en attente de validation par l'organisation.`
-    );
+      await textTranslate("FestivalDesArts: nouvel utilisateur enregistré",lang,"fr"),
+      await textTranslate(`Le compte <b>${usr.email}</b> avec le rôle '${role_desc}' a été enregistré avec succès.
+      Le compte est en attente de validation par l'organisation.`,lang,"fr"));
     sendBasicEmail(
       config.email_org,
-      "FestivalDesArts: validation de compte requise",
-      `Le compte <b>${usr.email}</b> (id:${usr.id}) avec le rôle '${role_desc}' attend votre validation.`
-    );
+      await textTranslate("FestivalDesArts: validation de compte requise",lang,"fr"),
+      await textTranslate(`Le compte <b>${usr.email}</b> (id:${usr.id}) avec le rôle '${role_desc}' attend votre validation.`,lang,"fr"));
     res.send({
       statusCode: "200",
       message: `User '${usr.email}' successfully registered ! Account is waiting for validation by the organisation.`,
