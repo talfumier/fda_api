@@ -1,6 +1,6 @@
 export function selectDb(req, res, next) {
   try {
-    const origin = req.headers["X-App-Origin"];
+    const origin = req.headers["x-app-origin"];
     // origin = dev (dev front-end app > local PC)
     // origin = test (test front-end app > Vercel, Netlify ?)
     // origin = prod (production front-end app > OVH server)

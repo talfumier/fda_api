@@ -5,9 +5,10 @@ GET https://jsonplaceholder.typicode.com/posts/1
 ### HEALTH CHECK
 GET http://localhost:3000/api/utilities/health
 X-App-Origin: dev
+Accept-Language: en
 ###
 GET https://www.festivaldesarts.merville31.fr/api/utilities/health
-X-App-Origin: dev
+X-App-Origin: prod
 ###
 
 ### DATABASE SYNCING
@@ -20,6 +21,7 @@ GET http://localhost:3000/api/utilities/sync/fda_test
 POST http://localhost:3000/api/register
 content-type: application/json
 X-App-Origin: dev
+Accept-Language: en
 
 {  
   "email":"henri.talfumier@wanadoo.fr",

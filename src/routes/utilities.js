@@ -11,6 +11,7 @@ const router = express.Router();
 router.get(
   "/health",
   routeHandler((req, res) => {
+    console.log(navigator.language);
     sendResponse(
       res,
       `Health check successful >>> active database : ${req.db.config.database} !`

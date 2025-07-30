@@ -1,17 +1,12 @@
 import Mailjet from "node-mailjet";
-import { environment } from "../config/environment.js";
+import {environment} from "../config/environment.js";
 
 const mailjet = new Mailjet({
   apiKey: environment.mail_jet_api_key,
   apiSecret: environment.mail_jet_api_secret,
 });
 
-export const sendBasicEmail = (
-  recipient,
-  subject,
-  htmlPart,
-  callback = null
-) => {
+export function sendBasicEmail(recipient, subject, htmlPart, callback = null) {
   mailjet
     .post("send", {version: "v3.1"})
     .request({
@@ -41,4 +36,4 @@ export const sendBasicEmail = (
       console.log({success: false, email: recipient, error});
       if (callback) callback(error);
     });
-};
+}

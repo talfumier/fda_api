@@ -1,3 +1,20 @@
+import translate from "translate";
+import langdetect from "langdetect";
+import {environment} from "../../config/environment.js";
+export async function textTranslate(text, to, from = null) {
+  try {
+    if (!text || from === to) return text;
+    translate.engine = "google";
+    translate.key = environment.google_api_key;
+    const translated = await translate(text, {
+      from: from ? from : langdetect.detect(text)[0].lang,
+      to,
+    });
+    return translated;
+  } catch (error) {
+    console.log(error);
+  }
+}
 export function bodyCleanUp(body) {
   const keys = Object.keys(body);
   keys.map((key) => {
