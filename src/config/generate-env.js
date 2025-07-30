@@ -19,12 +19,12 @@ const setEnv = () => {
     // sql_db_host:'${process.env.NATIONSOUND_SQL_DB_HOST}',
     // sql_db_port:'${process.env.NATIONSOUND_SQL_DB_PORT}',
     // mongo_db_connection:'${process.env.NATIONSOUND_MONGO_DB_CONNECTION}',
-    // sha256:'${process.env.NATIONSOUND_API_SHA256}',
-    // salt_rounds:'${process.env.NATIONSOUND_API_SALT}',
-    // mail_jet_api_key:'${process.env.NATIONSOUND_API_MAILJETKEY}',
-    // mail_jet_api_secret:'${process.env.NATIONSOUND_API_MAILJETSECRET}',
-    // mail_jet_sender:'${process.env.NATIONSOUND_API_MAILJETSENDER}',
-    // google_api_key:'${process.env.NATIONSOUND_API_GOOGLEAPIKEY}',
+    sha256:'${process.env.API_SHA256}',
+    salt_rounds:'${Number(process.env.API_SALT)}',
+    mail_jet_api_key:'${process.env.MAILJET_API_KEY}',
+    mail_jet_api_secret:'${process.env.MAILJET_API_SECRET}',
+    mail_jet_sender:'${process.env.MAILJET_API_SENDER}',
+    google_api_key:'${process.env.GOOGLE_API_KEY}',
     // cloudinary_name: '${process.env.NATIONSOUND_CLOUDINARY_NAME}',
     // cloudinary_api_key: '${process.env.NATIONSOUND_CLOUDINARY_APIKEY}',
     // cloudinary_api_secret: '${process.env.NATIONSOUND_CLOUDINARY_APISECRET}',
@@ -32,9 +32,11 @@ const setEnv = () => {
     // bo_source_url:'${process.env.NATIONSOUND_BACK_OFFICE_URL}',
     // google_private_key:'${process.env.NATIONSOUND_GOOGLE_PRIVATE_KEY}',
     // google_client_email:'${process.env.NATIONSOUND_GOOGLE_CLIENT_EMAIL}',
-    // google_backup_folder_id:'${process.env.NATIONSOUND_GOOGLE_BACKUP_FOLDER_ID}',
+    // google_backup_folder_id:'${
+      process.env.NATIONSOUND_GOOGLE_BACKUP_FOLDER_ID
+    }',
     
-    api_port:'${process.env.API_PORT}',
+    api_port:'${Number(process.env.API_PORT)}',
     production: true,
   };`;
   writeFile(targetPath, configFile, (err) => {

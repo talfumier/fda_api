@@ -1,3 +1,17 @@
+export function bodyCleanUp(body) {
+  const keys = Object.keys(body);
+  keys.map((key) => {
+    switch (key) {
+      case "lastName":
+      case "firstName":
+      case "email":
+        body[key] = body[key].toString().trim();
+        break;
+      default:
+    }
+  });
+  return body;
+}
 export async function setTimestampFields(conn, dbName) {
   let sql = `SELECT table_name FROM information_schema.tables WHERE table_schema = '${dbName}' AND table_type = 'BASE TABLE';`;
   const [tbls] = await conn.query(sql);

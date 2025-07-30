@@ -402,15 +402,15 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
           primaryKey: true,
           autoIncrement: true,
         },
-        idStatus: DataTypes.INTEGER,
+        idStatus: {type:DataTypes.INTEGER,defaultValue:1},   // 1 >> pending
         lastName: DataTypes.STRING,
         firstName: DataTypes.STRING,
         pseudo: DataTypes.STRING,
-        display: DataTypes.STRING,
-        public: DataTypes.BOOLEAN,
+        display: {type:DataTypes.INTEGER,defaultValue:2},   // 0: (lastName, firstName), 1:pseudo, 2: all of them
+        public: {type:DataTypes.BOOLEAN, defaultValue:1},   // 1 >> true
         email: DataTypes.STRING,
         phone: DataTypes.STRING,
-        lang: DataTypes.STRING,
+        lang: {type:DataTypes.STRING,defaultValue:"fr"},
         address: DataTypes.STRING,
         zipCode: DataTypes.STRING,
         city: DataTypes.STRING,
@@ -422,7 +422,8 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         web2: DataTypes.STRING,
         social1: DataTypes.STRING,
         social2: DataTypes.STRING,
-        newsletter: DataTypes.BOOLEAN,
+        newsletter: {type:DataTypes.BOOLEAN, defaultValue:1},   // 1 >> true
+        pwd: DataTypes.STRING,
       },
       {tableName: "tuser", timestamps: true}
     ),
