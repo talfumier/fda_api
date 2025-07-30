@@ -2,24 +2,42 @@ name: Deploy API to OVH
 
 on:
   push:
-    branches: [prod]
+    branches:
+      - prod
 
 jobs:
   deploy:
     runs-on: ubuntu-latest
 
     steps:
-      - name: Trigger API deployment
-        uses: appleboy/ssh-action@v1.0.3
-        with:
-          host: ${{ secrets.SERVER_HOST }}
-          username: ${{ secrets.SERVER_USER }}
-          key: ${{ secrets.SSH_PRIVATE_KEY }}
-          port: 12496
-          script: |
-            mkdir -p ~/.ssh
-            ssh-keyscan -p 12496 -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
-            rsync -avz --delete --exclude='.git' --exclude='.github' --exclude='.gitignore' --exclude='node_modules' -e "ssh -p 12496" ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/fda.fr/api
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      - name: Set up SSH
+        run: |
+          mkdir -p ~/.ssh
+          echo "${{ secrets.SSH_PRIVATE_KEY }}" > ~/.ssh/id_ed25519
+          chmod 600 ~/.ssh/id_ed25519
+
+          # Add server host key to known_hosts
+          ssh-keyscan -p 12496 -H ${{ secrets.SERVER_HOST }} >> ~/.ssh/known_hosts
+
+      - name: Deploy with rsync
+        run: |
+          rsync -avz --delete \
+            --exclude='.git' \
+            --exclude='.github' \
+            --exclude='.gitignore' \
+            --exclude='node_modules' \
+            -e "ssh -i ~/.ssh/id_ed25519 -p 12496" \
+            ./ ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }}:/var/www/fda.fr/api
+
+      - name: Build and restart remotely
+        run: |
+          ssh -i ~/.ssh/id_ed25519 -p 12496 ${{ secrets.SERVER_USER }}@${{ secrets.SERVER_HOST }} << 'EOF'
             cd /var/www/fda.fr/api
+            npm install
             npm run build
-            /home/deploy/.npm-global/bin/pm2 restart api || /home/deploy/.npm-global/bin/pm2 start src/index.js --name api
+            ~/.npm-global/bin/pm2 restart api || ~/.npm-global/bin/pm2 start src/index.js --name api
+          EOF
+
