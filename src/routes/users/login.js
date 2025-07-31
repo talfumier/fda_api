@@ -12,44 +12,45 @@ const router = express.Router();
 router.post(
   "/",
   routeHandler(async (req, res) => {
-    const User = getModels(req.db, "user");
-    const user = await User.findOne({
+    const User = getModels(req.db,"User");
+    let user = await User.model.findOne({
       where: {email: req.body.email},
-    });
+    });    
     if (user) {
-      if (!user.validated)
+      if (user.idStatus!==2)  //idStatus=2 >>> active account
         return res.send(
-          new Unauthorized("Your account is still pending validation.")
-        );
+          new Unauthorized(user.idStatus===1?"Your account is still pending validation !":"Your account has been deactivated !")
+        );        
       const pwd_valid = await bcrypt.compare(req.body.pwd, user.pwd);
       if (pwd_valid) {
         const token = jwt.sign(
           {
-            id: user.id,
-            last_name: user.last_name,
-            first_name: user.first_name,
+            idUser: user.idUser,
+            lastName: user.lastName,
+            firstName: user.firstName,
             email: user.email,
-            role: user.role,
-            files_id: user.files_id,
+            idRole: user.idRole,
+            idStatus:user.idStatus,
+            lang:user.lang
           },
           environment.sha256, //signing algorithm secret key kept in an environment variable, Secure Hash Algorithm
           {
             expiresIn: config.token_expires_in,
           }
-        );
-        await user.update({last_connection: new Date()});
+        );         
+        await user.update({lastConnection: new Date()});
         user.pwd = undefined;
         return res
           .header("x-auth-token", token)
           .header("access-control-expose-headers", ["x-auth-token"])
           .send({
             statusCode: "200",
-            message: `User with id:${user.id} successfully logged-in.`,
+            message: `User with id:${user.idUser} successfully logged-in.`,
             data: user,
           });
       }
     }
-    return res.send(new Unauthorized("Wrong username or password."));
+    return res.send(new Unauthorized(`User id ${user.idUser} not found : wrong username or password !`));
   })
 );
 export default router;

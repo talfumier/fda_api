@@ -8,7 +8,7 @@ X-App-Origin: dev
 Accept-Language: en
 ###
 GET https://www.festivaldesarts.merville31.fr/api/utilities/health
-X-App-Origin: prod
+X-App-Origin: dev
 ###
 
 ### DATABASE SYNCING
@@ -32,10 +32,21 @@ Accept-Language: en
 POST https://www.festivaldesarts.merville31.fr/api/register
 content-type: application/json
 X-App-Origin: dev
+Accept-Language: en
 
 {  
   "email":"henri.talfumier@wanadoo.fr",
   "idRole":1,
+  "pwd":"644601"
+}
+###
+POST http://localhost:3000/api/login
+content-type: application/json
+X-App-Origin: dev
+Accept-Language: en
+
+{ 
+  "email":"henri.talfumier@wanadoo.fr",
   "pwd":"644601"
 }
 ###

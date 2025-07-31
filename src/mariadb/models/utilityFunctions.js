@@ -12,7 +12,7 @@ export async function textTranslate(text, to, from = null) {
     });
     return translated;
   } catch (error) {
-    console.log(error);
+    console.log("Translation error: ", error);
   }
 }
 export function bodyCleanUp(body) {

@@ -29,7 +29,7 @@ app.locals.db = {
 
 routes(app); //request pipeline including error handling
 
-const port = environment.api_port;
+const port = parseInt(environment.api_port);
 app.listen(port, () => {
   return console.log(
     `[API]: ${
