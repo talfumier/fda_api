@@ -36,7 +36,7 @@ const setEnv = () => {
       process.env.NATIONSOUND_GOOGLE_BACKUP_FOLDER_ID
     }',
     
-    api_port:'${Number(process.env.API_PORT)}',
+    api_port:'${process.env.API_PORT}',
     production: true,
   };`;
   writeFile(targetPath, configFile, (err) => {
