@@ -352,6 +352,8 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         },
         role_fr: DataTypes.STRING,
         role_en: DataTypes.STRING,
+        account: DataTypes.BOOLEAN,
+        roleExpo: DataTypes.BOOLEAN,
       },
       {tableName: "trole", timestamps: true}
     ),

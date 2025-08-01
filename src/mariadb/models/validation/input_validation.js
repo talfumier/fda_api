@@ -1,13 +1,23 @@
 import Joi from "joi";
 import {joiPasswordExtendCore} from "joi-password";
-
+// SQL MODELS VALIDATION FUNCTIONS
 function makeValidator(schema, data, cs = "post") {
-  if (cs === "patch") {
-    const keys = Object.keys(data);
-    const patchSchema = schema.fork(keys, (field) => field.optional());
-    return patchSchema.validate(data);
+  const dataKeys = Object.keys(data);
+  let keys = {required: [], optional: []}; //contains mandatory fields to be validated and optional ones that can be missing
+  switch (cs) {
+    case "postForgotPwd":
+    case "patch": //as soon as a field is present in the request body, it has to be considered mandatory to ensure proper validation
+      keys.required = [...dataKeys]; //all keys in request body are required
+      if (dataKeys.indexOf("idRole") === -1) keys.optional.push("idRole");
+      if (dataKeys.indexOf("email") === -1) keys.optional.push("email");
+      let patchSchema = schema.fork(keys.required, (field) => field.required());
+      patchSchema = patchSchema.fork(keys.optional, (field) =>
+        field.optional()
+      );
+      return patchSchema.validate(data);
+    default:
+      return schema.validate(data);
   }
-  return schema.validate(data);
 }
 export function validateBooking(data, cs = "post") {
   const schema = Joi.object({
@@ -118,8 +128,10 @@ export function validatePrize(data, cs = "post") {
 }
 export function validateRole(data, cs = "post") {
   const schema = Joi.object({
-    role_fr: Joi.string().allow(null),
+    role_fr: Joi.string(),
     role_en: Joi.string().allow(null),
+    account: Joi.number().integer().valid(0, 1),
+    roleExpo: Joi.number().integer().valid(0, 1),
   });
   return makeValidator(schema, data, cs);
 }
@@ -140,19 +152,19 @@ export function validateTechnique(data, cs = "post") {
   });
   return makeValidator(schema, data, cs);
 }
-export function validateUser(data, cs = "post") {  
+export function validateUser(data, cs = "post") {
   const joiPassword = Joi.extend(joiPasswordExtendCore);
   const schema = Joi.object({
     idRole: Joi.number().integer().required(),
-    idStatus: Joi.number().integer().allow(null),   //default value 1 (pending) set in sqlModels
+    idStatus: Joi.number().integer().allow(null), //default value 1 (pending) set in sqlModels
     lastName: Joi.string().allow(null),
     firstName: Joi.string().allow(null),
     pseudo: Joi.string().allow(null),
-    display: Joi.number().integer().valid(0, 1).allow(null),   //default value 2 (all) set in sqlModels
-    public: Joi.number().integer().valid(0, 1).allow(null),   //default value 1 (true) set in sqlModels
+    display: Joi.number().integer().valid(0, 1, 2).allow(null), //default value 2 (all) set in sqlModels
+    public: Joi.number().integer().valid(0, 1).allow(null), //default value 1 (true) set in sqlModels
     email: Joi.string().email().required(),
     phone: Joi.string().allow(null),
-    lang: Joi.string().allow(null),   //default value 1 (fr) set in sqlModels
+    lang: Joi.string().allow(null), //default value 1 (fr) set in sqlModels
     address: Joi.string().allow(null),
     zipCode: Joi.string().allow(null),
     city: Joi.string().allow(null),
@@ -164,15 +176,15 @@ export function validateUser(data, cs = "post") {
     web2: Joi.string().allow(null),
     social1: Joi.string().allow(null),
     social2: Joi.string().allow(null),
-    newsletter: Joi.number().integer().valid(0, 1).allow(null),   //default value 1 (true) set in sqlModels  
-    pwd: joiPassword
-      .string(),
-      // .min(8)
-      // .max(60)
-      // .minOfSpecialCharacters(1)
-      // .minOfUppercase(1)
-      // .minOfNumeric(1)
-      // .noWhiteSpaces(),
+    newsletter: Joi.number().integer().valid(0, 1).allow(null), //default value 1 (true) set in sqlModels
+    pwd: joiPassword.string(),
+    // .min(8)
+    // .max(60)
+    // .minOfSpecialCharacters(1)
+    // .minOfUppercase(1)
+    // .minOfNumeric(1)
+    // .noWhiteSpaces(),
+    lastConnection: Joi.date().allow(null),
   });
   return makeValidator(schema, data, cs);
 }
