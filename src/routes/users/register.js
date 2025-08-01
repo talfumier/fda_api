@@ -44,15 +44,19 @@ router.post(
 
     user.pwd = undefined; //does not return the password
     const role=(await Role.model.findByPk(req.body.idRole));
+    let title=await textTranslate("nouvel utilisateur enregistré",req.lang,"fr");
+    title="FestivalDesArts: "+title;
     sendBasicEmail(
       user.email,
-      await textTranslate("FestivalDesArts: nouvel utilisateur enregistré",req.lang,"fr"),
+      title,
       await textTranslate(`Le compte avec l'identifiant ${user.email} et le rôle '${role.role_fr}' a été enregistré avec succès.
-      Le compte est en attente de validation par l'organisation.`,req.lang,"fr"));
+      Le compte est en attente de validation par l'organisation.`,req.lang,"fr"),
+    );
     sendBasicEmail(
       config.email_org,
-      await textTranslate("FestivalDesArts: validation de compte requise",req.lang,"fr"),
-      await textTranslate(`Le compte avec l'identifiant ${user.email} (id: ${user.idUser}, rôle: ${role.role_fr}) attend votre validation.`,req.lang,"fr"));
+      `FestivalDesArts: ${await textTranslate("validation de compte requise",req.lang,"fr")}`,
+      await textTranslate(`Le compte avec l'identifiant ${user.email} (id: ${user.idUser}, rôle: ${role.role_fr}) attend votre validation.`,req.lang,"fr"),
+    );
     res.send({
       statusCode: "200",
       message: `User '${user.email}' successfully registered ! Account is waiting for validation by the organisation.`,

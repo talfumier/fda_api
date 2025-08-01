@@ -47,6 +47,51 @@ Accept-Language: en
 
 { 
   "email":"henri.talfumier@wanadoo.fr",
+  "pwd":"644602"
+}
+###
+POST https://www.festivaldesarts.merville31.fr/api/login
+content-type: application/json
+X-App-Origin: dev
+Accept-Language: en
+
+{ 
+  "email":"henri.talfumier@wanadoo.fr",
   "pwd":"644601"
 }
 ###
+POST http://localhost:3000/api/resetpassword/forgotPassword
+content-type: application/json
+X-App-Origin: dev
+Accept-Language: en
+
+{ 
+  "email":"henri.talfumier@wanadoo.fr"
+}
+###
+POST https://www.festivaldesarts.merville31.fr/api/resetpassword/forgotPassword
+content-type: application/json
+X-App-Origin: dev
+Accept-Language: en
+
+{ 
+  "email":"henri.talfumier@wanadoo.fr"
+}
+###
+PATCH http://localhost:3000/api/resetpassword/forgotPassword/43/647d335459886b495e98bfa2572cf2cce07f88256a838a718b7c84f81446891c0b46d6bd008aaa90a547d2faae0ac0147ba6be6df89e6364befe2ef3f2b908dd01a3421e5d432d985ba9dcf090fb31f54f75084c9ab9a7b8151752cb3c0e75dd83b6af92d7e3be8fab4fabf1ad7b71c7e284b24703e62d09414884745ad33c053eac40abcde7f817ec6ca9313557ba358f5980f7a71164588af5a73e5ec5a7d1245ad3d1097a3b4c2fdbf33e071bf8f2d770aa71e603c7e41f0a2a31a34a7a547adf2dc11746e6827713987ee214b05dc3e26d78fa371e48cf38490580ffbae4caf8b57533800d915d476ed935ffab2fa93b4d92c23dffe750465e5dd4b10602
+content-type: application/json
+X-App-Origin: dev
+Accept-Language: en
+
+{
+ "pwd":"644601"
+}
+###
+PATCH https://www.festivaldesarts.merville31.fr/api/resetpassword/forgotPassword/43/348d2a0f7919cfa8be48be6e70deea88a975e4895946cbc53232937478d79258f8b573ea32f5c26fbc900136a0efd77442371236097d283e2945fce27998d02e3bec40628998577e34c97860ef4ffbbb4bc46da52b1117bd6f5601c7f8fb8f9027bf7d6ba099bbb4b696e8a85d5815d87b61153f830c0b713ebc2c7f20e12130b5863f3fa94e6ae6d5d371fa1042c2740b449cb791eb793c43b271cfa4942cc5f37859f62e22f1574e571e61f9a78b7bc0ea89d1d385e52698ccf07f951beac8066c87a37150cd1f50663210a3f06e60bd85b52d3ce10057a9d5613083d3bcdca294736e6d39f540f1b1958fc53a9a08d89df0a5fdc622bf3bc2a1253b5e831f
+content-type: application/json
+X-App-Origin: dev
+Accept-Language: en
+
+{
+ "pwd":"644602"
+}

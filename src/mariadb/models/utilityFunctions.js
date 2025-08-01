@@ -1,6 +1,20 @@
+import Joi from "joi";
 import translate from "translate";
 import langdetect from "langdetect";
+import {parseDocument} from "htmlparser2";
+import serialize from "dom-serializer";
 import {environment} from "../../config/environment.js";
+export const JoiObjectIdSchema = Joi.string()
+  .regex(/^[0-9a-fA-F]{24}$/)
+  .required();
+export function validateObjectId(id) {
+  //ObjectId validation
+  return JoiObjectIdSchema.validate(id);
+}
+export const JoiIntegerIdSchema = Joi.number().integer().min(0).required(); //integer >=0 required
+export function validateIntegerId(id) {
+  return JoiIntegerIdSchema.validate(id);
+}
 export async function textTranslate(text, to, from = null) {
   try {
     if (!text || from === to) return text;
@@ -12,7 +26,33 @@ export async function textTranslate(text, to, from = null) {
     });
     return translated;
   } catch (error) {
-    console.log("Translation error: ", error);
+    console.log("String translation error: ", error);
+    return text;
+  }
+}
+export async function htmlTranslate(html, to, from = null) {
+  try {
+    if (!html || from === to) return html;
+    const document = parseDocument(html);
+    // Recursively walk and translate text nodes
+    let original = null;
+    async function translateNode(node) {
+      if (node.type === "text") {
+        original = node.data.trim();
+        if (original) node.data = await textTranslate(original, to, from);
+      } else if (node.children && node.children.length) {
+        for (let child of node.children) {
+          await translateNode(child);
+        }
+      }
+    }
+    for (let child of document.children) {
+      await translateNode(child);
+    }
+    return serialize(document);
+  } catch (error) {
+    console.error("HTML translation error:", error);
+    return html;
   }
 }
 export function bodyCleanUp(body) {

@@ -1,4 +1,5 @@
 import {DataTypes} from "sequelize";
+import mongoose from "mongoose";
 import express from "express";
 import {createSshConnection} from "./mariadb/dbConnections.js";
 import {createLocalConnection} from "./mariadb/dbConnections.js";
@@ -18,6 +19,15 @@ n = dbConnections.length;
 if (n >= 1)
   dbConnections.map(async (conn) => {
     defineSqlModels(conn, DataTypes);
+  });
+/*DEALING WITH MONGO DB*/
+mongoose
+  .connect(environment.mongo_db_connection)
+  .then(() => {
+    console.log("✅ mongoDB nationsound connection successful !");
+  })
+  .catch((err) => {
+    console.log(`❌ connection to mongoDB nationsound failed : ${err} !`);
   });
 /*DEALING WITH EXPRESS*/
 const app = express();
