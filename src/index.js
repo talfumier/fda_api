@@ -6,6 +6,7 @@ import {createLocalConnection} from "./mariadb/dbConnections.js";
 import {defineSqlModels} from "./mariadb/models/sqlModels.js";
 import {routes} from "./routes/routes.js";
 import {environment} from "./config/environment.js";
+import {getModels} from "./mariadb/models/sqlModels.js";
 
 /*DEALING MITH MARIADB*/
 let n = 0;

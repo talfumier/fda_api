@@ -10,6 +10,7 @@ export function deleteConnection(sequelize) {
 export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   if (!sync && modelCache.has(sequelize)) return;
   if (sync && modelCache.has(sequelize)) deleteConnection(sequelize);
+
   const models = {};
 
   models.Booking = {
@@ -47,7 +48,12 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         showRoom: DataTypes.BOOLEAN,
         screen: DataTypes.BOOLEAN,
       },
-      {tableName: "tbooking_oeuvre", timestamps: true}
+      {
+        tableName: "tbooking_oeuvre",
+        timestamps: true,
+        createdAt: true,
+        updatedAt: false,
+      }
     ),
   };
   models.Doc = {
@@ -98,7 +104,12 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         idDomain: DataTypes.INTEGER,
         idTech: DataTypes.INTEGER,
       },
-      {tableName: "tdomain_technique", timestamps: true}
+      {
+        tableName: "tdomain_technique",
+        timestamps: true,
+        createdAt: true,
+        updatedAt: false,
+      }
     ),
   };
   models.DomainTechMedia = {
@@ -115,7 +126,12 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         idDomainTech: DataTypes.INTEGER,
         idMedia: DataTypes.INTEGER,
       },
-      {tableName: "tdomain_technique_media", timestamps: true}
+      {
+        tableName: "tdomain_technique_media",
+        timestamps: true,
+        createdAt: true,
+        updatedAt: false,
+      }
     ),
   };
   models.Expo = {
@@ -148,7 +164,6 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         priceShowRoom: DataTypes.FLOAT,
         priceScreen: DataTypes.FLOAT,
         archived: DataTypes.BOOLEAN,
-        updated: {type: DataTypes.DATE, defaultValue: sequelize.NOW},
       },
       {tableName: "texpo", timestamps: true}
     ),
@@ -167,7 +182,12 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         idExpo: DataTypes.INTEGER,
         idDoc: DataTypes.INTEGER,
       },
-      {tableName: "texpo_doc", timestamps: true}
+      {
+        tableName: "texpo_doc",
+        timestamps: true,
+        createdAt: true,
+        updatedAt: false,
+      }
     ),
   };
   models.ExpoImage = {
@@ -184,7 +204,12 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         idExpo: DataTypes.INTEGER,
         idImage: DataTypes.INTEGER,
       },
-      {tableName: "texpo_image", timestamps: true}
+      {
+        tableName: "texpo_image",
+        timestamps: true,
+        createdAt: true,
+        updatedAt: false,
+      }
     ),
   };
   models.ExpoPartner = {
@@ -201,7 +226,12 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         idExpo: DataTypes.INTEGER,
         idPartner: DataTypes.INTEGER,
       },
-      {tableName: "texpo_partner", timestamps: true}
+      {
+        tableName: "texpo_partner",
+        timestamps: true,
+        createdAt: true,
+        updatedAt: false,
+      }
     ),
   };
   models.ExpoPrizeUser = {
@@ -219,7 +249,12 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         idPrizeDomain: DataTypes.INTEGER,
         idUser: DataTypes.INTEGER,
       },
-      {tableName: "texpo_prize_user", timestamps: true}
+      {
+        tableName: "texpo_prize_user",
+        timestamps: true,
+        createdAt: true,
+        updatedAt: false,
+      }
     ),
   };
   models.Image = {
@@ -336,7 +371,12 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         idPrize: DataTypes.INTEGER,
         idDomain: DataTypes.INTEGER,
       },
-      {tableName: "tprize_domain", timestamps: true}
+      {
+        tableName: "tprize_domain",
+        timestamps: true,
+        createdAt: true,
+        updatedAt: false,
+      }
     ),
   };
   models.Role = {
@@ -404,7 +444,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
           primaryKey: true,
           autoIncrement: true,
         },
-        idRole: {type: DataTypes.INTEGER}, //account related roles
+        idRole: {type: DataTypes.INTEGER, defaultValue: 1}, //account related roles, 0 >> artist
         idStatus: {type: DataTypes.INTEGER, defaultValue: 1}, // 1 >> user pending validation
         lastName: DataTypes.STRING,
         firstName: DataTypes.STRING,
@@ -427,9 +467,34 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         social2: DataTypes.STRING,
         newsletter: {type: DataTypes.BOOLEAN, defaultValue: 1}, // 1 >> true
         pwd: DataTypes.STRING,
-        lastConnection: {type: DataTypes.DATE},
       },
-      {tableName: "tuser", timestamps: true}
+      {
+        tableName: "tuser",
+        timestamps: true,
+      }
+    ),
+  };
+  models.UserConn = {
+    validate: null,
+    master: null,
+    model: sequelize.define(
+      "UserConn",
+      {
+        idUserConn: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true,
+        },
+        idUser: DataTypes.INTEGER,
+        out: DataTypes.DATE,
+        maxOut: DataTypes.DATE,
+      },
+      {
+        tableName: "tuser_conn",
+        timestamps: true,
+        createdAt: "in",
+        updatedAt: false,
+      }
     ),
   };
   models.UserExpoRole = {
@@ -447,7 +512,12 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         idExpo: DataTypes.INTEGER,
         idRole: DataTypes.INTEGER, //expo related roles
       },
-      {tableName: "tuser_expo_role", timestamps: true}
+      {
+        tableName: "tuser_expo_role",
+        timestamps: true,
+        createdAt: true,
+        updatedAt: false,
+      }
     ),
   };
 
@@ -455,11 +525,15 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   models.User.model.belongsTo(models.Status.model, {foreignKey: "idStatus"});
   models.User.model.belongsTo(models.Role.model, {foreignKey: "idRole"});
   models.User.model.belongsTo(models.Image.model, {foreignKey: "idImage"});
-  // models.User.model.hasMany(models.UserRole.model, {foreignKey: "idUser"});
+  models.User.model.hasMany(models.UserConn.model, {foreignKey: "idUser"});
   models.User.model.hasMany(models.UserExpoRole.model, {foreignKey: "idUser"});
   models.User.model.hasMany(models.Booking.model, {foreignKey: "idUser"});
   models.User.model.hasMany(models.Partner.model, {foreignKey: "idUser"});
   models.User.model.hasMany(models.ExpoPrizeUser.model, {foreignKey: "idUser"});
+  // User/UserConn relationship
+  models.UserConn.model.belongsTo(models.User.model, {
+    foreignKey: "idUser",
+  });
   // (User,Expo,Role)/UserExpoRole relationships
   models.UserExpoRole.model.belongsTo(models.User.model, {
     foreignKey: "idUser",

@@ -1,19 +1,20 @@
 import Joi from "joi";
 import {joiPasswordExtendCore} from "joi-password";
 // SQL MODELS VALIDATION FUNCTIONS
-function makeValidator(schema, data, cs = "post") {
+function makeValidator(schema, data, cs = "post", tblName = null) {
   const dataKeys = Object.keys(data);
   let keys = {required: [], optional: []}; //contains mandatory fields to be validated and optional ones that can be missing
   switch (cs) {
     case "postForgotPwd":
     case "patch": //as soon as a field is present in the request body, it has to be considered mandatory to ensure proper validation
       keys.required = [...dataKeys]; //all keys in request body are required
-      if (dataKeys.indexOf("idRole") === -1) keys.optional.push("idRole");
-      if (dataKeys.indexOf("email") === -1) keys.optional.push("email");
+      if (tblName === "tuser" && dataKeys.indexOf("email") === -1)
+        keys.optional.push("email");
       let patchSchema = schema.fork(keys.required, (field) => field.required());
-      patchSchema = patchSchema.fork(keys.optional, (field) =>
-        field.optional()
-      );
+      if (keys.optional.length >= 1)
+        patchSchema = patchSchema.fork(keys.optional, (field) =>
+          field.optional()
+        );
       return patchSchema.validate(data);
     default:
       return schema.validate(data);
@@ -155,7 +156,7 @@ export function validateTechnique(data, cs = "post") {
 export function validateUser(data, cs = "post") {
   const joiPassword = Joi.extend(joiPasswordExtendCore);
   const schema = Joi.object({
-    idRole: Joi.number().integer().required(),
+    idRole: Joi.number().integer().allow(null), //default value 1 (artist) set in sqlModels
     idStatus: Joi.number().integer().allow(null), //default value 1 (pending) set in sqlModels
     lastName: Joi.string().allow(null),
     firstName: Joi.string().allow(null),
@@ -184,7 +185,6 @@ export function validateUser(data, cs = "post") {
     // .minOfUppercase(1)
     // .minOfNumeric(1)
     // .noWhiteSpaces(),
-    lastConnection: Joi.date().allow(null),
   });
-  return makeValidator(schema, data, cs);
+  return makeValidator(schema, data, cs, "tuser");
 }

@@ -1,6 +1,5 @@
 import express from "express";
 import bcrypt from "bcrypt";
-import _ from 'lodash';
 import {routeHandler} from "../../middleware/routeHandler.js";
 import {bodyCleanUp} from "../../mariadb/models/utilityFunctions.js";
 import {getModels} from "../../mariadb/models/sqlModels.js";
@@ -36,25 +35,26 @@ router.post(
       return res.send(
         new BadRequest(`User ${user.email} is already registered.`)
       );
-
     user = await User.model.create(
-      {...(_.omit(req.body, ["idRole"])),
+      {...req.body, 
         lang:req.lang,
         pwd:await bcrypt.hash(req.body.pwd, parseInt(environment.salt_rounds))});
 
     user.pwd = undefined; //does not return the password
-    const role=(await Role.model.findByPk(req.body.idRole));
-    let title=await textTranslate("nouvel utilisateur enregistré",req.lang,"fr");
-    title="FestivalDesArts: "+title;
+    const role=(await Role.model.findByPk(user.idRole));
+    let title=await textTranslate("votre compte a bien été créé",req.lang,"fr");
+    title="FestivalDesArts : " + title.toLowerCase();
     sendBasicEmail(
       user.email,
       title,
       await textTranslate(`Le compte avec l'identifiant ${user.email} et le rôle '${role.role_fr}' a été enregistré avec succès.
       Le compte est en attente de validation par l'organisation.`,req.lang,"fr"),
     );
+    title=await textTranslate("validation de compte en attente",req.lang,"fr");    
+    title="FestivalDesArts : " + title.toLowerCase();
     sendBasicEmail(
       config.email_org,
-      `FestivalDesArts: ${await textTranslate("validation de compte requise",req.lang,"fr")}`,
+      title,
       await textTranslate(`Le compte avec l'identifiant ${user.email} (id: ${user.idUser}, rôle: ${role.role_fr}) attend votre validation.`,req.lang,"fr"),
     );
     res.send({
