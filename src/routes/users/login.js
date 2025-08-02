@@ -1,6 +1,7 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import jwt from "jsonwebtoken";
+import {addHours} from "date-fns";
 import {routeHandler} from "../../middleware/routeHandler.js";
 import {getModels} from "./../../mariadb/models/sqlModels.js";
 import {Unauthorized} from "../../mariadb/models/validation/errors.js";
@@ -12,10 +13,10 @@ const router = express.Router();
 router.post(
   "/",
   routeHandler(async (req, res) => {
-    const User = getModels(req.db,"User");
+    const {User,UserConn} = getModels(req.db);
     let user = await User.model.findOne({
       where: {email: req.body.email},
-    });    
+    }); 
     if (user) {
       if (user.idStatus!==2)  //idStatus=2 >>> active account
         return res.send(
@@ -37,8 +38,8 @@ router.post(
           {
             expiresIn: config.token_expires_in,
           }
-        );         
-        await user.update({lastConnection: new Date()});
+        );      
+        await UserConn.model.create({idUser:user.idUser,maxOut:addHours(new Date(),config.token_expires_in.replace("h",""))});
         user.pwd = undefined;
         return res
           .header("x-auth-token", token)

@@ -48,19 +48,14 @@ router.post(
     });
     let title = await textTranslate("mot de passe oublié", req.lang, "fr");
     title = "FestivalDesArts : " + title.toLowerCase() + " ?";
-    sendBasicEmail(
-      //resetToken sent in plain text (i.e. not hashed)
-      user.email,
-      title,
-      await htmlTranslate(
-        `<div>
+    const link = `${environment.front_url}/resetpassword?id=${data.userId}&random=${resetToken}`;
+    let html = await htmlTranslate(
+      `<div>
         <span>
           Veuillez suivre ce lien pour créer un nouveau mot de passe :
         </span>
         <span>
-          <a href=${environment.front_url}/resetpassword?id=${
-          data.userId
-        }&random=${resetToken}>Réinitialisation mot de passe
+          <a href=999999999>Réinitialisation mot de passe
           </a>
         </span>
        <br />
@@ -72,9 +67,15 @@ router.post(
           )}.
         </span>
       </div>`,
-        req.lang,
-        "fr"
-      ),
+      req.lang,
+      "fr"
+    );
+    html = html.replace("999999999", link).replace(/"/g, "");
+    sendBasicEmail(
+      //resetToken sent in plain text (i.e. not hashed)
+      user.email,
+      title,
+      html,
       res,
       `✅ Email with reset instructions is on its way to ${email}.`
     );
@@ -95,7 +96,7 @@ router.patch(
     const token = await Token.findOne({userId: id});
     if (!token)
       return res.send(new Unauthorized("Invalid or expired reset token."));
-    const isValid = bcrypt.compare(req.params.resetToken, token.token);
+    const isValid = await bcrypt.compare(req.params.resetToken, token.token);
     if (!isValid)
       return res.send(
         new Unauthorized("Invalid or expired password reset token")

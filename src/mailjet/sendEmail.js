@@ -21,7 +21,7 @@ export function sendBasicEmail(
         {
           From: {
             Email: environment.mail_jet_sender,
-            Name: "FestivalDesArts mailbox: do not reply",
+            Name: "do not reply",
           },
           To: [
             {
