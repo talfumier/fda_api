@@ -1,6 +1,6 @@
 import express from "express";
 import {v2 as cloudinary} from "cloudinary";
-import authHandler from "../../middleware/authHandler.js";
+import {authHandler} from "../../middleware/authHandler.js";
 import {routeHandler} from "../../middleware/routeHandler.js";
 import {BadRequest, NotFound} from "../../mariadb/models/validation/errors.js";
 import {environment} from "../../config/environment.js";
