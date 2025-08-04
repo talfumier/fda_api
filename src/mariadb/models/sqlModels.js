@@ -15,7 +15,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
 
   models.Booking = {
     validate: val.validateBooking,
-    master: null,
+    master: ["idExpo", "idUser"],
     model: sequelize.define(
       "Booking",
       {
@@ -34,7 +34,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.BookingOeuvre = {
     validate: null,
-    master: null,
+    master: ["idBooking", "idOeuvre"],
     model: sequelize.define(
       "BookingOeuvre",
       {
@@ -58,7 +58,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.Doc = {
     validate: val.validateDoc,
-    master: "name_",
+    master: ["name_fr", "name_en"],
     model: sequelize.define(
       "Doc",
       {
@@ -75,7 +75,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.Domain = {
     validate: val.validateDomain,
-    master: "domain_",
+    master: ["domain_fr", "domain_en"],
     model: sequelize.define(
       "Domain",
       {
@@ -92,7 +92,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.DomainTech = {
     validate: null,
-    master: null,
+    master: ["idDomain", "idTech"],
     model: sequelize.define(
       "DomainTech",
       {
@@ -114,7 +114,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.DomainTechMedia = {
     validate: null,
-    master: null,
+    master: ["idDomainTech", "idMedia"],
     model: sequelize.define(
       "DomainTechMedia",
       {
@@ -136,7 +136,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.Expo = {
     validate: val.validateExpo,
-    master: "title_",
+    master: ["startDate", "endDate"],
     model: sequelize.define(
       "Expo",
       {
@@ -149,8 +149,8 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         title_fr: DataTypes.STRING,
         desc_fr: DataTypes.TEXT,
         desc_en: DataTypes.TEXT,
-        start_date: DataTypes.DATE,
-        end_date: DataTypes.DATE,
+        startDate: DataTypes.DATE,
+        endDate: DataTypes.DATE,
         address: DataTypes.STRING,
         zipCode: DataTypes.STRING,
         city: DataTypes.STRING,
@@ -170,7 +170,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.ExpoDoc = {
     validate: null,
-    master: null,
+    master: ["idExpo", "idDoc"],
     model: sequelize.define(
       "ExpoDoc",
       {
@@ -192,7 +192,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.ExpoImage = {
     validate: null,
-    master: null,
+    master: ["idExpo", "idImage"],
     model: sequelize.define(
       "ExpoImage",
       {
@@ -214,7 +214,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.ExpoPartner = {
     validate: null,
-    master: null,
+    master: ["idExpo", "idPartner"],
     model: sequelize.define(
       "ExpoPartner",
       {
@@ -236,7 +236,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.ExpoPrizeUser = {
     validate: null,
-    master: null,
+    master: ["idExpo", "idPrizeDomain", "idUser"],
     model: sequelize.define(
       "ExpoPrizeUser",
       {
@@ -259,7 +259,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.Image = {
     validate: val.validateImage,
-    master: "title_",
+    master: [],
     model: sequelize.define(
       "Image",
       {
@@ -268,8 +268,8 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
           primaryKey: true,
           autoIncrement: true,
         },
-        title_fr: DataTypes.STRING,
-        title_en: DataTypes.STRING,
+        fileName: DataTypes.STRING,
+        fileSize: DataTypes.INTEGER,
         url: DataTypes.STRING,
         data: DataTypes.BLOB,
       },
@@ -278,7 +278,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.Media = {
     validate: val.validateMedia,
-    master: "media_",
+    master: ["media_fr", "media_en"],
     model: sequelize.define(
       "Media",
       {
@@ -295,7 +295,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.Oeuvre = {
     validate: val.validateOeuvre,
-    master: "title_",
+    master: ["idImage"],
     model: sequelize.define(
       "Oeuvre",
       {
@@ -325,7 +325,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.Partner = {
     validate: val.validatePartner,
-    master: "name",
+    master: ["name"],
     model: sequelize.define(
       "Partner",
       {
@@ -347,7 +347,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.Prize = {
     validate: val.validatePrize,
-    master: "prize_",
+    master: ["prize_fr", "prize_en"],
     model: sequelize.define(
       "Prize",
       {
@@ -364,7 +364,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.PrizeDomain = {
     validate: null,
-    master: null,
+    master: ["idPrize", "idDomain"],
     model: sequelize.define(
       "PrizeDomain",
       {
@@ -381,7 +381,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.Role = {
     validate: val.validateRole,
-    master: "role_",
+    master: ["role_fr", "role_en"],
     model: sequelize.define(
       "Role",
       {
@@ -400,7 +400,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.Status = {
     validate: val.validateStatus,
-    master: "type",
+    master: ["type", "title_fr", "title_en"],
     model: sequelize.define(
       "Status",
       {
@@ -418,7 +418,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.Technique = {
     validate: val.validateTechnique,
-    master: "technique_",
+    master: ["technique_fr", "technique_en"],
     model: sequelize.define(
       "Technique",
       {
@@ -435,7 +435,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.User = {
     validate: val.validateUser,
-    master: "lastName",
+    master: ["email"],
     model: sequelize.define(
       "User",
       {
@@ -476,7 +476,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.UserConn = {
     validate: null,
-    master: null,
+    master: [],
     model: sequelize.define(
       "UserConn",
       {
@@ -499,7 +499,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.UserExpoRole = {
     validate: null,
-    master: null,
+    master: ["idUser", "idExpo", "idRole"],
     model: sequelize.define(
       "UserExpoRole",
       {
@@ -522,100 +522,187 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
 
   // User relationships
-  models.User.model.belongsTo(models.Status.model, {foreignKey: "idStatus"});
-  models.User.model.belongsTo(models.Role.model, {foreignKey: "idRole"});
-  models.User.model.belongsTo(models.Image.model, {foreignKey: "idImage"});
-  models.User.model.hasMany(models.UserConn.model, {foreignKey: "idUser"});
-  models.User.model.hasMany(models.UserExpoRole.model, {foreignKey: "idUser"});
-  models.User.model.hasMany(models.Booking.model, {foreignKey: "idUser"});
-  models.User.model.hasMany(models.Partner.model, {foreignKey: "idUser"});
-  models.User.model.hasMany(models.ExpoPrizeUser.model, {foreignKey: "idUser"});
+  models.User.model.belongsTo(models.Status.model, {
+    foreignKey: "idStatus",
+    onDelete: "RESTRICT",
+  });
+  models.User.model.belongsTo(models.Role.model, {
+    foreignKey: "idRole",
+    onDelete: "RESTRICT",
+  });
+  models.User.model.belongsTo(models.Image.model, {
+    foreignKey: "idImage",
+    onDelete: "RESTRICT",
+  });
+  models.User.model.hasMany(models.UserConn.model, {
+    foreignKey: "idUser",
+    onDelete: "CASCADE",
+  });
+  models.User.model.hasMany(models.UserExpoRole.model, {
+    foreignKey: "idUser",
+    onDelete: "RESTRICT",
+  });
+  models.User.model.hasMany(models.Booking.model, {
+    foreignKey: "idUser",
+    onDelete: "RESTRICT",
+  });
+  models.User.model.hasMany(models.Partner.model, {
+    foreignKey: "idUser",
+    onDelete: "RESTRICT",
+  });
+  models.User.model.hasMany(models.ExpoPrizeUser.model, {
+    foreignKey: "idUser",
+    onDelete: "RESTRICT",
+  });
   // User/UserConn relationship
   models.UserConn.model.belongsTo(models.User.model, {
     foreignKey: "idUser",
+    onDelete: "CASCADE",
   });
   // (User,Expo,Role)/UserExpoRole relationships
   models.UserExpoRole.model.belongsTo(models.User.model, {
     foreignKey: "idUser",
+    onDelete: "RESTRICT",
   });
   models.UserExpoRole.model.belongsTo(models.Expo.model, {
     foreignKey: "idExpo",
+    onDelete: "RESTRICT",
   });
   models.UserExpoRole.model.belongsTo(models.Role.model, {
     foreignKey: "idRole",
+    onDelete: "RESTRICT",
   });
   // Booking relationships
-  models.Booking.model.belongsTo(models.User.model, {foreignKey: "idUser"});
-  models.Booking.model.belongsTo(models.Expo.model, {foreignKey: "idExpo"});
-  models.Booking.model.belongsTo(models.Status.model, {foreignKey: "idStatus"});
+  models.Booking.model.belongsTo(models.User.model, {
+    foreignKey: "idUser",
+    onDelete: "RESTRICT",
+  });
+  models.Booking.model.belongsTo(models.Expo.model, {
+    foreignKey: "idExpo",
+    onDelete: "RESTRICT",
+  });
+  models.Booking.model.belongsTo(models.Status.model, {
+    foreignKey: "idStatus",
+    onDelete: "RESTRICT",
+  });
   models.Booking.model.hasMany(models.BookingOeuvre.model, {
     foreignKey: "idBooking",
+    onDelete: "RESTRICT",
   });
   // BookingOeuvre relationships
   models.BookingOeuvre.model.belongsTo(models.Booking.model, {
     foreignKey: "idBooking",
+    onDelete: "RESTRICT",
   });
   models.BookingOeuvre.model.belongsTo(models.Oeuvre.model, {
     foreignKey: "idOeuvre",
+    onDelete: "RESTRICT",
   });
   models.BookingOeuvre.model.belongsTo(models.Status.model, {
     foreignKey: "idStatus",
+    onDelete: "RESTRICT",
   });
   // Oeuvre relationships
   models.Oeuvre.model.belongsTo(models.DomainTechMedia.model, {
     foreignKey: "idDomainTechMedia",
+    onDelete: "RESTRICT",
   });
-  models.Oeuvre.model.belongsTo(models.Image.model, {foreignKey: "idImage"});
+  models.Oeuvre.model.belongsTo(models.Image.model, {
+    foreignKey: "idImage",
+    onDelete: "RESTRICT",
+  });
   // DomainTechMedia relationships
   models.DomainTechMedia.model.belongsTo(models.DomainTech.model, {
     foreignKey: "idDomainTech",
+    onDelete: "RESTRICT",
   });
   models.DomainTechMedia.model.belongsTo(models.Media.model, {
     foreignKey: "idMedia",
+    onDelete: "RESTRICT",
   });
   // DomainTech  relationships
   models.DomainTech.model.belongsTo(models.Domain.model, {
     foreignKey: "idDomain",
+    onDelete: "RESTRICT",
   });
   models.DomainTech.model.belongsTo(models.Technique.model, {
     foreignKey: "idTech",
+    onDelete: "RESTRICT",
   });
   // Expo relationships
-  models.Expo.model.hasMany(models.ExpoImage.model, {foreignKey: "idExpo"});
-  models.Expo.model.hasMany(models.ExpoDoc.model, {foreignKey: "idExpo"});
-  models.Expo.model.hasMany(models.ExpoPartner.model, {foreignKey: "idExpo"});
-  models.Expo.model.hasMany(models.ExpoPrizeUser.model, {foreignKey: "idExpo"});
+  models.Expo.model.hasMany(models.ExpoImage.model, {
+    foreignKey: "idExpo",
+    onDelete: "RESTRICT",
+  });
+  models.Expo.model.hasMany(models.ExpoDoc.model, {
+    foreignKey: "idExpo",
+    onDelete: "RESTRICT",
+  });
+  models.Expo.model.hasMany(models.ExpoPartner.model, {
+    foreignKey: "idExpo",
+    onDelete: "RESTRICT",
+  });
+  models.Expo.model.hasMany(models.ExpoPrizeUser.model, {
+    foreignKey: "idExpo",
+    onDelete: "RESTRICT",
+  });
   // ExpoImage relationships
-  models.ExpoImage.model.belongsTo(models.Expo.model, {foreignKey: "idExpo"});
-  models.ExpoImage.model.belongsTo(models.Image.model, {foreignKey: "idImage"});
+  models.ExpoImage.model.belongsTo(models.Expo.model, {
+    foreignKey: "idExpo",
+    onDelete: "RESTRICT",
+  });
+  models.ExpoImage.model.belongsTo(models.Image.model, {
+    foreignKey: "idImage",
+    onDelete: "RESTRICT",
+  });
   // ExpoDoc relationships
-  models.ExpoDoc.model.belongsTo(models.Expo.model, {foreignKey: "idExpo"});
-  models.ExpoDoc.model.belongsTo(models.Doc.model, {foreignKey: "idDoc"});
+  models.ExpoDoc.model.belongsTo(models.Expo.model, {
+    foreignKey: "idExpo",
+    onDelete: "RESTRICT",
+  });
+  models.ExpoDoc.model.belongsTo(models.Doc.model, {
+    foreignKey: "idDoc",
+    onDelete: "RESTRICT",
+  });
   // ExpoPartner relationships
-  models.ExpoPartner.model.belongsTo(models.Expo.model, {foreignKey: "idExpo"});
+  models.ExpoPartner.model.belongsTo(models.Expo.model, {
+    foreignKey: "idExpo",
+    onDelete: "RESTRICT",
+  });
   models.ExpoPartner.model.belongsTo(models.Partner.model, {
     foreignKey: "idPartner",
+    onDelete: "RESTRICT",
   });
   // ExpoPrizeUser  relationships
   models.ExpoPrizeUser.model.belongsTo(models.Expo.model, {
     foreignKey: "idExpo",
+    onDelete: "RESTRICT",
   });
   models.ExpoPrizeUser.model.belongsTo(models.User.model, {
     foreignKey: "idUser",
+    onDelete: "RESTRICT",
   });
   models.ExpoPrizeUser.model.belongsTo(models.PrizeDomain.model, {
     foreignKey: "idPrizeDomain",
+    onDelete: "RESTRICT",
   });
   // PrizeDomain relationships
   models.PrizeDomain.model.belongsTo(models.Prize.model, {
     foreignKey: "idPrize",
+    onDelete: "RESTRICT",
   });
   models.PrizeDomain.model.belongsTo(models.Domain.model, {
     foreignKey: "idDomain",
   });
   // Partner relationships
-  models.Partner.model.belongsTo(models.User.model, {foreignKey: "idUser"});
-  models.Partner.model.belongsTo(models.Image.model, {foreignKey: "idImage"});
+  models.Partner.model.belongsTo(models.User.model, {
+    foreignKey: "idUser",
+    onDelete: "RESTRICT",
+  });
+  models.Partner.model.belongsTo(models.Image.model, {
+    foreignKey: "idImage",
+    onDelete: "RESTRICT",
+  });
 
   modelCache.set(sequelize, models);
 };

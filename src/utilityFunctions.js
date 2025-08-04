@@ -3,7 +3,40 @@ import translate from "translate";
 import langdetect from "langdetect";
 import {parseDocument} from "htmlparser2";
 import serialize from "dom-serializer";
-import {environment} from "../../config/environment.js";
+import {Unauthorized} from "./mariadb/models/validation/errors.js";
+import {environment} from "./config/environment.js";
+import modelRoles from "./routes/entities/modelRoles.json" with {type: "json"};
+export function userIsAdmin(req) {
+  if (req.user.idRole !== 6)
+    return [
+      false,
+      new Unauthorized("Access denied. User must have 'admin' privileges !"),
+    ];
+  return [true, null];
+}
+export function userIsOrg(req,modelName) {
+  if (req.user.idRole >= 5) return [true, null];
+  return [
+    false,
+    new Unauthorized(
+      `Access to data model ${modelName} denied >>> your account must have 'organisation' or 'admin' privileges !`
+    ),
+  ];
+}
+export function userIsAuthorized(userIdRole, modelName) {
+  if (modelRoles[modelName].idRole.indexOf(userIdRole)!==-1) return [true, null];
+  return [
+    false,
+    new Unauthorized(
+      `Access to data model ${modelName} denied >>> your account does not hold required privileges !`
+    ),
+  ];
+}
+export function userIsOwner(req, email, modelName) {
+  if (email !== req.user.email)
+    return [false, new Unauthorized(`Access to data model ${modelName} denied >>> account 'owner' privileges required  !`)];
+  return [true, null];
+}
 export const JoiObjectIdSchema = Joi.string()
   .regex(/^[0-9a-fA-F]{24}$/)
   .required();

@@ -1,6 +1,6 @@
 export const sendResponse = (res, message) => {
   res.status(200).json({
-    status: "OK",
+    statusCode: "200",
     message,
     timestamp: new Date().toISOString(),
   });

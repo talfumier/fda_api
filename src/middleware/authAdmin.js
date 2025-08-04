@@ -1,11 +1,12 @@
-import {Unauthorized} from "../mariadb/models/validation/errors.js";
+import {userIsAdmin} from "../utilityFunctions.js";
 
 export function authAdmin(req, res, next) {
   //req.user returned from authHandler mw function since user must be authenticated
-  if (!req.user.role.includes("admin")) {
-    return res.send(
-      new Unauthorized("Access denied. User must have admin privilege.")
-    );
+  try {
+    const cond = userIsAdmin(req);
+    if (!cond[0]) return res.send(cond[1]);
+    next(); //passing req with its user properties to the next middleware function
+  } catch (error) {
+    next(err, req, res, next, "authAdmin.js"); //call error handler middleware
   }
-  next(); //passing req with its user properties to the next middleware function
 }

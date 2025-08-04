@@ -33,8 +33,8 @@ export function validateBooking(data, cs = "post") {
 export function validateDoc(data, cs = "post") {
   const schema = Joi.object({
     standalone: Joi.number().integer().valid(0, 1).allow(null),
-    name_fr: Joi.string().allow(null),
-    name_en: Joi.string().allow(null),
+    name_fr: Joi.string().required(),
+    name_en: Joi.string().required(),
     desc_fr: Joi.string().allow(null),
     desc_en: Joi.string().allow(null),
     url: Joi.string().allow(null),
@@ -43,19 +43,19 @@ export function validateDoc(data, cs = "post") {
 }
 export function validateDomain(data, cs = "post") {
   const schema = Joi.object({
-    domain_fr: Joi.string().allow(null),
-    domain_en: Joi.string().allow(null),
+    domain_fr: Joi.string().required(),
+    domain_en: Joi.string().required(),
   });
   return makeValidator(schema, data, cs);
 }
 export function validateExpo(data, cs = "post") {
   const schema = Joi.object({
-    title_en: Joi.string().allow(null),
-    title_fr: Joi.string().allow(null),
+    title_en: Joi.string().required(),
+    title_fr: Joi.string().required(),
     desc_en: Joi.string().allow(null),
     desc_fr: Joi.string().allow(null),
-    start_date: Joi.date().required(),
-    end_date: Joi.date().required(),
+    startDate: Joi.date().required(),
+    endDate: Joi.date().required(),
     address: Joi.string().allow(null),
     zipCode: Joi.string().allow(null),
     city: Joi.string().allow(null),
@@ -74,17 +74,17 @@ export function validateExpo(data, cs = "post") {
 }
 export function validateImage(data, cs = "post") {
   const schema = Joi.object({
-    title_fr: Joi.string().allow(null),
-    title_en: Joi.string().allow(null),
-    url: Joi.string().allow(null),
+    fileName: Joi.string().required(),
+    fileSize: Joi.number().allow(null),
+    url: Joi.string().required(),
     data: Joi.any().allow(null),
   });
   return makeValidator(schema, data, cs);
 }
 export function validateMedia(data, cs = "post") {
   const schema = Joi.object({
-    media_fr: Joi.string().allow(null),
-    media_en: Joi.string().allow(null),
+    media_fr: Joi.string().required(),
+    media_en: Joi.string().required(),
   });
   return makeValidator(schema, data, cs);
 }
@@ -93,8 +93,8 @@ export function validateOeuvre(data, cs = "post") {
     classic: Joi.number().integer().valid(0, 1).allow(null),
     modern: Joi.number().integer().valid(0, 1).allow(null),
     idDomainTechMedia: Joi.number().integer().required(),
-    title_fr: Joi.string().allow(null),
-    title_en: Joi.string().allow(null),
+    title_fr: Joi.string().required(),
+    title_en: Joi.string().required(),
     desc_fr: Joi.string().allow(null),
     desc_en: Joi.string().allow(null),
     completionDate: Joi.date().allow(null),
@@ -115,22 +115,22 @@ export function validatePartner(data, cs = "post") {
     zipCode: Joi.string().allow(null),
     city: Joi.string().allow(null),
     country: Joi.string().allow(null),
-    idImage: Joi.number().integer().required(),
+    idImage: Joi.number().integer().allow(null),
     idUser: Joi.number().integer().allow(null),
   });
   return makeValidator(schema, data, cs);
 }
 export function validatePrize(data, cs = "post") {
   const schema = Joi.object({
-    prize_fr: Joi.string().allow(null),
-    prize_en: Joi.string().allow(null),
+    prize_fr: Joi.string().required(),
+    prize_en: Joi.string().required(),
   });
   return makeValidator(schema, data, cs);
 }
 export function validateRole(data, cs = "post") {
   const schema = Joi.object({
-    role_fr: Joi.string(),
-    role_en: Joi.string().allow(null),
+    role_fr: Joi.string().required(),
+    role_en: Joi.string().required(),
     account: Joi.number().integer().valid(0, 1),
     roleExpo: Joi.number().integer().valid(0, 1),
   });
@@ -139,8 +139,8 @@ export function validateRole(data, cs = "post") {
 export function validateStatus(data, cs = "post") {
   const schema = Joi.object({
     type: Joi.string().allow(null),
-    title_fr: Joi.string().allow(null),
-    title_en: Joi.string().allow(null),
+    title_fr: Joi.string().required(),
+    title_en: Joi.string().required(),
     createdAt: Joi.date().allow(null),
     updatedAt: Joi.date().allow(null),
   });
@@ -148,8 +148,8 @@ export function validateStatus(data, cs = "post") {
 }
 export function validateTechnique(data, cs = "post") {
   const schema = Joi.object({
-    technique_fr: Joi.string().allow(null),
-    technique_en: Joi.string().allow(null),
+    technique_fr: Joi.string().required(),
+    technique_en: Joi.string().required(),
   });
   return makeValidator(schema, data, cs);
 }

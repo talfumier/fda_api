@@ -1,6 +1,6 @@
 import express from "express";
 import {routeHandler} from "../../middleware/routeHandler.js";
-import {textTranslate} from "../../mariadb/models/utilityFunctions.js";
+import {textTranslate} from "../../utilityFunctions.js";
 
 const router = express.Router();
 

@@ -15,7 +15,7 @@ import {
   htmlTranslate,
   textTranslate,
   validateIntegerId,
-} from "../../mariadb/models/utilityFunctions.js";
+} from "../../utilityFunctions.js";
 
 const router = express.Router();
 
