@@ -1,3 +1,4 @@
+@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjEsImxhc3ROYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImVtYWlsIjoiaGVucmkudGFsZnVtaWVyQHdhbmFkb28uZnIiLCJpZFJvbGUiOjUsImlkU3RhdHVzIjoyLCJsYW5nIjoiZW4iLCJpYXQiOjE3NTQyNDQzOTUsImV4cCI6MTc1NDI1NTE5NX0.41UlL2OMt4Ixmb1WEKkbyHDOhT9yBlknPYG9NhfnvVY
 
 ### REST CLIENT EXTENSION TEST
 GET https://jsonplaceholder.typicode.com/posts/1
@@ -17,7 +18,7 @@ GET http://localhost:3000/api/utilities/sync/fda_prod
 GET http://localhost:3000/api/utilities/sync/fda_test
 ###
 
-### USER
+### USERS
 POST http://localhost:3000/api/register
 content-type: application/json
 X-App-Origin: dev
@@ -94,3 +95,43 @@ Accept-Language: en
 {
  "pwd":"644601"
 }
+###
+GET http://localhost:3000/api/entities/User
+###
+GET http://localhost:3000/api/entities/ExpoPartner/1
+###
+POST http://localhost:3000/api/entities/User
+content-type: application/json
+X-App-Origin: dev
+Accept-Language: en
+
+{  
+  "email":"henri.talfumier@gmail.com",
+  "pwd":"644601"
+}
+###
+
+### PARTNERS
+POST http://localhost:3000/api/entities/Partner
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+Accept-Language: en
+
+{  
+  "name":"CCM COLOMIERS",
+  "idUser":1
+}
+###
+DELETE  http://localhost:3000/api/entities/Partner/2
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+Accept-Language: en
+###
+DELETE  http://localhost:3000/api/entities/User/1
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+Accept-Language: en
+###

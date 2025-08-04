@@ -1,13 +1,13 @@
 import express from "express";
 import bcrypt from "bcrypt";
 import {routeHandler} from "../../middleware/routeHandler.js";
-import {bodyCleanUp} from "../../mariadb/models/utilityFunctions.js";
+import {bodyCleanUp} from "../../utilityFunctions.js";
 import {getModels} from "../../mariadb/models/sqlModels.js";
 import {BadRequest} from "../../mariadb/models/validation/errors.js";
 import { sendBasicEmail } from "../../mailjet/sendEmail.js";
 import {environment} from "../../config/environment.js";
 import config from "../../config/config.json" with {type: "json"};
-import { textTranslate } from "../../mariadb/models/utilityFunctions.js";
+import { textTranslate } from "../../utilityFunctions.js";
 
 const router = express.Router();
 

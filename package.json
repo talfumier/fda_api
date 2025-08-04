@@ -15,6 +15,7 @@
   "description": "Festival des Arts - Merville 31",
   "dependencies": {
     "bcrypt": "^6.0.0",
+    "cloudinary": "^2.7.0",
     "cors": "^2.8.5",
     "date-fns": "^4.1.0",
     "dom-serializer": "^2.0.0",

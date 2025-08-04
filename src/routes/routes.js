@@ -6,6 +6,8 @@ import translate from "./google/translate.js";
 import register from "./users/register.js";
 import login from "./users/login.js";
 import password from "./users/password.js";
+import entities from "./entities//entities.js";
+import files from "./files/files.js";
 import {invalidPathHandler} from "../middleware/invalidPathHandler.js";
 import {errorHandler} from "../middleware/errorHandler.js";
 
@@ -23,10 +25,13 @@ export function routes(app) {
 
   app.use("/api/utilities", utilities);
   app.use("/api/translate", translate);
+  app.use("/api/files", files);
 
   app.use("/api/register", register);
   app.use("/api/login", login);
   app.use("/api/resetpassword", password);
+
+  app.use("/api/entities", entities);
 
   app.use(invalidPathHandler); //invalid path handler middleware > eventually triggerered when none of the routes matches
 

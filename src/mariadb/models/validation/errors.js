@@ -31,7 +31,7 @@ export class InternalServerError extends CustomError {
   }
 }
 export class UnexpectedError extends CustomError {
-  constructor(description) {
-    super("An unexpected error has occured.", "unknown", description);
+  constructor(description, source) {
+    super("An unexpected error has occured.", source, description);
   }
 }

@@ -1,0 +1,94 @@
+{
+  "Booking": {
+    "role": ["artist", "organisation"],
+    "idRole": [1.5]
+  },
+  "BookingOeuvre": {
+    "role": ["artist", "organisation"],
+    "idRole": [1, 5]
+  },
+  "Doc": {
+    "role": ["organisation"],
+    "idRole": [5, 6]
+  },
+  "Domain": {
+    "role": ["organisation"],
+    "idRole": [5, 6]
+  },
+  "DomainTechnique": {
+    "role": ["organisation"],
+    "idRole": [5, 6]
+  },
+  "DomainTechniqueMedia": {
+    "role": ["organisation"],
+    "idRole": [5, 6]
+  },
+  "Expo": {
+    "role": ["organisation"],
+    "idRole": [5, 6]
+  },
+  "ExpoDoc": {
+    "role": ["organisation"],
+    "idRole": [5, 6]
+  },
+  "ExpoImage": {
+    "role": ["organisation"],
+    "idRole": [5, 6]
+  },
+  "ExpoPartner": {
+    "role": ["organisation"],
+    "idRole": [5, 6]
+  },
+  "ExpoPrizeUser": {
+    "role": ["organisation"],
+    "idRole": [5, 6]
+  },
+  "Image": {
+    "role": ["artist", "partner", "organisation"],
+    "idRole": [1, 3, 5, 6]
+  },
+  "Media": {
+    "role": ["organisation"],
+    "idRole": [5, 6]
+  },
+  "Oeuvre": {
+    "role": ["artist", "organisation"],
+    "idRole": [1, 5, 6]
+  },
+  "Partner": {
+    "role": ["partner", "organisation"],
+    "idRole": [3, 5, 6]
+  },
+  "Prize": {
+    "role": ["organisation"],
+    "idRole": [5, 6]
+  },
+  "PrizeDomain": {
+    "role": ["organisation"],
+    "idRole": [5, 6]
+  },
+  "Role": {
+    "role": ["admin"],
+    "idRole": [6]
+  },
+  "Status": {
+    "role": ["admin"],
+    "idRole": [6]
+  },
+  "Technique": {
+    "role": ["organisation"],
+    "idRole": [5, 6]
+  },
+  "User": {
+    "role": ["artist", "partner", "organisation"],
+    "idRole": [1, 3, 5, 6]
+  },
+  "UserConn": {
+    "role": ["artist", "partner", "organisation"],
+    "idRole": [1, 3, 5, 6]
+  },
+  "UserExpoRole": {
+    "role": ["organisation"],
+    "idRole": [5, 6]
+  }
+}
