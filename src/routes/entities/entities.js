@@ -6,6 +6,7 @@ import {
   BadRequest,
   Unauthorized,
 } from "../../mariadb/models/validation/errors.js";
+import {Success} from "../../mariadb/models/validation/success.js";
 import {
   userIsAuthorized,
   userIsOrg,
@@ -23,10 +24,7 @@ router.get(
     const {modelName} = req.params;
     const {model} = getModels(req.db, modelName);
     const data = await model.findAll({attributes: {exclude: ["pwd"]}});
-    res.send({
-      statusCode: "200",
-      data,
-    });
+    res.send(new Success("Data retrieval successful", data));
   })
 );
 router.get(
@@ -40,10 +38,7 @@ router.get(
     if (!data)
       return res.send(new BadRequest(`${modelName} id:${id} not found !`));
     if (modelName === "User") data.pwd = undefined;
-    res.send({
-      statusCode: "200",
-      data,
-    });
+    res.send(new Success("Data retrieval successful", data));
   })
 );
 router.post(
@@ -81,11 +76,9 @@ router.post(
     data = await model.create(req.body);
     if (modelName === "User") data.pwd = undefined;
     id = data[`id${modelName}`];
-    res.send({
-      statusCode: "200",
-      message: `${modelName} id:${id} successfully created !`,
-      data,
-    });
+    res.send(
+      new Success(`${modelName} id:${id} successfully created !`, data, true)
+    );
   })
 );
 router.patch(
@@ -141,11 +134,9 @@ router.patch(
       );
     }
     if (modelName === "User") data.pwd = undefined;
-    res.send({
-      statusCode: "200",
-      message: `${modelName} id:${id} successfully updated !`,
-      data,
-    });
+    res.send(
+      new Success(`${modelName} id:${id} successfully updated !`, data, true)
+    );
   })
 );
 router.delete(
@@ -174,11 +165,13 @@ router.delete(
     try {
       await data.destroy();
       if (modelName === "User") data.pwd = undefined;
-      res.send({
-        statusCode: "200",
-        message: `${modelName} id:'${id}' and associated records (if any) successfully deleted !`,
-        data,
-      });
+      res.send(
+        new Success(
+          `${modelName} id:'${id}' and associated records (if any) successfully deleted !`,
+          null,
+          true
+        )
+      );
     } catch (error) {
       //related records prevent entity deletion
       if (error.original.errno === 1451)

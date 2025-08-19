@@ -178,13 +178,14 @@ export function validateUser(data, cs = "post") {
     social1: Joi.string().allow(null),
     social2: Joi.string().allow(null),
     newsletter: Joi.number().integer().valid(0, 1).allow(null), //default value 1 (true) set in sqlModels
-    pwd: joiPassword.string(),
-    // .min(8)
-    // .max(60)
-    // .minOfSpecialCharacters(1)
-    // .minOfUppercase(1)
-    // .minOfNumeric(1)
-    // .noWhiteSpaces(),
+    pwd: joiPassword
+      .string()
+      .min(8)
+      .max(60)
+      .minOfSpecialCharacters(1)
+      .minOfUppercase(1)
+      .minOfNumeric(1)
+      .noWhiteSpaces(),
   });
   return makeValidator(schema, data, cs, "tuser");
 }

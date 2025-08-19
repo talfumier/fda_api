@@ -1,37 +1,41 @@
 export class CustomError {
-  constructor(message = "Custom Error message", statusCode = 500, description) {
+  constructor(
+    general = "general error description",
+    statusCode = 500,
+    message
+  ) {
     this.name = this.constructor.name;
-    this.message = message;
+    this.general = general;
     this.statusCode = statusCode;
-    this.description = description;
+    this.message = message;
   }
 }
 export class BadRequest extends CustomError {
-  constructor(description) {
-    super("Cannot process the request as it stands.", 400, description);
+  constructor(message) {
+    super("Cannot process the request as it stands.", 400, message);
   }
 }
 export class NotFound extends CustomError {
-  constructor(description) {
-    super("The requested resource could not be found.", 404, description);
+  constructor(message) {
+    super("The requested resource could not be found.", 404, message);
   }
 }
 export class Unauthorized extends CustomError {
-  constructor(description) {
+  constructor(message) {
     super(
       "Unauthorized Access. Authentication required or invalid.",
       401,
-      description
+      message
     );
   }
 }
 export class InternalServerError extends CustomError {
-  constructor(description) {
-    super("Oooops something wrong happened.", 500, description);
+  constructor(message) {
+    super("Oooops something wrong happened.", 500, message);
   }
 }
 export class UnexpectedError extends CustomError {
-  constructor(description, source) {
-    super("An unexpected error has occured.", source, description);
+  constructor(message, source) {
+    super("An unexpected error has occured.", source, message);
   }
 }

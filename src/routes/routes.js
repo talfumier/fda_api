@@ -14,7 +14,7 @@ import {errorHandler} from "../middleware/errorHandler.js";
 export function routes(app) {
   app.use(
     cors({
-      origin: ["127.0.0.1", "http://your-external-app.com"],
+      origin: ["127.0.0.1", "http://localhost:5173"],
       allowedHeaders: ["Content-Type", "X-App-Origin"],
     })
   );

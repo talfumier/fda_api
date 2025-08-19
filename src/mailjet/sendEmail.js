@@ -1,6 +1,7 @@
 import Mailjet from "node-mailjet";
 import {environment} from "../config/environment.js";
 import {InternalServerError} from "../mariadb/models/validation/errors.js";
+import {Success} from "../mariadb/models/validation/success.js";
 
 const mailjet = new Mailjet({
   apiKey: environment.mail_jet_api_key,
@@ -39,7 +40,7 @@ export function sendBasicEmail(
       if (res)
         emailCallBack(
           recipient,
-          null,
+          null, //no error
           res,
           callback_success ? callback_success : null
         );
@@ -55,10 +56,13 @@ export function emailCallBack(email, err, res, success_msg = null) {
       new InternalServerError(`❌ Unable to deliver email to user ${email} !`)
     );
   else
-    res.send({
-      statusCode: "200",
-      message: !success_msg
-        ? `✅ email delivery to ${email} successful !`
-        : success_msg,
-    });
+    res.send(
+      new Success(
+        success_msg
+          ? success_msg
+          : `✅ email delivery to ${email} successful !`,
+        null,
+        success_msg ? true : false
+      )
+    );
 }
