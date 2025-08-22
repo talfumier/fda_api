@@ -8,7 +8,7 @@ import { Success } from "../../mariadb/models/validation/success.js";
 import { sendBasicEmail } from "../../mailjet/sendEmail.js";
 import {environment} from "../../config/environment.js";
 import config from "../../config/config.json" with {type: "json"};
-import { textTranslate } from "../../utilityFunctions.js";
+import { textTranslate,emailRedirect } from "../../utilityFunctions.js";
 
 const router = express.Router();
 
@@ -38,7 +38,6 @@ router.post(
       );
     user = await User.model.create(
       {...req.body, 
-        lang:req.body.lang,
         pwd:await bcrypt.hash(req.body.pwd, parseInt(environment.salt_rounds))});
 
     user.pwd = undefined; //does not return the password
@@ -46,7 +45,7 @@ router.post(
     let title=await textTranslate("votre compte a bien été créé",req.body.lang,"fr");
     title="FestivalDesArts : " + title.toLowerCase();
     sendBasicEmail(
-      user.email,
+      emailRedirect(user.email,req.headers['x-app-origin']),
       title,
       await textTranslate(`Le compte avec l'identifiant ${user.email} et le rôle '${role.role_fr}' a été enregistré avec succès.
       Le compte est en attente de validation par l'organisation.`,req.body.lang,"fr"),
@@ -54,7 +53,7 @@ router.post(
     title=await textTranslate("validation de compte en attente",req.body.lang,"fr");    
     title="FestivalDesArts : " + title.toLowerCase();
     sendBasicEmail(
-      config.email_org,
+      environment.production?config.email_org.prod:config.email_org.dev,
       title,
       await textTranslate(
         `Le compte avec l'identifiant ${user.email} (id: ${user.idUser}, rôle: ${role.role_fr}) attend votre validation.`,

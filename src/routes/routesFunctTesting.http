@@ -66,7 +66,7 @@ X-App-Origin: dev
 Accept-Language: en
 
 { 
-  "email":"henri.talfumier@wanadoo.fr"
+  "email":"henri.talfumier1@wanadoo.fr"
 }
 ###
 POST https://www.festivaldesarts.merville31.fr/api/resetpassword/forgotPassword

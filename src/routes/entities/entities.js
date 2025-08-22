@@ -14,7 +14,7 @@ import {
   validateIntegerId,
 } from "../../utilityFunctions.js";
 import {sendBasicEmail} from "../../mailjet/sendEmail.js";
-import {textTranslate} from "../../utilityFunctions.js";
+import {textTranslate, emailRedirect} from "../../utilityFunctions.js";
 
 const router = express.Router();
 
@@ -47,7 +47,6 @@ router.post(
   routeHandler(async (req, res) => {
     const {modelName} = req.params;
     let cond = userIsAuthorized(req.user.idRole, modelName);
-    console.log(req.user);
     if (!cond[0]) return res.send(cond[1]);
     if (modelName === "User") {
       cond = userIsOrg(req, modelName); //user (artist or partner role) is created through the register route, only organisation can create it from this route
@@ -115,20 +114,20 @@ router.patch(
       const statusId = req.body.idStatus;
       let title = await textTranslate(
         `votre compte a été ${statusId === 2 ? "validé" : "désactivé"}`,
-        req.lang,
+        req.user.lang,
         "fr"
       );
       title = "FestivalDesArts : " + title.toLowerCase();
       const {model: mdl} = getModels(req.db, "Role");
       const role = await mdl.findByPk(data.idRole);
       sendBasicEmail(
-        data.email,
+        emailRedirect(data.email, req.headers["x-app-origin"], req.user.role),
         title,
         await textTranslate(
           `Le compte avec l'identifiant ${data.email} et le rôle '${
             role.role_fr
           }' a été ${statusId === 2 ? "validé avec succès" : "désactivé"} !`,
-          req.lang,
+          req.user.lang,
           "fr"
         )
       );

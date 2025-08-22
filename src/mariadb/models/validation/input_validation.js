@@ -178,6 +178,7 @@ export function validateUser(data, cs = "post") {
     social1: Joi.string().allow(null),
     social2: Joi.string().allow(null),
     newsletter: Joi.number().integer().valid(0, 1).allow(null), //default value 1 (true) set in sqlModels
+    cgu_cgv: Joi.number().integer().valid(0, 1).allow(null), //default value 0 (false) set in sqlModels
     pwd: joiPassword
       .string()
       .min(8)

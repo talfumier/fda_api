@@ -16,6 +16,7 @@ import {
   htmlTranslate,
   textTranslate,
   validateIntegerId,
+  emailRedirect,
 } from "../../utilityFunctions.js";
 
 const router = express.Router();
@@ -34,9 +35,7 @@ router.post(
       },
     });
     if (!user)
-      return res.send(
-        new NotFound(`User '${req.body.email}' could not be found.`)
-      );
+      return res.send(new NotFound(`User '${email}' could not be found.`));
     let token = await Token.findOne({userId: user.idUser});
     if (token) await token.deleteOne();
     const {randomBytes} = await import("node:crypto");
@@ -76,11 +75,11 @@ router.post(
     html = html.replace("999999999", link).replace(/"/g, "");
     sendBasicEmail(
       //resetToken sent in plain text (i.e. not hashed)
-      user.email,
+      emailRedirect(user.email, req.headers["x-app-origin"]),
       title,
       html,
       res, //Success response sent by sendBasicEmail function
-      `Email with reset instructions is on its way to '${email}'.`
+      `Email with reset instructions is on its way to '${user.email}'.`
     );
   })
 );
