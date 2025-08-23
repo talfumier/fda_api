@@ -37,7 +37,7 @@ router.post(
           },
           environment.sha256, //signing algorithm secret key kept in an environment variable, Secure Hash Algorithm
           {
-            expiresIn: config.token_expires_in,
+            expiresIn: config.token_expires_in[req.headers["x-app-origin"]==='dev'?`'dev`:'prod'],
           }
         );   
         await UserConn.model.create({idUser:user.idUser,maxOut:addHours(new Date(),config.token_expires_in.replace("h",""))});

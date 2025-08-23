@@ -1,0 +1,5 @@
+{
+  "User": {
+    "details": "SELECT tuser.*,trole.role_fr,trole.role_en,tstatus.type,tstatus.title_fr,tstatus.title_en FROM tuser JOIN trole ON tuser.idRole=trole.idRole JOIN tstatus ON tuser.idStatus=tstatus.idStatus ORDER BY tuser.lastName,tuser.firstName,tuser.email;"
+  }
+}

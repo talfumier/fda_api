@@ -2,12 +2,14 @@ export class CustomError {
   constructor(
     general = "general error description",
     statusCode = 500,
-    message
+    message,
+    msgType = "non-persistent"
   ) {
     this.name = this.constructor.name;
     this.general = general;
     this.statusCode = statusCode;
     this.message = message;
+    this.msgType = msgType;
   }
 }
 export class BadRequest extends CustomError {
@@ -21,11 +23,12 @@ export class NotFound extends CustomError {
   }
 }
 export class Unauthorized extends CustomError {
-  constructor(message) {
+  constructor(message, msgType) {
     super(
       "Unauthorized Access. Authentication required or invalid.",
       401,
-      message
+      message,
+      msgType
     );
   }
 }

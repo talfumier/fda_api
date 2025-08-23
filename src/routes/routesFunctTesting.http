@@ -6,7 +6,6 @@ GET https://jsonplaceholder.typicode.com/posts/1
 ### HEALTH CHECK
 GET http://localhost:3000/api/utilities/health
 X-App-Origin: dev
-Accept-Language: en
 ###
 GET https://www.festivaldesarts.merville31.fr/api/utilities/health
 X-App-Origin: dev
@@ -22,7 +21,6 @@ GET http://localhost:3000/api/utilities/sync/fda_test
 POST http://localhost:3000/api/register
 content-type: application/json
 X-App-Origin: dev
-Accept-Language: en
 
 {  
   "email":"henri.talfumier@wanadoo.fr",
@@ -32,7 +30,6 @@ Accept-Language: en
 POST https://www.festivaldesarts.merville31.fr/api/register
 content-type: application/json
 X-App-Origin: dev
-Accept-Language: en
 
 {  
   "email":"henri.talfumier@wanadoo.fr",
@@ -43,7 +40,6 @@ Accept-Language: en
 POST http://localhost:3000/api/login
 content-type: application/json
 X-App-Origin: dev
-Accept-Language: en
 
 { 
   "email":"henri.talfumier@wanadoo.fr",
@@ -53,7 +49,6 @@ Accept-Language: en
 POST https://www.festivaldesarts.merville31.fr/api/login
 content-type: application/json
 X-App-Origin: dev
-Accept-Language: en
 
 { 
   "email":"henri.talfumier@wanadoo.fr",
@@ -63,7 +58,6 @@ Accept-Language: en
 POST http://localhost:3000/api/resetpassword/forgotPassword
 content-type: application/json
 X-App-Origin: dev
-Accept-Language: en
 
 { 
   "email":"henri.talfumier1@wanadoo.fr"
@@ -72,7 +66,6 @@ Accept-Language: en
 POST https://www.festivaldesarts.merville31.fr/api/resetpassword/forgotPassword
 content-type: application/json
 X-App-Origin: dev
-Accept-Language: en
 
 { 
   "email":"henri.talfumier@wanadoo.fr"
@@ -81,7 +74,6 @@ Accept-Language: en
 PATCH http://localhost:3000/api/resetpassword/forgotPassword/1/732fff46d7ee32b184bf74b8a116eb9933e5134797a5bee44b7ccfb9a8ca188d8161d891a63060d2a7ee3f37142c350dd8888035855f0523d31b2965198d73b9d1856966022f087d7b58b653a50f332afdd0d79153ee9fe5ca1ff7149a80007e30fb8105b931a9c5e3a18ad38adfeb3c3a911e7544ed494c8bed3a32cb0a14af69a05793666379aad26b104bc4cd202f0a0d723cc80388709198e93b4cd9e9a68bae04e357bd7e88ad17d0c4b03628d06915d4718c331e2eda88cdafdb0e9505cb5c59614cf16fd63580f3cb011b4f2eb03a65fc0136da13029efb3033415fa23a3e12cb6e496312953dc9fd14891cb7cb42876e6fe8dcdc53ae84da8c792cb4
 content-type: application/json
 X-App-Origin: dev
-Accept-Language: en
 
 {
  "pwd":"644601"
@@ -90,7 +82,6 @@ Accept-Language: en
 PATCH https://www.festivaldesarts.merville31.fr/api/resetpassword/forgotPassword/52/5f9ce6dd02f3e7d0ee73f085f8cb6f4cd68e2defbe1bd11414b7ec677e88dab800c8ad923bd22aa7b1d5b9d596d65d94fb6c90fa952d41f459d525a0dbd25cb7879f8ac6ce833b4b2bced3f15699bbb873bd7dad2f70ed002deffe63a74a164822dcc188d9ee12f42964a9ca2b9f09c35e34a721c625d45ab10129c501d5f4a119b75baaba82096ca64856c41c93921c720513147c7f302846f36efaaf6940426d3633c523c2e1be0b69ce5fc90f172f6dce7b255af0edb6719f096527812332413b2c545a2b791c75e83e94a21bc5a8ba0ac896610b9424d86e6f744a1bcc48ad6ccb79b65eb49a6f647e5dd484c0823d81b62c3f09a79a7a6831251dbb76ba
 content-type: application/json
 X-App-Origin: dev
-Accept-Language: en
 
 {
  "pwd":"644601"
@@ -103,7 +94,6 @@ GET http://localhost:3000/api/entities/ExpoPartner/1
 POST http://localhost:3000/api/entities/User
 content-type: application/json
 X-App-Origin: dev
-Accept-Language: en
 
 {  
   "email":"henri.talfumier@gmail.com",
@@ -116,7 +106,6 @@ POST http://localhost:3000/api/entities/Partner
 x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
-Accept-Language: en
 
 {  
   "name":"CCM COLOMIERS",
@@ -127,11 +116,12 @@ DELETE  http://localhost:3000/api/entities/Partner/2
 x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
-Accept-Language: en
 ###
 DELETE  http://localhost:3000/api/entities/User/1
 x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
-Accept-Language: en
+###
+GET http://localhost:3000/api/entities/sql/User/details
+X-App-Origin: dev
 ###
