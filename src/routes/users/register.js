@@ -22,7 +22,7 @@ router.post(
           `User ${req.body.email} with admin privileges cannot be created through the API.`
         )
       );
-    const{User,Role}=getModels(req.db);
+    const{User,StatusTracking,Role}=getModels(req.db);
 
     const {error} = User.validate(req.body, "post");
     if (error) return res.send(new BadRequest(error.details[0].message));
@@ -39,8 +39,10 @@ router.post(
     user = await User.model.create(
       {...req.body, 
         pwd:await bcrypt.hash(req.body.pwd, parseInt(environment.salt_rounds))});
-
     user.pwd = undefined; //does not return the password
+    //Create corresponding status in tstatus_tracking for the newlycreated user
+    await StatusTracking.model.create({idUser:user.idUser,idStatus:1}) //idStatus = 1 >>> pending
+
     const role=(await Role.model.findByPk(user.idRole));
     let title=await textTranslate("votre compte a bien été créé",req.body.lang,"fr");
     title="FestivalDesArts : " + title.toLowerCase();

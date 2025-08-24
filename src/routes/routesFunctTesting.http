@@ -43,7 +43,7 @@ X-App-Origin: dev
 
 { 
   "email":"henri.talfumier@wanadoo.fr",
-  "pwd":"644601"
+  "pwd":"Ht644601$"
 }
 ###
 POST https://www.festivaldesarts.merville31.fr/api/login

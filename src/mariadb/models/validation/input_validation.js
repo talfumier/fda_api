@@ -157,7 +157,6 @@ export function validateUser(data, cs = "post") {
   const joiPassword = Joi.extend(joiPasswordExtendCore);
   const schema = Joi.object({
     idRole: Joi.number().integer().allow(null), //default value 1 (artist) set in sqlModels
-    idStatus: Joi.number().integer().allow(null), //default value 1 (pending) set in sqlModels
     lastName: Joi.string().allow(null),
     firstName: Joi.string().allow(null),
     pseudo: Joi.string().allow(null),
