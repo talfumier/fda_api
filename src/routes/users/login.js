@@ -25,7 +25,7 @@ router.post(
     if (user && status.length>=1) {
       if (status[0].idStatus!==2)  //idStatus=2 >>> active account
         return res.send(
-          new Unauthorized(user.idStatus===1?"Your account is still pending validation.":"Your account has been deactivated.")
+          new Unauthorized(status[0].idStatus==1?"Your account is still pending validation.":"Your account has been deactivated.")
         );        
       const pwd_valid = await bcrypt.compare(req.body.pwd, user.pwd);
       if (pwd_valid) {
