@@ -1,5 +1,4 @@
 import express from "express";
-import { QueryTypes } from 'sequelize';
 import {routeHandler} from "../../middleware/routeHandler.js";
 import {authHandler} from "../../middleware/authHandler.js";
 import {getModels} from "../../mariadb/models/sqlModels.js";
@@ -16,7 +15,6 @@ import {
 } from "../../utilityFunctions.js";
 import {sendBasicEmail} from "../../mailjet/sendEmail.js";
 import {textTranslate, emailRedirect} from "../../utilityFunctions.js";
-import sqlQueries from "./sql.json" with {type: "json"};
 
 const router = express.Router();
 
@@ -40,20 +38,6 @@ router.get(
     if (!data)
       return res.send(new BadRequest(`${modelName} id:${id} not found !`));
     if (modelName === "User") data.pwd = undefined;
-    res.send(new Success("Data retrieval successful", data));
-  })
-);
-router.get(
-  "/sql/:modelName/:id", 
-  routeHandler(async (req, res) => {
-    const {modelName,id} = req.params;
-    const data = await req.db.query(sqlQueries[modelName][id],{
-        type: QueryTypes.SELECT
-      }
-    );
-    data.map((item) => {
-      item.pwd=undefined
-    })
     res.send(new Success("Data retrieval successful", data));
   })
 );
