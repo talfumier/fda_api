@@ -1,4 +1,4 @@
-@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjEsImxhc3ROYW1lIjpudWxsLCJmaXJzdE5hbWUiOm51bGwsImVtYWlsIjoiaGVucmkudGFsZnVtaWVyQHdhbmFkb28uZnIiLCJpZFJvbGUiOjUsImlkU3RhdHVzIjoyLCJsYW5nIjoiZW4iLCJpYXQiOjE3NTQyNDQzOTUsImV4cCI6MTc1NDI1NTE5NX0.41UlL2OMt4Ixmb1WEKkbyHDOhT9yBlknPYG9NhfnvVY
+@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6IlRBTEZVTUlFUiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS50YWxmdW1pZXJAd2FuYWRvby5mciIsImlkUm9sZSI6NywiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc1NjM3MTQ1MywiZXhwIjoxNzU2NDA3NDUzfQ.obQyGf-RUr1M9vNbyTt5cjh-2A1bFFMHJ3wFjikfpG8
 
 ### REST CLIENT EXTENSION TEST
 GET https://jsonplaceholder.typicode.com/posts/1
@@ -100,7 +100,17 @@ X-App-Origin: dev
   "pwd":"644601"
 }
 ###
+### STATUSTRACKING
+POST http://localhost:3000/api/entities/StatusTracking
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
 
+{  
+  "idStatus":2,
+  "idUser":47
+}
+###
 ### PARTNERS
 POST http://localhost:3000/api/entities/Partner
 x-auth-token:{{user_token}}
@@ -122,6 +132,8 @@ x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
 ###
-GET http://localhost:3000/api/sql-entities/list_items_user
+GET http://localhost:3000/api/sql-entities/list_items_user/:idRole,:idUser/7,44
+x-auth-token:{{user_token}}
+content-type: application/json
 X-App-Origin: dev
 ###

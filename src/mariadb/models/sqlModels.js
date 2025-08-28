@@ -435,7 +435,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.StatusTracking = {
     validate: null,
-    master: ["idStatus"],
+    master: null, //managed in entities.js
     model: sequelize.define(
       "StatusTracking",
       {

@@ -16,7 +16,7 @@ export function routes(app) {
   app.use(
     cors({
       origin: ["127.0.0.1", "http://localhost:5173"],
-      allowedHeaders: ["Content-Type", "X-App-Origin"],
+      allowedHeaders: ["Content-Type", "X-Auth-Token", "X-App-Origin"],
     })
   );
 

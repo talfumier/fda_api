@@ -1,98 +1,98 @@
 {
   "Booking": {
     "role": ["artist", "organisation"],
-    "idRole": [1.5]
+    "idRole": [1, 5, 6, 7]
   },
   "BookingOeuvre": {
     "role": ["artist", "organisation"],
-    "idRole": [1, 5]
+    "idRole": [1, 5, 6, 7]
   },
   "Doc": {
     "role": ["organisation"],
-    "idRole": [5, 6]
+    "idRole": [5, 6, 7]
   },
   "Domain": {
     "role": ["organisation"],
-    "idRole": [5, 6]
+    "idRole": [5, 6, 7]
   },
   "DomainTechnique": {
     "role": ["organisation"],
-    "idRole": [5, 6]
+    "idRole": [5, 6, 7]
   },
   "DomainTechniqueMedia": {
     "role": ["organisation"],
-    "idRole": [5, 6]
+    "idRole": [5, 6, 7]
   },
   "Expo": {
     "role": ["organisation"],
-    "idRole": [5, 6]
+    "idRole": [5, 6, 7]
   },
   "ExpoDoc": {
     "role": ["organisation"],
-    "idRole": [5, 6]
+    "idRole": [5, 6, 7]
   },
   "ExpoImage": {
     "role": ["organisation"],
-    "idRole": [5, 6]
+    "idRole": [5, 6, 7]
   },
   "ExpoPartner": {
     "role": ["organisation"],
-    "idRole": [5, 6]
+    "idRole": [5, 6, 7]
   },
   "ExpoPrizeUser": {
     "role": ["organisation"],
-    "idRole": [5, 6]
+    "idRole": [5, 6, 7]
   },
   "Image": {
     "role": ["artist", "partner", "organisation"],
-    "idRole": [1, 3, 5, 6]
+    "idRole": [1, 3, 5, 6, 7]
   },
   "Media": {
     "role": ["organisation"],
-    "idRole": [5, 6]
+    "idRole": [5, 6, 7]
   },
   "Oeuvre": {
     "role": ["artist", "organisation"],
-    "idRole": [1, 5, 6]
+    "idRole": [1, 5, 6, 7]
   },
   "Partner": {
     "role": ["partner", "organisation"],
-    "idRole": [3, 5, 6]
+    "idRole": [3, 5, 6, 7]
   },
   "Prize": {
     "role": ["organisation"],
-    "idRole": [5, 6]
+    "idRole": [5, 6, 7]
   },
   "PrizeDomain": {
     "role": ["organisation"],
-    "idRole": [5, 6]
+    "idRole": [5, 6, 7]
   },
   "Role": {
     "role": ["admin"],
-    "idRole": [6]
+    "idRole": [6, 7]
   },
   "Status": {
     "role": ["admin"],
-    "idRole": [6]
+    "idRole": [6, 7]
   },
   "StatusTracking": {
     "role": ["organisation"],
-    "idRole": [5, 6]
+    "idRole": [5, 6, 7]
   },
   "Technique": {
     "role": ["organisation"],
-    "idRole": [5, 6]
+    "idRole": [5, 6, 7]
   },
   "User": {
     "role": ["artist", "partner", "organisation"],
-    "idRole": [1, 3, 5, 6]
+    "idRole": [1, 3, 5, 6, 7]
   },
   "UserConn": {
     "role": ["artist", "partner", "organisation"],
-    "idRole": [1, 3, 5, 6]
+    "idRole": [1, 3, 5, 6, 7]
   },
   "UserExpoRole": {
     "role": ["organisation"],
-    "idRole": [5, 6]
+    "idRole": [5, 6, 7]
   }
 }

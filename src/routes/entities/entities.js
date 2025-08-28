@@ -52,13 +52,16 @@ router.post(
       cond = userIsOrg(req, modelName); //user (artist or partner role) is created through the register route, only organisation can create it from this route
       if (!cond[0]) return res.send(cond[1]);
     }
-    const {model, validate, master} = getModels(req.db, modelName);
+    const models = getModels(req.db, modelName);
+    const {model, validate} = models;
+    let {master} = models;
     if (validate) {
       const {error} = validate(req.body, "post");
       if (error) return res.send(new BadRequest(error.details[0].message));
     }
     let data = null;
-    const where = {};
+    let where = {};
+    if (master === null) master = Object.keys(req.body); //master = null for StatusTracking model
     master.map((fld) => {
       where[fld] = req.body[fld];
     });
