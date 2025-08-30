@@ -16,10 +16,10 @@ router.post(
   "/",
   routeHandler(async (req, res) => {
     req.body = bodyCleanUp(req.body);
-    if (req.body.role && req.body.role === 6)   //6 >> admin
+    if (req.body.role===7)   // 7 >> admin
       return res.send(
         new BadRequest(
-          `User ${req.body.email} with admin privileges cannot be created through the API.`
+          `User ${req.body.email} with full admin privileges cannot be created through the API.`
         )
       );
     const{User,StatusTracking,Role}=getModels(req.db);
@@ -55,7 +55,7 @@ router.post(
     title=await textTranslate("validation de compte en attente",req.body.lang,"fr");    
     title="FestivalDesArts : " + title.toLowerCase();
     sendBasicEmail(
-      environment.production?config.email_org.prod:config.email_org.dev,
+      req.body.role ===6?config.email_admin:(environment.production?config.email_org.prod:config.email_org.dev),
       title,
       await textTranslate(
         `Le compte avec l'identifiant ${user.email} (id: ${user.idUser}, rôle: ${role.role_fr}) attend votre validation.`,

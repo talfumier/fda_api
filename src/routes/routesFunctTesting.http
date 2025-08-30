@@ -132,7 +132,7 @@ x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
 ###
-GET http://localhost:3000/api/sql-entities/list_items_user/:idRole,:idUser/7,44
+GET http://localhost:3000/api/sql-entities/list_items_user/:idRole/7
 x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
