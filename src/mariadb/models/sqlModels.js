@@ -547,7 +547,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   // StatusTracking relationships
   models.StatusTracking.model.belongsTo(models.Status.model, {
     foreignKey: "idStatus",
-    onDelete: "RESTRICT",
+    onDelete: "CASCADE",
   });
   models.BookingOeuvre.model.hasMany(models.StatusTracking.model, {
     foreignKey: "idBookingOeuvre",

@@ -32,6 +32,11 @@ export class Unauthorized extends CustomError {
     );
   }
 }
+export class Conflict extends CustomError {
+  constructor(message, msgType) {
+    super("Database tables conflict.", 409, message, msgType);
+  }
+}
 export class InternalServerError extends CustomError {
   constructor(message) {
     super("Oooops something wrong happened.", 500, message);

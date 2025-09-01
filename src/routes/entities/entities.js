@@ -4,6 +4,7 @@ import {authHandler} from "../../middleware/authHandler.js";
 import {getModels} from "../../mariadb/models/sqlModels.js";
 import {
   BadRequest,
+  Conflict,
   Unauthorized,
 } from "../../mariadb/models/validation/errors.js";
 import {Success} from "../../mariadb/models/validation/success.js";
@@ -65,11 +66,13 @@ router.post(
     master.map((fld) => {
       where[fld] = req.body[fld];
     });
+    //for Status_Tracking, a given user can have the same idStatus multiple times at different timestamps
+    //what is important is that the last one should be different from the one proposed for update in req.body >>> managed in front-end
     data = await model.findOne({
       where,
     });
     let id = null;
-    if (data) {
+    if (data && modelName !== "StatusTracking") {
       id = data[`id${modelName}`];
       return res.send(
         new BadRequest(`${modelName} id:'${id}' does already exist !`)
@@ -178,8 +181,8 @@ router.delete(
       //related records prevent entity deletion
       if (error.original.errno === 1451)
         return res.send(
-          new Unauthorized(
-            `${modelName} id:'${id}' cannot be deleted due to related records in related child tables !`
+          new Conflict(
+            `${modelName} id:'${id}' cannot be deleted due to child records in linked tables !`
           )
         );
       else throw error;

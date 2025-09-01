@@ -1,4 +1,4 @@
-@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6IlRBTEZVTUlFUiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS50YWxmdW1pZXJAd2FuYWRvby5mciIsImlkUm9sZSI6NywiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc1NjM3MTQ1MywiZXhwIjoxNzU2NDA3NDUzfQ.obQyGf-RUr1M9vNbyTt5cjh-2A1bFFMHJ3wFjikfpG8
+@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6Inp6enp6IiwiZmlyc3ROYW1lIjoieXl5eSIsImVtYWlsIjoiaGVucmkudGFsZnVtaWVyQHdhbmFkb28uZnIiLCJpZFJvbGUiOjcsImlkU3RhdHVzIjoyLCJsYW5nIjoiZW4iLCJpYXQiOjE3NTY1NzgwODYsImV4cCI6MTc1NjYxNDA4Nn0.dQ7JEyEw44r3JHocwsJepQ--xVd30GzojOrIWm2UiP8
 
 ### REST CLIENT EXTENSION TEST
 GET https://jsonplaceholder.typicode.com/posts/1
@@ -42,7 +42,7 @@ content-type: application/json
 X-App-Origin: dev
 
 { 
-  "email":"henri.talfumier1@wanadoo.fr",
+  "email":"henri.talfumier@wanadoo.fr",
   "pwd":"Ht644601$"
 }
 ###
@@ -108,7 +108,7 @@ X-App-Origin: dev
 
 {  
   "idStatus":2,
-  "idUser":47
+  "idUser":46
 }
 ###
 ### PARTNERS

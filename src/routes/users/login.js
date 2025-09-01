@@ -18,11 +18,12 @@ router.post(
     let user = await User.model.findOne({
       where: {email: req.body.email},
     }); 
+    if(!user) return res.send(new NotFound(`User '${req.body.email}' not found.`));
     const status=await StatusTracking.model.findAll({
       where: {idUser: user.idUser},
       order: [['createdAt', 'DESC']]
     })
-    if (user && status.length>=1) {
+    if (status.length>=1) {
       if (status[0].idStatus!==2)  //idStatus=2 >>> active account
         return res.send(
           new Unauthorized(status[0].idStatus==1?"Your account is still pending validation.":"Your account has been deactivated.")
@@ -57,7 +58,6 @@ router.post(
       }
       return res.send(new Unauthorized('Wrong password.'))
     }
-    return res.send(new NotFound(`User '${req.body.email}' not found.`));
   })
 );
 export default router;
