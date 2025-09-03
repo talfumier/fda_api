@@ -8,6 +8,7 @@ import {
   NotFound,
   Unauthorized,
 } from "../../mariadb/models/validation/errors.js";
+import {Success} from "../../mariadb/models/validation/success.js";
 import {routeHandler} from "../../middleware/routeHandler.js";
 import {environment} from "../../config/environment.js";
 import {sendBasicEmail} from "../../mailjet/sendEmail.js";
@@ -15,6 +16,7 @@ import {
   htmlTranslate,
   textTranslate,
   validateIntegerId,
+  emailRedirect,
 } from "../../utilityFunctions.js";
 
 const router = express.Router();
@@ -26,14 +28,14 @@ router.post(
     const User = getModels(req.db, "User");
     const {error} = User.validate({email: req.body.email}, "postForgotPwd");
     if (error) return res.send(new BadRequest(error.details[0].message));
-    const {email} = req.body;
+    const {email, lang} = req.body;
     const user = await User.model.findOne({
       where: {
         email,
       },
     });
     if (!user)
-      return res.send(new NotFound(`User ${user.email} could not be found.`));
+      return res.send(new NotFound(`User '${email}' could not be found.`));
     let token = await Token.findOne({userId: user.idUser});
     if (token) await token.deleteOne();
     const {randomBytes} = await import("node:crypto");
@@ -46,7 +48,7 @@ router.post(
       userId: user.idUser,
       token: hash,
     });
-    let title = await textTranslate("mot de passe oublié", req.lang, "fr");
+    let title = await textTranslate("mot de passe oublié", lang, "fr");
     title = "FestivalDesArts : " + title.toLowerCase() + " ?";
     const link = `${environment.front_url}/resetpassword?id=${data.userId}&random=${resetToken}`;
     let html = await htmlTranslate(
@@ -67,17 +69,17 @@ router.post(
           )}.
         </span>
       </div>`,
-      req.lang,
+      lang,
       "fr"
     );
     html = html.replace("999999999", link).replace(/"/g, "");
     sendBasicEmail(
       //resetToken sent in plain text (i.e. not hashed)
-      user.email,
+      emailRedirect(user.email, req.headers["x-app-origin"]),
       title,
       html,
-      res,
-      `✅ Email with reset instructions is on its way to ${email}.`
+      res, //Success response sent by sendBasicEmail function
+      `Email with reset instructions is on its way to '${user.email}'.`
     );
   })
 );
@@ -99,17 +101,20 @@ router.patch(
     const isValid = await bcrypt.compare(req.params.resetToken, token.token);
     if (!isValid)
       return res.send(
-        new Unauthorized("Invalid or expired password reset token")
+        new Unauthorized("Invalid or expired password reset token.")
       );
     user.pwd = await bcrypt.hash(
       req.body.pwd,
       parseInt(environment.salt_rounds)
     );
     await user.save();
-    res.send({
-      statusCode: "200",
-      message: `Password successfully reset for ${user.email}.`,
-    });
+    res.send(
+      new Success(
+        `Password successfully reset for '${user.email}'.`,
+        null,
+        true
+      )
+    );
   })
 );
 export default router;

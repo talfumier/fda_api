@@ -4,8 +4,24 @@ import langdetect from "langdetect";
 import {parseDocument} from "htmlparser2";
 import serialize from "dom-serializer";
 import {Unauthorized} from "./mariadb/models/validation/errors.js";
+import config from "./config/config.json" with {type: "json"};
 import {environment} from "./config/environment.js";
 import modelRoles from "./routes/entities/modelRoles.json" with {type: "json"};
+
+export function emailRedirect(email,x_app_origin,role=null) { 
+  //during test, when a mail is to be sent to a user not part of the organisation (it may be a fake email address),
+  //it needs to be redirected to the connected organisation user running the tests or  
+  //if the route doesn't require authentication to the generic fda gmail address
+  if(role && role >=5) return email;  //role is available when user is actually authenticated
+  switch(x_app_origin){
+    case 'dev':
+      return config.email_org.dev
+    case 'test':
+      return config.email_org.prod
+    default:
+      return email
+  }
+}
 export function userIsAdmin(req) {
   if (req.user.idRole !== 6)
     return [

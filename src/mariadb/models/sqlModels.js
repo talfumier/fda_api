@@ -433,6 +433,30 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
       {tableName: "ttechnique", timestamps: true}
     ),
   };
+  models.StatusTracking = {
+    validate: null,
+    master: null, //managed in entities.js
+    model: sequelize.define(
+      "StatusTracking",
+      {
+        idStatusTracking: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true,
+        },
+        idStatus: DataTypes.INTEGER,
+        idUser: {type: DataTypes.INTEGER, allowNull: true},
+        idBookingOeuvre: {type: DataTypes.INTEGER, allowNull: true},
+        idBooking: {type: DataTypes.INTEGER, allowNull: true},
+      },
+      {
+        tableName: "tstatus_tracking",
+        timestamps: true,
+        createdAt: true,
+        updatedAt: false,
+      }
+    ),
+  };
   models.User = {
     validate: val.validateUser,
     master: ["email"],
@@ -444,8 +468,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
           primaryKey: true,
           autoIncrement: true,
         },
-        idRole: {type: DataTypes.INTEGER, defaultValue: 1}, //account related roles, 0 >> artist
-        idStatus: {type: DataTypes.INTEGER, defaultValue: 1}, // 1 >> user pending validation
+        idRole: {type: DataTypes.INTEGER, defaultValue: 1}, //account related roles, 1 >> artist
         lastName: DataTypes.STRING,
         firstName: DataTypes.STRING,
         pseudo: DataTypes.STRING,
@@ -466,6 +489,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         social1: DataTypes.STRING,
         social2: DataTypes.STRING,
         newsletter: {type: DataTypes.BOOLEAN, defaultValue: 1}, // 1 >> true
+        cgu_cgv: {type: DataTypes.BOOLEAN, defaultValue: 0},
         pwd: DataTypes.STRING,
       },
       {
@@ -520,11 +544,23 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
       }
     ),
   };
-
-  // User relationships
-  models.User.model.belongsTo(models.Status.model, {
+  // StatusTracking relationships
+  models.StatusTracking.model.belongsTo(models.Status.model, {
     foreignKey: "idStatus",
+    onDelete: "CASCADE",
+  });
+  models.BookingOeuvre.model.hasMany(models.StatusTracking.model, {
+    foreignKey: "idBookingOeuvre",
     onDelete: "RESTRICT",
+  });
+  models.Booking.model.hasMany(models.StatusTracking.model, {
+    foreignKey: "idBooking",
+    onDelete: "RESTRICT",
+  });
+  // User relationships
+  models.User.model.hasMany(models.StatusTracking.model, {
+    foreignKey: "idUser",
+    onDelete: "CASCADE",
   });
   models.User.model.belongsTo(models.Role.model, {
     foreignKey: "idRole",
@@ -581,10 +617,6 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
     foreignKey: "idExpo",
     onDelete: "RESTRICT",
   });
-  models.Booking.model.belongsTo(models.Status.model, {
-    foreignKey: "idStatus",
-    onDelete: "RESTRICT",
-  });
   models.Booking.model.hasMany(models.BookingOeuvre.model, {
     foreignKey: "idBooking",
     onDelete: "RESTRICT",
@@ -596,10 +628,6 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   });
   models.BookingOeuvre.model.belongsTo(models.Oeuvre.model, {
     foreignKey: "idOeuvre",
-    onDelete: "RESTRICT",
-  });
-  models.BookingOeuvre.model.belongsTo(models.Status.model, {
-    foreignKey: "idStatus",
     onDelete: "RESTRICT",
   });
   // Oeuvre relationships

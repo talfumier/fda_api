@@ -4,8 +4,10 @@ import {authHandler} from "../../middleware/authHandler.js";
 import {getModels} from "../../mariadb/models/sqlModels.js";
 import {
   BadRequest,
+  Conflict,
   Unauthorized,
 } from "../../mariadb/models/validation/errors.js";
+import {Success} from "../../mariadb/models/validation/success.js";
 import {
   userIsAuthorized,
   userIsOrg,
@@ -13,7 +15,7 @@ import {
   validateIntegerId,
 } from "../../utilityFunctions.js";
 import {sendBasicEmail} from "../../mailjet/sendEmail.js";
-import {textTranslate} from "../../utilityFunctions.js";
+import {textTranslate, emailRedirect} from "../../utilityFunctions.js";
 
 const router = express.Router();
 
@@ -23,10 +25,7 @@ router.get(
     const {modelName} = req.params;
     const {model} = getModels(req.db, modelName);
     const data = await model.findAll({attributes: {exclude: ["pwd"]}});
-    res.send({
-      statusCode: "200",
-      data,
-    });
+    res.send(new Success("Data retrieval successful", data));
   })
 );
 router.get(
@@ -40,10 +39,7 @@ router.get(
     if (!data)
       return res.send(new BadRequest(`${modelName} id:${id} not found !`));
     if (modelName === "User") data.pwd = undefined;
-    res.send({
-      statusCode: "200",
-      data,
-    });
+    res.send(new Success("Data retrieval successful", data));
   })
 );
 router.post(
@@ -52,27 +48,31 @@ router.post(
   routeHandler(async (req, res) => {
     const {modelName} = req.params;
     let cond = userIsAuthorized(req.user.idRole, modelName);
-    console.log(req.user);
     if (!cond[0]) return res.send(cond[1]);
     if (modelName === "User") {
       cond = userIsOrg(req, modelName); //user (artist or partner role) is created through the register route, only organisation can create it from this route
       if (!cond[0]) return res.send(cond[1]);
     }
-    const {model, validate, master} = getModels(req.db, modelName);
+    const models = getModels(req.db, modelName);
+    const {model, validate} = models;
+    let {master} = models;
     if (validate) {
       const {error} = validate(req.body, "post");
       if (error) return res.send(new BadRequest(error.details[0].message));
     }
     let data = null;
-    const where = {};
+    let where = {};
+    if (master === null) master = Object.keys(req.body); //master = null for StatusTracking model
     master.map((fld) => {
       where[fld] = req.body[fld];
     });
+    //for Status_Tracking, a given user can have the same idStatus multiple times at different timestamps
+    //what is important is that the last one should be different from the one proposed for update in req.body >>> managed in front-end
     data = await model.findOne({
       where,
     });
     let id = null;
-    if (data) {
+    if (data && modelName !== "StatusTracking") {
       id = data[`id${modelName}`];
       return res.send(
         new BadRequest(`${modelName} id:'${id}' does already exist !`)
@@ -81,11 +81,9 @@ router.post(
     data = await model.create(req.body);
     if (modelName === "User") data.pwd = undefined;
     id = data[`id${modelName}`];
-    res.send({
-      statusCode: "200",
-      message: `${modelName} id:${id} successfully created !`,
-      data,
-    });
+    res.send(
+      new Success(`${modelName} id:${id} successfully created !`, data, true)
+    );
   })
 );
 router.patch(
@@ -122,30 +120,28 @@ router.patch(
       const statusId = req.body.idStatus;
       let title = await textTranslate(
         `votre compte a été ${statusId === 2 ? "validé" : "désactivé"}`,
-        req.lang,
+        req.user.lang,
         "fr"
       );
       title = "FestivalDesArts : " + title.toLowerCase();
       const {model: mdl} = getModels(req.db, "Role");
       const role = await mdl.findByPk(data.idRole);
       sendBasicEmail(
-        data.email,
+        emailRedirect(data.email, req.headers["x-app-origin"], req.user.role),
         title,
         await textTranslate(
           `Le compte avec l'identifiant ${data.email} et le rôle '${
             role.role_fr
           }' a été ${statusId === 2 ? "validé avec succès" : "désactivé"} !`,
-          req.lang,
+          req.user.lang,
           "fr"
         )
       );
     }
     if (modelName === "User") data.pwd = undefined;
-    res.send({
-      statusCode: "200",
-      message: `${modelName} id:${id} successfully updated !`,
-      data,
-    });
+    res.send(
+      new Success(`${modelName} id:${id} successfully updated !`, data, true)
+    );
   })
 );
 router.delete(
@@ -174,17 +170,19 @@ router.delete(
     try {
       await data.destroy();
       if (modelName === "User") data.pwd = undefined;
-      res.send({
-        statusCode: "200",
-        message: `${modelName} id:'${id}' and associated records (if any) successfully deleted !`,
-        data,
-      });
+      res.send(
+        new Success(
+          `${modelName} id:'${id}' and associated records (if any) successfully deleted !`,
+          null,
+          true
+        )
+      );
     } catch (error) {
       //related records prevent entity deletion
       if (error.original.errno === 1451)
         return res.send(
-          new Unauthorized(
-            `${modelName} id:'${id}' cannot be deleted due to related records in related child tables !`
+          new Conflict(
+            `${modelName} id:'${id}' cannot be deleted due to child records in linked tables !`
           )
         );
       else throw error;

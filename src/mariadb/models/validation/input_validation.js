@@ -157,7 +157,6 @@ export function validateUser(data, cs = "post") {
   const joiPassword = Joi.extend(joiPasswordExtendCore);
   const schema = Joi.object({
     idRole: Joi.number().integer().allow(null), //default value 1 (artist) set in sqlModels
-    idStatus: Joi.number().integer().allow(null), //default value 1 (pending) set in sqlModels
     lastName: Joi.string().allow(null),
     firstName: Joi.string().allow(null),
     pseudo: Joi.string().allow(null),
@@ -178,13 +177,15 @@ export function validateUser(data, cs = "post") {
     social1: Joi.string().allow(null),
     social2: Joi.string().allow(null),
     newsletter: Joi.number().integer().valid(0, 1).allow(null), //default value 1 (true) set in sqlModels
-    pwd: joiPassword.string(),
-    // .min(8)
-    // .max(60)
-    // .minOfSpecialCharacters(1)
-    // .minOfUppercase(1)
-    // .minOfNumeric(1)
-    // .noWhiteSpaces(),
+    cgu_cgv: Joi.number().integer().valid(0, 1).allow(null), //default value 0 (false) set in sqlModels
+    pwd: joiPassword
+      .string()
+      .min(8)
+      .max(60)
+      .minOfSpecialCharacters(1)
+      .minOfUppercase(1)
+      .minOfNumeric(1)
+      .noWhiteSpaces(),
   });
   return makeValidator(schema, data, cs, "tuser");
 }
