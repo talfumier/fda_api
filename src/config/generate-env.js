@@ -35,7 +35,7 @@ const setEnv = () => {
     if (err) console.error(err);
     else
       console.log(
-        `Node.js environment.js file generated correctly at ${targetPath} \n`
+        `API environment.js file generated correctly at ${targetPath} \n`
       );
   });
 };
