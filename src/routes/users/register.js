@@ -55,7 +55,7 @@ router.post(
     title=await textTranslate("validation de compte en attente",req.body.lang,"fr");    
     title="FestivalDesArts : " + title.toLowerCase();
     sendBasicEmail(
-      req.body.role ===6?config.email_admin:(environment.production?config.email_org.prod:config.email_org.dev),
+      req.body.role ===7?config.email_admin:(req.headers["x-app-origin"]==='prod'?config.email_org.prod:config.email_org.dev),
       title,
       await textTranslate(
         `Le compte avec l'identifiant ${user.email} (id: ${user.idUser}, rôle: ${role.role_fr}) attend votre validation.`,
