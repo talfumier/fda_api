@@ -489,7 +489,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         social1: DataTypes.STRING,
         social2: DataTypes.STRING,
         newsletter: {type: DataTypes.BOOLEAN, defaultValue: 1}, // 1 >> true
-        cgu_cgv: {type: DataTypes.BOOLEAN, defaultValue: 0},
+        cgu_cgv: {type: DataTypes.DATE, defaultValue: DataTypes.NOW},
         pwd: DataTypes.STRING,
       },
       {

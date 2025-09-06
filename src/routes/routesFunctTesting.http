@@ -1,4 +1,4 @@
-@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6Inp6enp6IiwiZmlyc3ROYW1lIjoieXl5eSIsImVtYWlsIjoiaGVucmkudGFsZnVtaWVyQHdhbmFkb28uZnIiLCJpZFJvbGUiOjcsImlkU3RhdHVzIjoyLCJsYW5nIjoiZW4iLCJpYXQiOjE3NTY1NzgwODYsImV4cCI6MTc1NjYxNDA4Nn0.dQ7JEyEw44r3JHocwsJepQ--xVd30GzojOrIWm2UiP8
+@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6Inp6enp6IiwiZmlyc3ROYW1lIjoieXl5eSIsImVtYWlsIjoiaGVucmkudGFsZnVtaWVyQHdhbmFkb28uZnIiLCJpZFJvbGUiOjcsImlkU3RhdHVzIjoyLCJsYW5nIjoiZW4iLCJpYXQiOjE3NTcxMzU3MDksImV4cCI6MTc1NzE3MTcwOX0.a7rLwUKvM42Xw09p_iO_CaTn6duwiatzrnTl-9tPTAg
 
 ### REST CLIENT EXTENSION TEST
 GET https://jsonplaceholder.typicode.com/posts/1
@@ -132,7 +132,7 @@ x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
 ###
-GET http://localhost:3000/api/sql-entities/list_items_user/:idRole/7
+GET http://localhost:3000/api/sql-entities/list_items_user0/:idRole/7
 x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
