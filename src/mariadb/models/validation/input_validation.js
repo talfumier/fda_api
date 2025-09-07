@@ -159,11 +159,13 @@ export function validateUser(data, cs = "post") {
     idRole: Joi.number().integer().allow(null), //default value 1 (artist) set in sqlModels
     lastName: Joi.string().allow(null),
     firstName: Joi.string().allow(null),
+    public_name: Joi.number().integer().valid(0, 1).allow(null), //default value 1 (true) set in sqlModels
     pseudo: Joi.string().allow(null),
-    display: Joi.number().integer().valid(0, 1, 2).allow(null), //default value 2 (all) set in sqlModels
-    public: Joi.number().integer().valid(0, 1).allow(null), //default value 1 (true) set in sqlModels
+    public_pseudo: Joi.number().integer().valid(0, 1).allow(null), //default value 0 (false) set in sqlModels
     email: Joi.string().email().required(),
+    public_email: Joi.number().integer().valid(0, 1).allow(null), //default value 0 (false) set in sqlModels
     phone: Joi.string().allow(null),
+    public_phone: Joi.number().integer().valid(0, 1).allow(null), //default value 0 (false) set in sqlModels
     lang: Joi.string().allow(null), //default value 1 (fr) set in sqlModels
     address: Joi.string().allow(null),
     zipCode: Joi.string().allow(null),
@@ -172,6 +174,7 @@ export function validateUser(data, cs = "post") {
     resume_fr: Joi.string().allow(null),
     resume_en: Joi.string().allow(null),
     idImage: Joi.number().integer().allow(null),
+    public_image: Joi.number().integer().valid(0, 1).allow(null), //default value 1 (true) set in sqlModels
     web1: Joi.string().allow(null),
     web2: Joi.string().allow(null),
     social1: Joi.string().allow(null),
