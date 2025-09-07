@@ -471,11 +471,13 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         idRole: {type: DataTypes.INTEGER, defaultValue: 1}, //account related roles, 1 >> artist
         lastName: DataTypes.STRING,
         firstName: DataTypes.STRING,
+        public_name: {type: DataTypes.BOOLEAN, defaultValue: 1},
         pseudo: DataTypes.STRING,
-        display: {type: DataTypes.INTEGER, defaultValue: 2}, // 0: (lastName, firstName), 1:pseudo, 2: all of them
-        public: {type: DataTypes.BOOLEAN, defaultValue: 1}, // 1 >> true
+        public_pseudo: {type: DataTypes.BOOLEAN, defaultValue: 0},
         email: DataTypes.STRING,
+        public_email: {type: DataTypes.BOOLEAN, defaultValue: 0},
         phone: DataTypes.STRING,
+        public_phone: {type: DataTypes.BOOLEAN, defaultValue: 0},
         lang: {type: DataTypes.STRING, defaultValue: "fr"},
         address: DataTypes.STRING,
         zipCode: DataTypes.STRING,
@@ -484,6 +486,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         resume_fr: DataTypes.TEXT,
         resume_en: DataTypes.TEXT,
         idImage: DataTypes.INTEGER,
+        public_image: {type: DataTypes.BOOLEAN, defaultValue: 1},
         web1: DataTypes.STRING,
         web2: DataTypes.STRING,
         social1: DataTypes.STRING,
