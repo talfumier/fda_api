@@ -7,8 +7,8 @@ GET https://jsonplaceholder.typicode.com/posts/1
 GET http://localhost:3000/api/utilities/health
 X-App-Origin: dev
 ###
-GET https://www.festivaldesarts.merville31.fr/api/utilities/health
-X-App-Origin: dev
+GET https://test.festivaldesarts.merville31.fr/api/utilities/health
+X-App-Origin: test
 ###
 
 ### DATABASE SYNCING

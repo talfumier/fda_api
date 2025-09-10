@@ -21,7 +21,7 @@ const setEnv = () => {
     mail_jet_api_secret:'${process.env.MAILJET_API_SECRET}',
     mail_jet_sender:'${process.env.MAILJET_API_SENDER}',
     google_api_key:'${process.env.GOOGLE_API_KEY}',
-    cloudinary_folder:'${process.env.CLOUDINARY_FOLDER}'
+    cloudinary_folder:'${process.env.CLOUDINARY_FOLDER}',
     cloudinary_name: '${process.env.CLOUDINARY_NAME}',
     cloudinary_api_key: '${process.env.CLOUDINARY_APIKEY}',
     cloudinary_api_secret: '${process.env.CLOUDINARY_APISECRET}',    
