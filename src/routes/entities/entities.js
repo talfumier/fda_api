@@ -79,6 +79,35 @@ router.post(
       );
     }
     data = await model.create(req.body);
+    if (modelName === "StatusTracking") {
+      //user status change
+      if (Object.keys(req.body).includes("idUser")) {
+        const cond = userIsOrg(req, modelName);
+        if (!cond[0]) return res.send(cond[1]);
+        const statusId = req.body.idStatus;
+        let title = await textTranslate(
+          `votre compte a été ${statusId === 2 ? "validé" : "désactivé"}`,
+          req.user.lang,
+          "fr"
+        );
+        title = "FestivalDesArts : " + title.toLowerCase();
+        const {model: mdl1} = getModels(req.db, "User");
+        const {idRole, email} = await mdl1.findByPk(req.body.idUser);
+        const {model: mdl2} = getModels(req.db, "Role");
+        const {role_fr} = await mdl2.findByPk(idRole);
+        sendBasicEmail(
+          emailRedirect("user", email, req.headers["x-app-origin"]),
+          title,
+          await textTranslate(
+            `Le compte avec l'identifiant ${email} et le rôle '${role_fr}' a été ${
+              statusId === 2 ? "validé avec succès" : "désactivé"
+            } !`,
+            req.user.lang,
+            "fr"
+          )
+        );
+      }
+    }
     if (modelName === "User") data.pwd = undefined;
     id = data[`id${modelName}`];
     res.send(
@@ -103,41 +132,10 @@ router.patch(
     const data = await model.findByPk(id);
     if (!data)
       return res.send(new BadRequest(`${modelName} id:${id} not found !`));
-    // user status or role change
-    let userStatusChange = null;
-    if (modelName === "User") {
-      const keys = Object.keys(req.body);
-      userStatusChange = keys.indexOf("idStatus") !== -1;
-      if (userStatusChange) {
-        const cond = userIsOrg(req, modelName);
-        if (!cond[0]) return res.send(cond[1]);
-      }
-      if (keys.indexOf("idRole") !== -1)
-        new Unauthorized(`User account role cannot be modified !`);
-    }
+    // user role change
+    if (modelName === "User" && Object.keys(req.body).includes("idRole"))
+      res.send(new Unauthorized(`User account role cannot be modified !`));
     await data.update(req.body);
-    if (userStatusChange) {
-      const statusId = req.body.idStatus;
-      let title = await textTranslate(
-        `votre compte a été ${statusId === 2 ? "validé" : "désactivé"}`,
-        req.user.lang,
-        "fr"
-      );
-      title = "FestivalDesArts : " + title.toLowerCase();
-      const {model: mdl} = getModels(req.db, "Role");
-      const role = await mdl.findByPk(data.idRole);
-      sendBasicEmail(
-        emailRedirect(data.email, req.headers["x-app-origin"], req.user.role),
-        title,
-        await textTranslate(
-          `Le compte avec l'identifiant ${data.email} et le rôle '${
-            role.role_fr
-          }' a été ${statusId === 2 ? "validé avec succès" : "désactivé"} !`,
-          req.user.lang,
-          "fr"
-        )
-      );
-    }
     if (modelName === "User") data.pwd = undefined;
     res.send(
       new Success(`${modelName} id:${id} successfully updated !`, data, true)

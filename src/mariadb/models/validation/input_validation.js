@@ -74,10 +74,11 @@ export function validateExpo(data, cs = "post") {
 }
 export function validateImage(data, cs = "post") {
   const schema = Joi.object({
+    idImage: Joi.number().required(),
     fileName: Joi.string().required(),
     fileSize: Joi.number().allow(null),
+    fileLastModified: Joi.date(),
     url: Joi.string().required(),
-    data: Joi.any().allow(null),
   });
   return makeValidator(schema, data, cs);
 }

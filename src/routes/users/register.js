@@ -47,7 +47,7 @@ router.post(
     let title=await textTranslate("votre compte a bien été créé",req.body.lang,"fr");
     title="FestivalDesArts : " + title.toLowerCase();
     sendBasicEmail(
-      emailRedirect(user.email,req.headers['x-app-origin']),
+      emailRedirect('user',user.email,req.headers['x-app-origin']),
       title,
       await textTranslate(`Le compte avec l'identifiant ${user.email} et le rôle '${role.role_fr}' a été enregistré avec succès.
       Le compte est en attente de validation par l'organisation.`,req.body.lang,"fr"),
@@ -55,7 +55,7 @@ router.post(
     title=await textTranslate("validation de compte en attente",req.body.lang,"fr");    
     title="FestivalDesArts : " + title.toLowerCase();
     sendBasicEmail(
-      req.body.role ===7?config.email_admin:(req.headers["x-app-origin"]==='prod'?config.email_org.prod:config.email_org.dev),
+      emailRedirect('org',null,req.headers["x-app-origin"],req.body.role),
       title,
       await textTranslate(
         `Le compte avec l'identifiant ${user.email} (id: ${user.idUser}, rôle: ${role.role_fr}) attend votre validation.`,
