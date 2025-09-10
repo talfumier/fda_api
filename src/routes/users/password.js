@@ -21,6 +21,17 @@ import {
 
 const router = express.Router();
 
+function getMasterUrl(cs) {
+  switch (cs) {
+    case "dev":
+      return environment.front_url_dev;
+    case "test":
+      return environment.front_url_test;
+    case "prod":
+      return environment.front_url_prod;
+  }
+}
+
 //request a new password
 router.post(
   "/forgotPassword", //No authentication when requesting a new password
@@ -50,7 +61,8 @@ router.post(
     });
     let title = await textTranslate("mot de passe oublié", lang, "fr");
     title = "FestivalDesArts : " + title.toLowerCase() + " ?";
-    const link = `${environment.front_url}/resetpassword?id=${data.userId}&random=${resetToken}`;
+    const front_url = getMasterUrl(req.headers["x-app-origin"]);
+    const link = `${front_url}/resetpassword?id=${data.userId}&random=${resetToken}`;
     let html = await htmlTranslate(
       `<div>
         <span>
@@ -75,7 +87,7 @@ router.post(
     html = html.replace("999999999", link).replace(/"/g, "");
     sendBasicEmail(
       //resetToken sent in plain text (i.e. not hashed)
-      emailRedirect(user.email, req.headers["x-app-origin"]),
+      emailRedirect("user", user.email, req.headers["x-app-origin"]),
       title,
       html,
       res, //Success response sent by sendBasicEmail function

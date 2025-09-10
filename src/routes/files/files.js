@@ -3,6 +3,7 @@ import {v2 as cloudinary} from "cloudinary";
 import {authHandler} from "../../middleware/authHandler.js";
 import {routeHandler} from "../../middleware/routeHandler.js";
 import {BadRequest, NotFound} from "../../mariadb/models/validation/errors.js";
+import {Success} from "../../mariadb/models/validation/success.js";
 import {environment} from "../../config/environment.js";
 
 const router = express.Router();
@@ -18,16 +19,18 @@ router.post(
   routeHandler(async (req, res) => {
     const options = {
       public_id: req.body.publicId,
-      folder: "festivaldesarts",
+      folder: environment.cloudinary_folder,
       unique_filename: true,
       use_filename: true,
     };
     const result = await cloudinary.uploader.upload(req.body.data, options);
-    res.send({
-      statusCode: "200",
-      message: `Image ${req.body.publicId} successfully uploaded to Cloudinary.`,
-      url: result.secure_url,
-    });
+    res.send(
+      new Success(
+        `Image ${req.body.publicId} successfully uploaded to Cloudinary.`,
+        result.secure_url,
+        true
+      )
+    );
   })
 );
 router.post(
@@ -37,9 +40,13 @@ router.post(
     const publicId = req.body.publicId;
     if (!publicId)
       return res.send(new BadRequest("Missing cloudinary publicId"));
-    const result = await cloudinary.uploader.destroy(publicId);
+    const result = await cloudinary.uploader.destroy(
+      `${environment.cloudinary_folder}/${publicId}`
+    );
     if (result.result === "ok")
-      res.send({message: `Image ${publicId} deleted from cloudinary.`});
+      res.send(
+        new Success(`Image ${publicId} deleted from cloudinary.`, null, true)
+      );
     else res.send(new NotFound(`Image ${publicId} not found on cloudinary.`));
   })
 );

@@ -259,21 +259,26 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.Image = {
     validate: val.validateImage,
-    master: [],
+    master: ["idImage"],
     model: sequelize.define(
       "Image",
       {
         idImage: {
           type: DataTypes.INTEGER,
           primaryKey: true,
-          autoIncrement: true,
+          autoIncrement: false,
         },
         fileName: DataTypes.STRING,
         fileSize: DataTypes.INTEGER,
+        fileLastModified: DataTypes.DATE,
         url: DataTypes.STRING,
-        data: DataTypes.BLOB,
       },
-      {tableName: "timage", timestamps: true}
+      {
+        tableName: "timage",
+        timestamps: true,
+        createdAt: true,
+        updatedAt: false,
+      }
     ),
   };
   models.Media = {

@@ -1,4 +1,4 @@
-@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6Inp6enp6IiwiZmlyc3ROYW1lIjoieXl5eSIsImVtYWlsIjoiaGVucmkudGFsZnVtaWVyQHdhbmFkb28uZnIiLCJpZFJvbGUiOjcsImlkU3RhdHVzIjoyLCJsYW5nIjoiZW4iLCJpYXQiOjE3NTcxMzU3MDksImV4cCI6MTc1NzE3MTcwOX0.a7rLwUKvM42Xw09p_iO_CaTn6duwiatzrnTl-9tPTAg
+@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6IlRBTEZVTUlFUiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS50YWxmdW1pZXJAd2FuYWRvby5mciIsImlkUm9sZSI6NywiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc1NzUxODA2MCwiZXhwIjoxNzU3NTU0MDYwfQ.hCV3F0t4TlNZOoW2PaltpcT81471PPyMcU8cvMZLKkU
 
 ### REST CLIENT EXTENSION TEST
 GET https://jsonplaceholder.typicode.com/posts/1
@@ -100,6 +100,27 @@ X-App-Origin: dev
   "pwd":"644601"
 }
 ###
+POST http://localhost:3000/api/entities/Image
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+
+{  
+  "fileLastModified":1714410564077,
+  "fileName":"Egyptien.webp",
+  "fileSize":23144,
+  "idImage":1797998988,
+  "url":"https://res.cloudinary.com/dhxmf1sju/image/upload/v1757440358/festivaldesarts/213525257.webp"
+}
+###
+PATCH http://localhost:3000/api/entities/User/44
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+
+{  
+  "idStatus":955625093
+}
 ### STATUSTRACKING
 POST http://localhost:3000/api/entities/StatusTracking
 x-auth-token:{{user_token}}
@@ -108,7 +129,7 @@ X-App-Origin: dev
 
 {  
   "idStatus":2,
-  "idUser":46
+  "idUser":52
 }
 ###
 ### PARTNERS
@@ -137,3 +158,7 @@ x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
 ###
+GET http://localhost:3000/api/sql-entities/avatar/:idImage/0
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev

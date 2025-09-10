@@ -1,7 +1,7 @@
 {
   "email_admin": "henri.talfumier@wanadoo.fr",
   "email_org": {
-    "dev": "henri.talfumier@wanadoo.fr",
+    "test": "festivalartsmerville@gmail.com",
     "prod": "festivalartsmerville@gmail.com"
   },
   "token_expires_in": {

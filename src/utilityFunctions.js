@@ -8,20 +8,35 @@ import config from "./config/config.json" with {type: "json"};
 import {environment} from "./config/environment.js";
 import modelRoles from "./routes/entities/modelRoles.json" with {type: "json"};
 
-export function emailRedirect(email,x_app_origin,role=null) { 
-  //organisation users must have a valid email address
-  //during test, when a mail is to be sent to a user not part of the organisation (it may be a fake email address),
-  //it needs to be redirected to the connected organisation user running the tests or  
-  //if the route doesn't require authentication to the generic fda gmail address
-  if(role && role >=5) return email;  //role is available when organisation user is actually authenticated
-  if(email.toLowerCase().includes('merville31.fr') || email.toLowerCase().includes('bonnet')) return email
-  switch(x_app_origin){
-    case 'dev':
-      return config.email_org.dev
-    case 'test':
-      return config.email_org.prod
-    default:  //i.e production
-      return email
+export function emailRedirect(cs,email,x_app_origin,role=null) { 
+  switch(cs){
+    case 'user':
+    //organisation users must have a valid email address
+    //during test, when a mail is to be sent to a user not part of the organisation (it may be a fake email address),
+    //it needs to be redirected to the connected organisation user running the tests or  
+    //if the route doesn't require authentication to the generic fda gmail address
+      if(role && role >=5) return email;  //role is available when organisation user is actually authenticated
+      if(email.toLowerCase().includes('merville31.fr') || email.toLowerCase().includes('bonnet')) return email
+      switch(x_app_origin){
+        case 'dev':
+          return config.email_admin
+        case 'test':
+          return config.email_org.test
+        default:  //i.e production
+          return email
+      }
+      break
+    case 'org':
+      if(role >=6) return config.email_admin
+      switch(x_app_origin){
+        case 'dev':
+          return config.email_admin
+        case 'test':
+          return config.email_org.test
+        case 'prod':
+          return config.email_org.prod
+      }
+
   }
 }
 export function userIsAdmin(req) {
