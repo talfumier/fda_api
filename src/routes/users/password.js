@@ -62,7 +62,7 @@ router.post(
     let title = await textTranslate("mot de passe oublié", lang, "fr");
     title = "FestivalDesArts : " + title.toLowerCase() + " ?";
     const front_url = getMasterUrl(req.headers["x-app-origin"]);
-    const link = `${front_url}/resetpassword?id=${data.userId}&random=${resetToken}`;
+    const link = `${front_url}/public/resetpassword?id=${data.userId}&random=${resetToken}`;
     let html = await htmlTranslate(
       `<div>
         <span>
