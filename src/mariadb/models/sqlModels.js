@@ -155,15 +155,14 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         zipCode: DataTypes.STRING,
         city: DataTypes.STRING,
         country: DataTypes.STRING,
-        gpsLat: DataTypes.FLOAT,
-        gpsLong: DataTypes.FLOAT,
+        gpsLat: DataTypes.STRING,
+        gpsLong: DataTypes.STRING,
         depotDateTime_open: DataTypes.DATE,
         depotDateTime_close: DataTypes.DATE,
         vernissageDateTime: DataTypes.DATE,
         lunchDateTime: DataTypes.DATE,
-        priceShowRoom: DataTypes.FLOAT,
-        priceScreen: DataTypes.FLOAT,
-        archived: DataTypes.BOOLEAN,
+        priceShowRoom: DataTypes.INTEGER,
+        priceScreen: DataTypes.INTEGER,
       },
       {tableName: "texpo", timestamps: true}
     ),
@@ -451,6 +450,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         },
         idStatus: DataTypes.INTEGER,
         idUser: {type: DataTypes.INTEGER, allowNull: true},
+        idExpo: {type: DataTypes.INTEGER, allowNull: true},
         idBookingOeuvre: {type: DataTypes.INTEGER, allowNull: true},
         idBooking: {type: DataTypes.INTEGER, allowNull: true},
       },
@@ -666,6 +666,10 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
     onDelete: "RESTRICT",
   });
   // Expo relationships
+  models.Expo.model.hasMany(models.StatusTracking.model, {
+    foreignKey: "idExpo",
+    onDelete: "CASCADE",
+  });
   models.Expo.model.hasMany(models.ExpoImage.model, {
     foreignKey: "idExpo",
     onDelete: "RESTRICT",

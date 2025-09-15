@@ -66,7 +66,7 @@ router.post(
     master.map((fld) => {
       where[fld] = req.body[fld];
     });
-    //for Status_Tracking, a given user can have the same idStatus multiple times at different timestamps
+    //for Status_Tracking, a given element can have the same idStatus multiple times at different timestamps
     //what is important is that the last one should be different from the one proposed for update in req.body >>> managed in front-end
     data = await model.findOne({
       where,

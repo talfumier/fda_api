@@ -50,25 +50,24 @@ export function validateDomain(data, cs = "post") {
 }
 export function validateExpo(data, cs = "post") {
   const schema = Joi.object({
-    title_en: Joi.string().required(),
-    title_fr: Joi.string().required(),
+    title_en: Joi.string().allow(null),
+    title_fr: Joi.string().allow(null),
     desc_en: Joi.string().allow(null),
     desc_fr: Joi.string().allow(null),
-    startDate: Joi.date().required(),
-    endDate: Joi.date().required(),
+    startDate: Joi.date().allow(null),
+    endDate: Joi.date().allow(null),
     address: Joi.string().allow(null),
     zipCode: Joi.string().allow(null),
     city: Joi.string().allow(null),
     country: Joi.string().allow(null),
-    gpsLat: Joi.number().allow(null),
-    gpsLong: Joi.number().allow(null),
-    depotDateTime_open: Joi.date().required(),
-    depotDateTime_close: Joi.date().required(),
-    vernissageDateTime: Joi.date().required(),
-    lunchDateTime: Joi.date().required(),
+    gpsLat: Joi.string().allow(null),
+    gpsLong: Joi.string().allow(null),
+    depotDateTime_open: Joi.date().allow(null),
+    depotDateTime_close: Joi.date().allow(null),
+    vernissageDateTime: Joi.date().allow(null),
+    lunchDateTime: Joi.date().allow(null),
     priceShowRoom: Joi.number().allow(null),
     priceScreen: Joi.number().allow(null),
-    archived: Joi.number().integer().valid(0, 1).allow(null),
   });
   return makeValidator(schema, data, cs);
 }
