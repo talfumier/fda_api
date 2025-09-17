@@ -159,6 +159,8 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         gpsLong: DataTypes.STRING,
         depotDateTime_open: DataTypes.DATE,
         depotDateTime_close: DataTypes.DATE,
+        collectionDateTime_open: DataTypes.DATE,
+        collectionDateTime_close: DataTypes.DATE,
         vernissageDateTime: DataTypes.DATE,
         lunchDateTime: DataTypes.DATE,
         priceShowRoom: DataTypes.INTEGER,

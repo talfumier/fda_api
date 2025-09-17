@@ -64,6 +64,8 @@ export function validateExpo(data, cs = "post") {
     gpsLong: Joi.string().allow(null),
     depotDateTime_open: Joi.date().allow(null),
     depotDateTime_close: Joi.date().allow(null),
+    collectionDateTime_open: Joi.date().allow(null),
+    collectionDateTime_close: Joi.date().allow(null),
     vernissageDateTime: Joi.date().allow(null),
     lunchDateTime: Joi.date().allow(null),
     priceShowRoom: Joi.number().allow(null),
