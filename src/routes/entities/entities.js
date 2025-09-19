@@ -49,8 +49,10 @@ router.post(
     const {modelName} = req.params;
     let cond = userIsAuthorized(req.user.idRole, modelName);
     if (!cond[0]) return res.send(cond[1]);
-    if (modelName === "User") {
-      cond = userIsOrg(req, modelName); //user (artist or partner role) is created through the register route, only organisation can create it from this route
+    if (modelName === "User" || modelName === "Expo") {
+      //a user is created through the register route, only organisation can create it from this route
+      //expo can only be created by organisation
+      cond = userIsOrg(req, modelName);
       if (!cond[0]) return res.send(cond[1]);
     }
     const models = getModels(req.db, modelName);
@@ -64,13 +66,14 @@ router.post(
     let where = {};
     if (master === null) master = Object.keys(req.body); //master = null for StatusTracking model
     master.map((fld) => {
-      where[fld] = req.body[fld];
+      if (req.body[fld]) where[fld] = req.body[fld];
     });
     //for Status_Tracking, a given element can have the same idStatus multiple times at different timestamps
     //what is important is that the last one should be different from the one proposed for update in req.body >>> managed in front-end
-    data = await model.findOne({
-      where,
-    });
+    if (Object.keys(where).length >= 1)
+      data = await model.findOne({
+        where,
+      });
     let id = null;
     if (data && modelName !== "StatusTracking") {
       id = data[`id${modelName}`];
@@ -79,6 +82,11 @@ router.post(
       );
     }
     data = await model.create(req.body);
+    if (modelName === "Expo") {
+      //Create corresponding status in tstatus_tracking for the newly created expo
+      const {StatusTracking} = getModels(req.db);
+      await StatusTracking.model.create({idExpo: data.idExpo, idStatus: 10}); //idStatus = 10 >>> pending
+    }
     if (modelName === "StatusTracking") {
       //user status change
       if (Object.keys(req.body).includes("idUser")) {
