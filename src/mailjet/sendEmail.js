@@ -10,6 +10,7 @@ const mailjet = new Mailjet({
 
 export function sendBasicEmail(
   recipient,
+  name,
   subject,
   htmlPart,
   res = null,
@@ -22,7 +23,7 @@ export function sendBasicEmail(
         {
           From: {
             Email: environment.mail_jet_sender,
-            Name: "do not reply",
+            Name: name,
           },
           To: [
             {
