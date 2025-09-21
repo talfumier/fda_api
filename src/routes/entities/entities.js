@@ -105,6 +105,7 @@ router.post(
         const {role_fr} = await mdl2.findByPk(idRole);
         sendBasicEmail(
           emailRedirect("user", email, req.headers["x-app-origin"]),
+          await textTranslate("do not reply", req.user.lang, "en"),
           title,
           await textTranslate(
             `Le compte avec l'identifiant ${email} et le rôle '${role_fr}' a été ${

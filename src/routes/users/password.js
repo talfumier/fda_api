@@ -59,6 +59,7 @@ router.post(
       userId: user.idUser,
       token: hash,
     });
+    const name = await textTranslate("do not reply", lang, "en");
     let title = await textTranslate("mot de passe oublié", lang, "fr");
     title = "FestivalDesArts : " + title.toLowerCase() + " ?";
     const front_url = getMasterUrl(req.headers["x-app-origin"]);
@@ -88,6 +89,7 @@ router.post(
     sendBasicEmail(
       //resetToken sent in plain text (i.e. not hashed)
       emailRedirect("user", user.email, req.headers["x-app-origin"]),
+      name,
       title,
       html,
       res, //Success response sent by sendBasicEmail function

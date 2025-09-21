@@ -46,6 +46,7 @@ router.post(
     await StatusTracking.model.create({idUser: user.idUser, idStatus: 1}); //idStatus = 1 >>> pending
 
     const role = await Role.model.findByPk(user.idRole);
+    const name = await textTranslate("do not reply", req.body.lang, "en");
     let title = await textTranslate(
       "votre compte a bien été créé",
       req.body.lang,
@@ -54,6 +55,7 @@ router.post(
     title = "FestivalDesArts : " + title.toLowerCase();
     sendBasicEmail(
       emailRedirect("user", user.email, req.headers["x-app-origin"]),
+      name,
       title,
       await textTranslate(
         `Le compte avec l'identifiant ${user.email} et le rôle '${role.role_fr}' a été enregistré avec succès.
@@ -70,6 +72,7 @@ router.post(
     title = "FestivalDesArts : " + title.toLowerCase();
     sendBasicEmail(
       emailRedirect("org", null, req.headers["x-app-origin"], req.body.role),
+      name,
       title,
       await textTranslate(
         `Le compte avec l'identifiant ${user.email} (id: ${user.idUser}, rôle: ${role.role_fr}) attend votre validation.`,
