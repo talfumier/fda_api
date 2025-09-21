@@ -1,4 +1,4 @@
-@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6IlRBTEZVTUlFUiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS50YWxmdW1pZXJAd2FuYWRvby5mciIsImlkUm9sZSI6NywiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc1NzU4MDE3NCwiZXhwIjoxNzU3NjE2MTc0fQ.hpWsa0tRB4z4kbl3PYbkgITMlfT1NzaaEDuRMyHUIpI
+@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6IlRBTEZVTUlFUiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS50YWxmdW1pZXJAd2FuYWRvby5mciIsImlkUm9sZSI6NywiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc1ODI2MTg0NiwiZXhwIjoxNzU4Mjk3ODQ2fQ.jDle0nrq4l49OSYbS4L59uqI-lauIRKYMZ5NevvkwMw
 
 ### REST CLIENT EXTENSION TEST
 GET https://jsonplaceholder.typicode.com/posts/1
@@ -87,17 +87,19 @@ X-App-Origin: dev
  "pwd":"644601"
 }
 ###
+GET http://localhost:3000/api/entities/ExpoImage/1
+###
 GET http://localhost:3000/api/entities/User
 ###
 GET http://localhost:3000/api/entities/ExpoPartner/1
 ###
-POST http://localhost:3000/api/entities/User
+POST http://localhost:3000/api/entities/Expo
+x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
 
 {  
-  "email":"henri.talfumier@gmail.com",
-  "pwd":"644601"
+  "title_en":"cccccc"
 }
 ###
 POST http://localhost:3000/api/entities/Image
@@ -164,6 +166,11 @@ content-type: application/json
 X-App-Origin: dev
 ###
 GET http://localhost:3000/api/sql-entities/avatar/:idImage/0
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+###
+GET http://localhost:3000/api/sql-entities/list_status_tracking/:type/expo
 x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
