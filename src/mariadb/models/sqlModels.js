@@ -674,7 +674,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   });
   models.Expo.model.hasMany(models.ExpoImage.model, {
     foreignKey: "idExpo",
-    onDelete: "RESTRICT",
+    onDelete: "CASCADE",
   });
   models.Expo.model.hasMany(models.ExpoDoc.model, {
     foreignKey: "idExpo",
@@ -695,7 +695,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   });
   models.ExpoImage.model.belongsTo(models.Image.model, {
     foreignKey: "idImage",
-    onDelete: "RESTRICT",
+    onDelete: "CASCADE",
   });
   // ExpoDoc relationships
   models.ExpoDoc.model.belongsTo(models.Expo.model, {

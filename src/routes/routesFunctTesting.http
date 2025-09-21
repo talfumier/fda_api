@@ -87,6 +87,8 @@ X-App-Origin: dev
  "pwd":"644601"
 }
 ###
+GET http://localhost:3000/api/entities/ExpoImage/1
+###
 GET http://localhost:3000/api/entities/User
 ###
 GET http://localhost:3000/api/entities/ExpoPartner/1
