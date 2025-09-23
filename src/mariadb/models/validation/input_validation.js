@@ -93,23 +93,23 @@ export function validateMedia(data, cs = "post") {
 }
 export function validateOeuvre(data, cs = "post") {
   const schema = Joi.object({
-    idUser: Joi.number().integer().required(),
+    idUser: Joi.number().integer(),
     classic_modern: Joi.number().integer().valid(0, 1),
-    idDomain: Joi.number().integer().required(),
-    idTech: Joi.number().integer().required(),
-    idMedia: Joi.number().integer().required(),
-    title_fr: Joi.string().required(),
-    title_en: Joi.string().required(),
-    desc_fr: Joi.string().allow(null),
-    desc_en: Joi.string().allow(null),
+    idDomain: Joi.number().allow(null),
+    idTech: Joi.number().allow(null),
+    idMedia: Joi.number().allow(null),
+    title_fr: Joi.string().allow(null, ""),
+    title_en: Joi.string().allow(null, ""),
+    desc_fr: Joi.string().allow(null, ""),
+    desc_en: Joi.string().allow(null, ""),
     completionDate: Joi.date().allow(null),
     price: Joi.number().allow(null),
-    reserved: Joi.number().integer().valid(0, 1).allow(null),
+    reserved: Joi.number().integer().valid(0, 1),
     width: Joi.number().allow(null),
     height: Joi.number().allow(null),
     depth: Joi.number().allow(null),
     weight: Joi.number().allow(null),
-    idImage: Joi.number().integer().required(),
+    idImage: Joi.number().allow(null),
   });
   return makeValidator(schema, data, cs);
 }

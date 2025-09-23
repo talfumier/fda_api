@@ -11,7 +11,7 @@ router.get(
   authHandler, //user must be authenticated
   routeHandler(async (req, res) => {
     const {stored_proc} = req.params;
-    let dataArr = await req.db.query(`CALL ${stored_proc}`, {
+    let dataArr = await req.db.query(`CALL ${stored_proc}()`, {
       type: QueryTypes.SELECT,
     });
     dataArr.map((data, idx) => {
