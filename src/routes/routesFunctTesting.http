@@ -1,4 +1,4 @@
-@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6IlRBTEZVTUlFUiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS50YWxmdW1pZXJAd2FuYWRvby5mciIsImlkUm9sZSI6NywiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc1ODI2MTg0NiwiZXhwIjoxNzU4Mjk3ODQ2fQ.jDle0nrq4l49OSYbS4L59uqI-lauIRKYMZ5NevvkwMw
+@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjYwLCJsYXN0TmFtZSI6Im1hcnRpbiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS5tYXJ0aW5Ad2FuYWRvby5mciIsImlkUm9sZSI6MSwiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc1ODYwNTIwMSwiZXhwIjoxNzU4NjQxMjAxfQ.S7yprZVQPcErbbOC6TyT_fWsfQwEuevdhsv2vZ0nm_k
 
 ### REST CLIENT EXTENSION TEST
 GET https://jsonplaceholder.typicode.com/posts/1
@@ -171,6 +171,11 @@ content-type: application/json
 X-App-Origin: dev
 ###
 GET http://localhost:3000/api/sql-entities/list_status_tracking/:type/expo
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+###
+GET http://localhost:3000/api/sql-entities/no-params/options_domain
 x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev

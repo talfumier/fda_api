@@ -22,9 +22,8 @@ function makeValidator(schema, data, cs = "post", tblName = null) {
 }
 export function validateBooking(data, cs = "post") {
   const schema = Joi.object({
-    idUser: Joi.number().integer().required(),
     idExpo: Joi.number().integer().required(),
-    idStatus: Joi.number().integer().required(),
+    idUser: Joi.number().integer().required(),
     vernissage: Joi.number().integer().valid(0, 1).allow(null),
     lunch: Joi.number().integer().valid(0, 1).allow(null),
   });
@@ -45,6 +44,7 @@ export function validateDomain(data, cs = "post") {
   const schema = Joi.object({
     domain_fr: Joi.string().required(),
     domain_en: Joi.string().required(),
+    order: Joi.number().required(),
   });
   return makeValidator(schema, data, cs);
 }
@@ -87,14 +87,17 @@ export function validateMedia(data, cs = "post") {
   const schema = Joi.object({
     media_fr: Joi.string().required(),
     media_en: Joi.string().required(),
+    order: Joi.number().required(),
   });
   return makeValidator(schema, data, cs);
 }
 export function validateOeuvre(data, cs = "post") {
   const schema = Joi.object({
-    classic: Joi.number().integer().valid(0, 1).allow(null),
-    modern: Joi.number().integer().valid(0, 1).allow(null),
-    idDomainTechMedia: Joi.number().integer().required(),
+    idUser: Joi.number().integer().required(),
+    classic_modern: Joi.number().integer().valid(0, 1),
+    idDomain: Joi.number().integer().required(),
+    idTech: Joi.number().integer().required(),
+    idMedia: Joi.number().integer().required(),
     title_fr: Joi.string().required(),
     title_en: Joi.string().required(),
     desc_fr: Joi.string().allow(null),
@@ -152,6 +155,7 @@ export function validateTechnique(data, cs = "post") {
   const schema = Joi.object({
     technique_fr: Joi.string().required(),
     technique_en: Joi.string().required(),
+    order: Joi.number().required(),
   });
   return makeValidator(schema, data, cs);
 }
