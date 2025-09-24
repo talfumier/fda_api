@@ -102,6 +102,8 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
           primaryKey: true,
           autoIncrement: true,
         },
+        short_en: DataTypes.STRING,
+        short_fr: DataTypes.STRING,
         title_en: DataTypes.STRING,
         title_fr: DataTypes.STRING,
         desc_fr: DataTypes.TEXT,
