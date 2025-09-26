@@ -22,9 +22,8 @@ function makeValidator(schema, data, cs = "post", tblName = null) {
 }
 export function validateBooking(data, cs = "post") {
   const schema = Joi.object({
-    idUser: Joi.number().integer().required(),
     idExpo: Joi.number().integer().required(),
-    idStatus: Joi.number().integer().required(),
+    idUser: Joi.number().integer().required(),
     vernissage: Joi.number().integer().valid(0, 1).allow(null),
     lunch: Joi.number().integer().valid(0, 1).allow(null),
   });
@@ -45,31 +44,34 @@ export function validateDomain(data, cs = "post") {
   const schema = Joi.object({
     domain_fr: Joi.string().required(),
     domain_en: Joi.string().required(),
+    order: Joi.number().required(),
   });
   return makeValidator(schema, data, cs);
 }
 export function validateExpo(data, cs = "post") {
   const schema = Joi.object({
-    title_en: Joi.string().allow(null),
-    title_fr: Joi.string().allow(null),
-    desc_en: Joi.string().allow(null),
-    desc_fr: Joi.string().allow(null),
+    short_fr: Joi.string().allow(null, ""),
+    short_en: Joi.string().allow(null, ""),
+    title_en: Joi.string().allow(null, ""),
+    title_fr: Joi.string().allow(null, ""),
+    desc_en: Joi.string().allow(null, ""),
+    desc_fr: Joi.string().allow(null, ""),
     startDate: Joi.date().allow(null),
     endDate: Joi.date().allow(null),
-    address: Joi.string().allow(null),
-    zipCode: Joi.string().allow(null),
-    city: Joi.string().allow(null),
-    country: Joi.string().allow(null),
-    gpsLat: Joi.string().allow(null),
-    gpsLong: Joi.string().allow(null),
+    address: Joi.string().allow(null, ""),
+    zipCode: Joi.string().allow(null, ""),
+    city: Joi.string().allow(null, ""),
+    country: Joi.string().allow(null, ""),
+    gpsLat: Joi.string().allow(null, ""),
+    gpsLong: Joi.string().allow(null, ""),
     depotDateTime_open: Joi.date().allow(null),
     depotDateTime_close: Joi.date().allow(null),
     collectionDateTime_open: Joi.date().allow(null),
     collectionDateTime_close: Joi.date().allow(null),
     vernissageDateTime: Joi.date().allow(null),
     lunchDateTime: Joi.date().allow(null),
-    priceShowRoom: Joi.number().allow(null),
-    priceScreen: Joi.number().allow(null),
+    priceShowRoom: Joi.number().allow(null, ""),
+    priceScreen: Joi.number().allow(null, ""),
   });
   return makeValidator(schema, data, cs);
 }
@@ -87,26 +89,29 @@ export function validateMedia(data, cs = "post") {
   const schema = Joi.object({
     media_fr: Joi.string().required(),
     media_en: Joi.string().required(),
+    order: Joi.number().required(),
   });
   return makeValidator(schema, data, cs);
 }
 export function validateOeuvre(data, cs = "post") {
   const schema = Joi.object({
-    classic: Joi.number().integer().valid(0, 1).allow(null),
-    modern: Joi.number().integer().valid(0, 1).allow(null),
-    idDomainTechMedia: Joi.number().integer().required(),
-    title_fr: Joi.string().required(),
-    title_en: Joi.string().required(),
-    desc_fr: Joi.string().allow(null),
-    desc_en: Joi.string().allow(null),
+    idUser: Joi.number().integer(),
+    classic_modern: Joi.number().integer().valid(0, 1),
+    idDomain: Joi.number().allow(null),
+    idTech: Joi.number().allow(null),
+    idMedia: Joi.number().allow(null),
+    title_fr: Joi.string().allow(null, ""),
+    title_en: Joi.string().allow(null, ""),
+    desc_fr: Joi.string().allow(null, ""),
+    desc_en: Joi.string().allow(null, ""),
     completionDate: Joi.date().allow(null),
     price: Joi.number().allow(null),
-    reserved: Joi.number().integer().valid(0, 1).allow(null),
+    reserved: Joi.number().integer().valid(0, 1),
     width: Joi.number().allow(null),
     height: Joi.number().allow(null),
     depth: Joi.number().allow(null),
     weight: Joi.number().allow(null),
-    idImage: Joi.number().integer().required(),
+    idImage: Joi.number().allow(null),
   });
   return makeValidator(schema, data, cs);
 }
@@ -152,6 +157,7 @@ export function validateTechnique(data, cs = "post") {
   const schema = Joi.object({
     technique_fr: Joi.string().required(),
     technique_en: Joi.string().required(),
+    order: Joi.number().required(),
   });
   return makeValidator(schema, data, cs);
 }

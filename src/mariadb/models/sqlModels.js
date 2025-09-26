@@ -25,7 +25,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
           autoIncrement: true,
         },
         idExpo: DataTypes.INTEGER,
-        status: DataTypes.STRING,
+        idUser: DataTypes.INTEGER,
         vernissage: DataTypes.BOOLEAN,
         lunch: DataTypes.BOOLEAN,
       },
@@ -86,52 +86,9 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         },
         domain_fr: DataTypes.STRING,
         domain_en: DataTypes.STRING,
+        order: DataTypes.INTEGER,
       },
       {tableName: "tdomain", timestamps: true}
-    ),
-  };
-  models.DomainTech = {
-    validate: null,
-    master: ["idDomain", "idTech"],
-    model: sequelize.define(
-      "DomainTech",
-      {
-        idDomainTech: {
-          type: DataTypes.INTEGER,
-          primaryKey: true,
-          autoIncrement: true,
-        },
-        idDomain: DataTypes.INTEGER,
-        idTech: DataTypes.INTEGER,
-      },
-      {
-        tableName: "tdomain_technique",
-        timestamps: true,
-        createdAt: true,
-        updatedAt: false,
-      }
-    ),
-  };
-  models.DomainTechMedia = {
-    validate: null,
-    master: ["idDomainTech", "idMedia"],
-    model: sequelize.define(
-      "DomainTechMedia",
-      {
-        idDomainTechMedia: {
-          type: DataTypes.INTEGER,
-          primaryKey: true,
-          autoIncrement: true,
-        },
-        idDomainTech: DataTypes.INTEGER,
-        idMedia: DataTypes.INTEGER,
-      },
-      {
-        tableName: "tdomain_technique_media",
-        timestamps: true,
-        createdAt: true,
-        updatedAt: false,
-      }
     ),
   };
   models.Expo = {
@@ -145,6 +102,8 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
           primaryKey: true,
           autoIncrement: true,
         },
+        short_en: DataTypes.STRING,
+        short_fr: DataTypes.STRING,
         title_en: DataTypes.STRING,
         title_fr: DataTypes.STRING,
         desc_fr: DataTypes.TEXT,
@@ -295,6 +254,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         },
         media_fr: DataTypes.STRING,
         media_en: DataTypes.STRING,
+        order: DataTypes.INTEGER,
       },
       {tableName: "tmedia", timestamps: true}
     ),
@@ -310,9 +270,11 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
           primaryKey: true,
           autoIncrement: true,
         },
-        classic: DataTypes.BOOLEAN,
-        modern: DataTypes.BOOLEAN,
-        idDomainTechMedia: DataTypes.INTEGER,
+        idUser: DataTypes.INTEGER,
+        classic_modern: {type: DataTypes.INTEGER, defaultValue: 0}, //0:classic, 1:modern
+        idDomain: DataTypes.INTEGER,
+        idTech: DataTypes.INTEGER,
+        idMedia: DataTypes.INTEGER,
         title_fr: DataTypes.STRING,
         title_en: DataTypes.STRING,
         desc_fr: DataTypes.TEXT,
@@ -320,10 +282,10 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         completionDate: DataTypes.DATE,
         price: DataTypes.FLOAT,
         reserved: DataTypes.BOOLEAN,
-        width: DataTypes.FLOAT,
-        height: DataTypes.FLOAT,
-        depth: DataTypes.FLOAT,
-        weight: DataTypes.FLOAT,
+        width: DataTypes.INTEGER,
+        height: DataTypes.INTEGER,
+        depth: DataTypes.INTEGER,
+        weight: DataTypes.INTEGER,
         idImage: DataTypes.INTEGER,
       },
       {tableName: "toeuvre", timestamps: true}
@@ -435,6 +397,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         },
         technique_fr: DataTypes.STRING,
         technique_en: DataTypes.STRING,
+        order: DataTypes.INTEGER,
       },
       {tableName: "ttechnique", timestamps: true}
     ),
@@ -592,6 +555,10 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
     foreignKey: "idUser",
     onDelete: "RESTRICT",
   });
+  models.User.model.hasMany(models.Oeuvre.model, {
+    foreignKey: "idUser",
+    onDelete: "RESTRICT",
+  });
   models.User.model.hasMany(models.Partner.model, {
     foreignKey: "idUser",
     onDelete: "RESTRICT",
@@ -641,30 +608,24 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
     onDelete: "RESTRICT",
   });
   // Oeuvre relationships
-  models.Oeuvre.model.belongsTo(models.DomainTechMedia.model, {
-    foreignKey: "idDomainTechMedia",
+  models.Oeuvre.model.belongsTo(models.Domain.model, {
+    foreignKey: "idDomain",
+    onDelete: "RESTRICT",
+  });
+  models.Oeuvre.model.belongsTo(models.Technique.model, {
+    foreignKey: "idTech",
+    onDelete: "RESTRICT",
+  });
+  models.Oeuvre.model.belongsTo(models.Media.model, {
+    foreignKey: "idMedia",
+    onDelete: "RESTRICT",
+  });
+  models.Oeuvre.model.belongsTo(models.User.model, {
+    foreignKey: "idUser",
     onDelete: "RESTRICT",
   });
   models.Oeuvre.model.belongsTo(models.Image.model, {
     foreignKey: "idImage",
-    onDelete: "RESTRICT",
-  });
-  // DomainTechMedia relationships
-  models.DomainTechMedia.model.belongsTo(models.DomainTech.model, {
-    foreignKey: "idDomainTech",
-    onDelete: "RESTRICT",
-  });
-  models.DomainTechMedia.model.belongsTo(models.Media.model, {
-    foreignKey: "idMedia",
-    onDelete: "RESTRICT",
-  });
-  // DomainTech  relationships
-  models.DomainTech.model.belongsTo(models.Domain.model, {
-    foreignKey: "idDomain",
-    onDelete: "RESTRICT",
-  });
-  models.DomainTech.model.belongsTo(models.Technique.model, {
-    foreignKey: "idTech",
     onDelete: "RESTRICT",
   });
   // Expo relationships

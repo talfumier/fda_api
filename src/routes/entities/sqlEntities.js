@@ -7,6 +7,28 @@ import {Success} from "../../mariadb/models/validation/success.js";
 const router = express.Router();
 
 router.get(
+  "/noparams/:stored_proc",
+  authHandler, //user must be authenticated
+  routeHandler(async (req, res) => {
+    const {stored_proc} = req.params;
+    let dataArr = await req.db.query(`CALL ${stored_proc}()`, {
+      type: QueryTypes.SELECT,
+    });
+    dataArr.map((data, idx) => {
+      if (idx !== dataArr.length - 1)
+        return Object.keys(data).map((key) => {
+          try {
+            data[key].pwd = undefined;
+          } catch (error) {}
+        });
+    });
+    dataArr = dataArr.map((data) => {
+      return Object.values(data);
+    });
+    res.send(new Success("Data retrieval successful", dataArr.slice(0, -1))); //filter out meta data from SQL
+  })
+);
+router.get(
   "/:stored_proc/:params/:values",
   authHandler, //user must be authenticated
   routeHandler(async (req, res) => {
