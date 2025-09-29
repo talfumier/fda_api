@@ -528,7 +528,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   });
   models.Booking.model.hasMany(models.StatusTracking.model, {
     foreignKey: "idBooking",
-    onDelete: "RESTRICT",
+    onDelete: "CASCADE",
   });
   // User relationships
   models.User.model.hasMany(models.StatusTracking.model, {

@@ -82,10 +82,15 @@ router.post(
       );
     }
     data = await model.create(req.body);
-    if (modelName === "Expo") {
+    if (modelName === "Expo" || modelName === "Booking") {
       //Create corresponding status in tstatus_tracking for the newly created expo
       const {StatusTracking} = getModels(req.db);
-      await StatusTracking.model.create({idExpo: data.idExpo, idStatus: 10}); //idStatus = 10 >>> pending
+
+      await StatusTracking.model.create(
+        modelName === "Expo"
+          ? {idExpo: data.idExpo, idStatus: 11} //idStatus = 11 >>> pending
+          : {idBooking: data.idBooking, idStatus: 7} //idStatus = 7 >>> draft
+      ); //idStatus = 11 >>> pending
     }
     if (modelName === "StatusTracking") {
       //user status change

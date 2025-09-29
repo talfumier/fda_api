@@ -1,4 +1,4 @@
-@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6IlRBTEZVTUlFUiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS50YWxmdW1pZXJAd2FuYWRvby5mciIsImlkUm9sZSI6NywiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc1ODY0Mjc3OSwiZXhwIjoxNzU4Njc4Nzc5fQ.x3dzhq07GalfcsrAZeLGVdx7UgcVlIKyVK-NBO-6ybU
+@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6IlRBTEZVTUlFUiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS50YWxmdW1pZXJAd2FuYWRvby5mciIsImlkUm9sZSI6NywiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc1OTEyNjI0OSwiZXhwIjoxNzU5MTYyMjQ5fQ.Lcuznin790Ys7SWGs7TtwFOsaIEciXLwMNq3JRnpadM
 
 ### REST CLIENT EXTENSION TEST
 GET https://jsonplaceholder.typicode.com/posts/1
@@ -16,6 +16,10 @@ GET http://localhost:3000/api/utilities/sync/fda_prod
 ###
 GET http://localhost:3000/api/utilities/sync/fda_test
 ###
+GET http://localhost:3000/api/utilities/fields/Booking
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
 
 ### USERS
 POST http://localhost:3000/api/register
@@ -184,7 +188,7 @@ x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
 ###
-GET http://localhost:3000/api/sql-entities/noparams/options_domain
+GET http://localhost:3000/api/sql-entities/noparams/options_expo
 x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
