@@ -22,8 +22,8 @@ function makeValidator(schema, data, cs = "post", tblName = null) {
 }
 export function validateBooking(data, cs = "post") {
   const schema = Joi.object({
-    idExpo: Joi.number().integer().required(),
-    idUser: Joi.number().integer().required(),
+    idExpo: Joi.number().integer(),
+    idUser: Joi.number().integer(),
     vernissage: Joi.number().integer().valid(0, 1).allow(null),
     lunch: Joi.number().integer().valid(0, 1).allow(null),
   });

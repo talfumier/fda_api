@@ -1,4 +1,4 @@
-@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6IlRBTEZVTUlFUiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS50YWxmdW1pZXJAd2FuYWRvby5mciIsImlkUm9sZSI6NywiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc1OTEyNjI0OSwiZXhwIjoxNzU5MTYyMjQ5fQ.Lcuznin790Ys7SWGs7TtwFOsaIEciXLwMNq3JRnpadM
+@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6IlRBTEZVTUlFUiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS50YWxmdW1pZXJAd2FuYWRvby5mciIsImlkUm9sZSI6NywiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc1OTI5ODE3MywiZXhwIjoxNzU5MzM0MTczfQ.dDU8Ta8T79E7Q8PxkZsoJL26VA9-T3lAtO0yqLjUJDM
 
 ### REST CLIENT EXTENSION TEST
 GET https://jsonplaceholder.typicode.com/posts/1
@@ -135,6 +135,15 @@ X-App-Origin: dev
 
 {  
   "idImage":1926258172
+}
+###
+PATCH http://localhost:3000/api/entities/Booking/11
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+
+{  
+  "vernissage":1
 }
 ### STATUSTRACKING
 POST http://localhost:3000/api/entities/StatusTracking
