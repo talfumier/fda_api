@@ -45,15 +45,11 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         },
         idBooking: DataTypes.INTEGER,
         idOeuvre: DataTypes.INTEGER,
+        selected: DataTypes.BOOLEAN,
         showRoom: DataTypes.BOOLEAN,
         screen: DataTypes.BOOLEAN,
       },
-      {
-        tableName: "tbooking_oeuvre",
-        timestamps: true,
-        createdAt: true,
-        updatedAt: false,
-      }
+      {tableName: "tbooking_oeuvre", timestamps: true}
     ),
   };
   models.Doc = {
@@ -524,7 +520,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   });
   models.BookingOeuvre.model.hasMany(models.StatusTracking.model, {
     foreignKey: "idBookingOeuvre",
-    onDelete: "RESTRICT",
+    onDelete: "CASCADE",
   });
   models.Booking.model.hasMany(models.StatusTracking.model, {
     foreignKey: "idBooking",
@@ -596,7 +592,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   });
   models.Booking.model.hasMany(models.BookingOeuvre.model, {
     foreignKey: "idBooking",
-    onDelete: "RESTRICT",
+    onDelete: "CASCADE",
   });
   // BookingOeuvre relationships
   models.BookingOeuvre.model.belongsTo(models.Booking.model, {
@@ -608,6 +604,10 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
     onDelete: "RESTRICT",
   });
   // Oeuvre relationships
+  models.Oeuvre.model.hasMany(models.BookingOeuvre.model, {
+    foreignKey: "idOeuvre",
+    onDelete: "CASCADE",
+  });
   models.Oeuvre.model.belongsTo(models.Domain.model, {
     foreignKey: "idDomain",
     onDelete: "RESTRICT",

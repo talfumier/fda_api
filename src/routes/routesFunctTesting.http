@@ -1,4 +1,4 @@
-@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6IlRBTEZVTUlFUiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS50YWxmdW1pZXJAd2FuYWRvby5mciIsImlkUm9sZSI6NywiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc1OTI5ODE3MywiZXhwIjoxNzU5MzM0MTczfQ.dDU8Ta8T79E7Q8PxkZsoJL26VA9-T3lAtO0yqLjUJDM
+@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6IlRBTEZVTUlFUiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS50YWxmdW1pZXJAd2FuYWRvby5mciIsImlkUm9sZSI6NywiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc1OTgxNDk2MSwiZXhwIjoxNzU5ODUwOTYxfQ.r9xsuisSOn_8O-SJJcQbFAT621kb1NAc6BP0_gPoxEQ
 
 ### REST CLIENT EXTENSION TEST
 GET https://jsonplaceholder.typicode.com/posts/1
@@ -106,6 +106,18 @@ X-App-Origin: dev
   "title_en":"cccccc"
 }
 ###
+POST http://localhost:3000/api/entities/Booking
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+
+{  
+  "idExpo":82,
+  "idUser":44,
+  "vernissage":0,
+  "lunch":0
+}
+###
 POST http://localhost:3000/api/entities/Image
 x-auth-token:{{user_token}}
 content-type: application/json
@@ -156,18 +168,25 @@ X-App-Origin: dev
   "idUser":52
 }
 ###
-### PARTNERS
-POST http://localhost:3000/api/entities/Partner
+POST http://localhost:3000/api/entities/BookingOeuvre
 x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
 
 {  
-  "name":"CCM COLOMIERS",
-  "idUser":1
+  "idBooking":12,
+  "idOeuvre":26,
+  "screen":0,
+  "selected":1,
+  "showRoom":1
 }
 ###
 DELETE  http://localhost:3000/api/entities/Partner/2
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+###
+DELETE  http://localhost:3000/api/entities/Booking/52
 x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
@@ -193,6 +212,11 @@ content-type: application/json
 X-App-Origin: dev
 ###
 GET http://localhost:3000/api/sql-entities/list_status_tracking/:type/expo
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+###
+GET http://localhost:3000/api/sql-entities/options_expo/:idExpo/82
 x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev

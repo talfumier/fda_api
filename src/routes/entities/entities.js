@@ -78,19 +78,23 @@ router.post(
     if (data && modelName !== "StatusTracking") {
       id = data[`id${modelName}`];
       return res.send(
-        new BadRequest(`${modelName} id:'${id}' does already exist !`)
+        new BadRequest(`${modelName} id:'${id}' does already exist !`) //example: tbooking master=[idExpo, idUser] >>> ensure that a given idUser cannot have several bookings for the idExpo
       );
     }
     data = await model.create(req.body);
-    if (modelName === "Expo" || modelName === "Booking") {
-      //Create corresponding status in tstatus_tracking for the newly created expo
+    if (
+      modelName === "Expo" || //Create corresponding status in tstatus_tracking for the newly created objects
+      modelName === "Booking" ||
+      modelName === "BookingOeuvre"
+    ) {
       const {StatusTracking} = getModels(req.db);
-
       await StatusTracking.model.create(
         modelName === "Expo"
           ? {idExpo: data.idExpo, idStatus: 11} //idStatus = 11 >>> pending
-          : {idBooking: data.idBooking, idStatus: 7} //idStatus = 7 >>> draft
-      ); //idStatus = 11 >>> pending
+          : modelName === "Booking"
+          ? {idBooking: data.idBooking, idStatus: 7} //idStatus = 7 >>> draft
+          : {idBookingOeuvre: data.idBookingOeuvre, idStatus: 14} //idStatus = 14 >>> draft
+      );
     }
     if (modelName === "StatusTracking") {
       //user status change

@@ -29,6 +29,15 @@ export function validateBooking(data, cs = "post") {
   });
   return makeValidator(schema, data, cs);
 }
+export function validateBookingOeuvre(data, cs = "post") {
+  const schema = Joi.object({
+    idBooking: Joi.number().integer(),
+    idOeuvre: Joi.number().integer(),
+    showRoom: Joi.number().integer().valid(0, 1).allow(null),
+    screen: Joi.number().integer().valid(0, 1).allow(null),
+  });
+  return makeValidator(schema, data, cs);
+}
 export function validateDoc(data, cs = "post") {
   const schema = Joi.object({
     standalone: Joi.number().integer().valid(0, 1).allow(null),
