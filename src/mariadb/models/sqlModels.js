@@ -112,6 +112,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         country: DataTypes.STRING,
         gpsLat: DataTypes.STRING,
         gpsLong: DataTypes.STRING,
+        closureDateTime: DataTypes.DATE,
         depotDateTime_open: DataTypes.DATE,
         depotDateTime_close: DataTypes.DATE,
         collectionDateTime_open: DataTypes.DATE,
