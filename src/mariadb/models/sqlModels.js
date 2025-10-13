@@ -28,6 +28,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         idUser: DataTypes.INTEGER,
         vernissage: DataTypes.BOOLEAN,
         lunch: DataTypes.BOOLEAN,
+        price: {type: DataTypes.INTEGER, defaultValue: 0},
       },
       {tableName: "tbooking", timestamps: true}
     ),
@@ -119,8 +120,8 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         collectionDateTime_close: DataTypes.DATE,
         vernissageDateTime: DataTypes.DATE,
         lunchDateTime: DataTypes.DATE,
-        priceShowRoom: DataTypes.INTEGER,
-        priceScreen: DataTypes.INTEGER,
+        priceShowRoom: {type: DataTypes.INTEGER, defaultValue: 0},
+        priceScreen: {type: DataTypes.INTEGER, defaultValue: 0},
       },
       {tableName: "texpo", timestamps: true}
     ),
