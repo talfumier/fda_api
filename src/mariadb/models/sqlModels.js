@@ -13,6 +13,22 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
 
   const models = {};
 
+  models.Admin = {
+    validate: null,
+    master: ["idAdmin"],
+    model: sequelize.define(
+      "Admin",
+      {
+        idAdmin: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true,
+        },
+        artistPartnerOnly: DataTypes.INTEGER, //1 >>> only artist and partner roles are visible at account creation, 0 >>> all roles visible
+      },
+      {tableName: "tadmin", timestamps: true}
+    ),
+  };
   models.Booking = {
     validate: val.validateBooking,
     master: ["idExpo", "idUser"],
@@ -29,6 +45,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         vernissage: DataTypes.BOOLEAN,
         lunch: DataTypes.BOOLEAN,
         price: {type: DataTypes.INTEGER, defaultValue: 0},
+        terms: {type: DataTypes.INTEGER, defaultValue: 0}, //terms & conditions 0 >>> not accepted, 1 >>> accepted
       },
       {tableName: "tbooking", timestamps: true}
     ),

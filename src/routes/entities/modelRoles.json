@@ -77,7 +77,7 @@
   },
   "StatusTracking": {
     "role": ["organisation"],
-    "idRole": [5, 6, 7]
+    "idRole": [1, 5, 6, 7]
   },
   "Technique": {
     "role": ["organisation"],
@@ -94,5 +94,9 @@
   "UserExpoRole": {
     "role": ["organisation"],
     "idRole": [5, 6, 7]
+  },
+  "Admin": {
+    "role": ["organisation"],
+    "idRole": [6, 7]
   }
 }
