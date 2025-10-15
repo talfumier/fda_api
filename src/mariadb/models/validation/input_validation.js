@@ -27,6 +27,7 @@ export function validateBooking(data, cs = "post") {
     vernissage: Joi.number().integer().valid(0, 1).allow(null),
     lunch: Joi.number().integer().valid(0, 1).allow(null),
     price: Joi.number().integer().allow(null),
+    terms: Joi.number().integer().valid(0, 1).allow(null),
   });
   return makeValidator(schema, data, cs);
 }
