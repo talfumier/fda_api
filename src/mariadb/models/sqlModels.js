@@ -399,19 +399,19 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
       {tableName: "tstatus", timestamps: true}
     ),
   };
-  models.Technique = {
+  models.Tech = {
     validate: val.validateTechnique,
-    master: ["technique_fr", "technique_en"],
+    master: ["tech_fr", "tech_en"],
     model: sequelize.define(
-      "Technique",
+      "Tech",
       {
         idTech: {
           type: DataTypes.INTEGER,
           primaryKey: true,
           autoIncrement: true,
         },
-        technique_fr: DataTypes.STRING,
-        technique_en: DataTypes.STRING,
+        tech_fr: DataTypes.STRING,
+        tech_en: DataTypes.STRING,
         order: DataTypes.INTEGER,
       },
       {tableName: "ttechnique", timestamps: true}
@@ -631,7 +631,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
     foreignKey: "idDomain",
     onDelete: "RESTRICT",
   });
-  models.Oeuvre.model.belongsTo(models.Technique.model, {
+  models.Oeuvre.model.belongsTo(models.Tech.model, {
     foreignKey: "idTech",
     onDelete: "RESTRICT",
   });
