@@ -52,7 +52,10 @@ router.post(
       req.body.lang,
       "fr"
     );
-    title = "FestivalDesArts : " + title.toLowerCase();
+    title =
+      req.headers["x-app-origin"] === "test"
+        ? "Test - "
+        : "" + "FestivalDesArts : " + title.toLowerCase();
     sendBasicEmail(
       emailRedirect("user", user.email, req.headers["x-app-origin"]),
       name,
@@ -69,7 +72,10 @@ router.post(
       req.body.lang,
       "fr"
     );
-    title = "FestivalDesArts : " + title.toLowerCase();
+    title =
+      req.headers["x-app-origin"] === "test"
+        ? "Test - "
+        : "" + "FestivalDesArts : " + title.toLowerCase();
     sendBasicEmail(
       emailRedirect("org", null, req.headers["x-app-origin"], req.body.role),
       name,
