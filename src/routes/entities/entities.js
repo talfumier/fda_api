@@ -107,7 +107,10 @@ router.post(
           req.user.lang,
           "fr"
         );
-        title = "FestivalDesArts : " + title.toLowerCase();
+        title =
+          req.headers["x-app-origin"] === "test"
+            ? "Test - "
+            : "" + "FestivalDesArts : " + title.toLowerCase();
         const {model: mdl1} = getModels(req.db, "User");
         const {idRole, email} = await mdl1.findByPk(req.body.idUser);
         const {model: mdl2} = getModels(req.db, "Role");

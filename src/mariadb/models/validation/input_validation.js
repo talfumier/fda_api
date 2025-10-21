@@ -167,8 +167,8 @@ export function validateStatus(data, cs = "post") {
 }
 export function validateTechnique(data, cs = "post") {
   const schema = Joi.object({
-    technique_fr: Joi.string().required(),
-    technique_en: Joi.string().required(),
+    tech_fr: Joi.string().required(),
+    tech_en: Joi.string().required(),
     order: Joi.number().required(),
   });
   return makeValidator(schema, data, cs);
