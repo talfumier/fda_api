@@ -46,16 +46,16 @@ router.post(
     await StatusTracking.model.create({idUser: user.idUser, idStatus: 1}); //idStatus = 1 >>> pending
 
     const role = await Role.model.findByPk(user.idRole);
-    const name = await textTranslate("do not reply", req.body.lang, "en");
+    // const name = await textTranslate("do not reply", req.body.lang, "en");
+    const name = "festival des arts";
     let title = await textTranslate(
       "votre compte a bien été créé",
       req.body.lang,
       "fr"
     );
-    title =
-      req.headers["x-app-origin"] === "test"
-        ? "Test - "
-        : "" + "FestivalDesArts : " + title.toLowerCase();
+    title = `${
+      req.headers["x-app-origin"] === "test" ? "Test - " : ""
+    }"FestivalDesArts : ${title.toLowerCase()}`;
     sendBasicEmail(
       emailRedirect("user", user.email, req.headers["x-app-origin"]),
       name,
@@ -72,10 +72,9 @@ router.post(
       req.body.lang,
       "fr"
     );
-    title =
-      req.headers["x-app-origin"] === "test"
-        ? "Test - "
-        : "" + "FestivalDesArts : " + title.toLowerCase();
+    title = `${
+      req.headers["x-app-origin"] === "test" ? "Test - " : ""
+    }"FestivalDesArts : ${title.toLowerCase()}`;
     sendBasicEmail(
       emailRedirect("org", null, req.headers["x-app-origin"], req.body.role),
       name,
