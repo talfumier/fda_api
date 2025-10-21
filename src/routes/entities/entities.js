@@ -107,17 +107,17 @@ router.post(
           req.user.lang,
           "fr"
         );
-        title =
-          req.headers["x-app-origin"] === "test"
-            ? "Test - "
-            : "" + "FestivalDesArts : " + title.toLowerCase();
+        title = `${
+          req.headers["x-app-origin"] === "test" ? "Test - " : ""
+        }"FestivalDesArts : ${title.toLowerCase()}`;
         const {model: mdl1} = getModels(req.db, "User");
         const {idRole, email} = await mdl1.findByPk(req.body.idUser);
         const {model: mdl2} = getModels(req.db, "Role");
         const {role_fr} = await mdl2.findByPk(idRole);
         sendBasicEmail(
           emailRedirect("user", email, req.headers["x-app-origin"]),
-          await textTranslate("do not reply", req.user.lang, "en"),
+          // await textTranslate("do not reply", req.user.lang, "en"),
+          "festival des arts",
           title,
           await textTranslate(
             `Le compte avec l'identifiant ${email} et le rôle '${role_fr}' a été ${

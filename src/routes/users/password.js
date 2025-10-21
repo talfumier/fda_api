@@ -59,12 +59,12 @@ router.post(
       userId: user.idUser,
       token: hash,
     });
-    const name = await textTranslate("do not reply", lang, "en");
+    // const name = await textTranslate("do not reply", lang, "en");
+    const name = "festival des arts";
     let title = await textTranslate("mot de passe oublié", lang, "fr");
-    title =
-      req.headers["x-app-origin"] === "test"
-        ? "Test - "
-        : "" + "FestivalDesArts : " + title.toLowerCase() + " ?";
+    title = `${
+      req.headers["x-app-origin"] === "test" ? "Test - " : ""
+    }"FestivalDesArts : ${title.toLowerCase()} ?`;
     const front_url = getMasterUrl(req.headers["x-app-origin"]);
     const link = `${front_url}/public/resetpassword?id=${data.userId}&random=${resetToken}`;
     let html = await htmlTranslate(
