@@ -60,11 +60,11 @@ router.post(
       token: hash,
     });
     // const name = await textTranslate("do not reply", lang, "en");
-    const name = "festival des arts";
+    const name = "festivaldesarts";
     let title = await textTranslate("mot de passe oublié", lang, "fr");
     title = `${
       req.headers["x-app-origin"] === "test" ? "Test - " : ""
-    }"FestivalDesArts : ${title.toLowerCase()} ?`;
+    }FestivalDesArts : ${title.toLowerCase()} ?`;
     const front_url = getMasterUrl(req.headers["x-app-origin"]);
     const link = `${front_url}/public/resetpassword?id=${data.userId}&random=${resetToken}`;
     let html = await htmlTranslate(

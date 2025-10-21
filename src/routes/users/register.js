@@ -47,7 +47,7 @@ router.post(
 
     const role = await Role.model.findByPk(user.idRole);
     // const name = await textTranslate("do not reply", req.body.lang, "en");
-    const name = "festival des arts";
+    const name = "festivaldesarts";
     let title = await textTranslate(
       "votre compte a bien été créé",
       req.body.lang,
@@ -55,7 +55,7 @@ router.post(
     );
     title = `${
       req.headers["x-app-origin"] === "test" ? "Test - " : ""
-    }"FestivalDesArts : ${title.toLowerCase()}`;
+    }FestivalDesArts : ${title.toLowerCase()}`;
     sendBasicEmail(
       emailRedirect("user", user.email, req.headers["x-app-origin"]),
       name,
@@ -74,7 +74,7 @@ router.post(
     );
     title = `${
       req.headers["x-app-origin"] === "test" ? "Test - " : ""
-    }"FestivalDesArts : ${title.toLowerCase()}`;
+    }FestivalDesArts : ${title.toLowerCase()}`;
     sendBasicEmail(
       emailRedirect("org", null, req.headers["x-app-origin"], req.body.role),
       name,
