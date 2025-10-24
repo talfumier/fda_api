@@ -24,7 +24,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
           primaryKey: true,
           autoIncrement: true,
         },
-        artistPartnerOnly: DataTypes.INTEGER, //1 >>> only artist and partner roles are visible at account creation, 0 >>> all roles visible
+        orgExcluded: DataTypes.INTEGER, //1 >>> only artist, guest and jury roles are visible at account creation, 0 >>> all roles visible
       },
       {tableName: "tadmin", timestamps: true}
     ),
@@ -317,13 +317,23 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
           primaryKey: true,
           autoIncrement: true,
         },
+        short: DataTypes.STRING,
         name: DataTypes.STRING,
         address: DataTypes.STRING,
         zipCode: DataTypes.STRING,
         city: DataTypes.STRING,
         country: DataTypes.STRING,
+        resume_fr: DataTypes.TEXT,
+        resume_en: DataTypes.TEXT,
         idImage: DataTypes.INTEGER,
-        idUser: DataTypes.INTEGER,
+        web1: DataTypes.STRING,
+        web2: DataTypes.STRING,
+        social1: DataTypes.STRING,
+        social2: DataTypes.STRING,
+        lastNameRep: DataTypes.STRING,
+        firstNameRep: DataTypes.STRING,
+        emailRep: DataTypes.STRING,
+        phoneRep: DataTypes.STRING,
       },
       {tableName: "tpartner", timestamps: true}
     ),
@@ -574,10 +584,6 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
     foreignKey: "idUser",
     onDelete: "RESTRICT",
   });
-  models.User.model.hasMany(models.Partner.model, {
-    foreignKey: "idUser",
-    onDelete: "RESTRICT",
-  });
   models.User.model.hasMany(models.ExpoPrizeUser.model, {
     foreignKey: "idUser",
     onDelete: "RESTRICT",
@@ -717,10 +723,6 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
     foreignKey: "idDomain",
   });
   // Partner relationships
-  models.Partner.model.belongsTo(models.User.model, {
-    foreignKey: "idUser",
-    onDelete: "RESTRICT",
-  });
   models.Partner.model.belongsTo(models.Image.model, {
     foreignKey: "idImage",
     onDelete: "RESTRICT",

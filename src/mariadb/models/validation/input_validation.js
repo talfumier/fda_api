@@ -129,13 +129,23 @@ export function validateOeuvre(data, cs = "post") {
 }
 export function validatePartner(data, cs = "post") {
   const schema = Joi.object({
+    short: Joi.string().allow(null),
     name: Joi.string().allow(null),
-    address: Joi.string().allow(null),
-    zipCode: Joi.string().allow(null),
-    city: Joi.string().allow(null),
-    country: Joi.string().allow(null),
+    address: Joi.string().allow(null, ""),
+    zipCode: Joi.string().allow(null, ""),
+    city: Joi.string().allow(null, ""),
+    country: Joi.string().allow(null, ""),
+    resume_fr: Joi.string().allow(null, ""),
+    resume_en: Joi.string().allow(null, ""),
     idImage: Joi.number().integer().allow(null),
-    idUser: Joi.number().integer().allow(null),
+    web1: Joi.string().allow(null),
+    web2: Joi.string().allow(null),
+    social1: Joi.string().allow(null),
+    social2: Joi.string().allow(null),
+    lastNameRep: Joi.string().allow(null),
+    firstNameRep: Joi.string().allow(null),
+    emailRep: Joi.string().email().allow(null),
+    phoneRep: Joi.string().allow(null),
   });
   return makeValidator(schema, data, cs);
 }
