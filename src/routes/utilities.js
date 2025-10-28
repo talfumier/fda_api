@@ -24,8 +24,8 @@ router.get(
 router.get(
   "/sync/:dbName", //dbName=fda_test or db=fda_prod >>> database to sync
   routeHandler(async (req, res) => {
+    const dbName = req.params.dbName;
     try {
-      const dbName = req.params.dbName;
       if (dbName === req.db.config.database) {
         await req.db.close();
         deleteConnection(req.db); //delete connection associated data in modelCache weakMap

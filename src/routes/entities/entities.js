@@ -66,7 +66,7 @@ router.post(
     let where = {};
     if (master === null) master = Object.keys(req.body); //master = null for StatusTracking model
     master.map((fld) => {
-      if (req.body[fld]) where[fld] = req.body[fld];
+      if (req.body[fld] !== undefined) where[fld] = req.body[fld];
     });
     //for Status_Tracking, a given element can have the same idStatus multiple times at different timestamps
     //what is important is that the last one should be different from the one proposed for update in req.body >>> managed in front-end
