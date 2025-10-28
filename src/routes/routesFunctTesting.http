@@ -1,4 +1,4 @@
-@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6IlRBTEZVTUlFUiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS50YWxmdW1pZXJAd2FuYWRvby5mciIsImlkUm9sZSI6NywiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc2MDk1Njc3MSwiZXhwIjoxNzYwOTkyNzcxfQ.jqB9ERjryqH4Y7V05avh-3qjr8q--v5q7lLyxDT0DU0
+@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6IlRBTEZVTUlFUiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS50YWxmdW1pZXJAd2FuYWRvby5mciIsImlkUm9sZSI6NywiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc2MTU4MzUwMCwiZXhwIjoxNzYxNjE5NTAwfQ.RX8c7NXDFQLqq7js_xOn6zOcTIN5l2xf520AFyknPzg
 
 ### REST CLIENT EXTENSION TEST
 GET https://jsonplaceholder.typicode.com/posts/1
@@ -179,17 +179,15 @@ X-App-Origin: dev
   "idUser":52
 }
 ###
-POST http://localhost:3000/api/entities/BookingOeuvre
+POST http://localhost:3000/api/entities/UserExpoRole
 x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
 
 {  
-  "idBooking":12,
-  "idOeuvre":26,
-  "screen":0,
-  "selected":1,
-  "showRoom":1
+  "idExpo":126,
+  "idUser":73,
+  "idRole":2
 }
 ###
 DELETE  http://localhost:3000/api/entities/Partner/2
@@ -228,6 +226,11 @@ content-type: application/json
 X-App-Origin: dev
 ###
 GET http://localhost:3000/api/sql-entities/options_expo/:idExpo/82
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+###
+GET http://localhost:3000/api/sql-entities/list_expo_prize_user/:idExpo/126
 x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev

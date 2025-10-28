@@ -153,6 +153,7 @@ export function validatePrize(data, cs = "post") {
   const schema = Joi.object({
     prize_fr: Joi.string().required(),
     prize_en: Joi.string().required(),
+    order: Joi.number().required(),
   });
   return makeValidator(schema, data, cs);
 }

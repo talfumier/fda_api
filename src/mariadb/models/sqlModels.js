@@ -211,7 +211,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.ExpoPrizeUser = {
     validate: null,
-    master: ["idExpo", "idPrizeDomain", "idUser"],
+    master: ["idExpo", "idPrize", "idUser"],
     model: sequelize.define(
       "ExpoPrizeUser",
       {
@@ -220,9 +220,10 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
           primaryKey: true,
           autoIncrement: true,
         },
-        idExpo: DataTypes.INTEGER,
-        idPrizeDomain: DataTypes.INTEGER,
-        idUser: DataTypes.INTEGER,
+        idExpo: {type: DataTypes.INTEGER, allowNull: true},
+        idPrize: DataTypes.INTEGER,
+        idUser: {type: DataTypes.INTEGER, allowNull: true},
+        applicable: {type: DataTypes.INTEGER, defaultValue: 1}, //0:n/a, 1:applicable
       },
       {
         tableName: "texpo_prize_user",
@@ -351,25 +352,9 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         },
         prize_fr: DataTypes.STRING,
         prize_en: DataTypes.STRING,
+        order: DataTypes.INTEGER,
       },
       {tableName: "tprize", timestamps: true}
-    ),
-  };
-  models.PrizeDomain = {
-    validate: null,
-    master: ["idPrize", "idDomain"],
-    model: sequelize.define(
-      "PrizeDomain",
-      {
-        idPrize: DataTypes.INTEGER,
-        idDomain: DataTypes.INTEGER,
-      },
-      {
-        tableName: "tprize_domain",
-        timestamps: true,
-        createdAt: true,
-        updatedAt: false,
-      }
     ),
   };
   models.Role = {
@@ -525,7 +510,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
     model: sequelize.define(
       "UserExpoRole",
       {
-        idUserExpo: {
+        idUserExpoRole: {
           type: DataTypes.INTEGER,
           primaryKey: true,
           autoIncrement: true,
@@ -710,17 +695,14 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
     foreignKey: "idUser",
     onDelete: "RESTRICT",
   });
-  models.ExpoPrizeUser.model.belongsTo(models.PrizeDomain.model, {
-    foreignKey: "idPrizeDomain",
-    onDelete: "RESTRICT",
-  });
-  // PrizeDomain relationships
-  models.PrizeDomain.model.belongsTo(models.Prize.model, {
+  models.ExpoPrizeUser.model.belongsTo(models.Prize.model, {
     foreignKey: "idPrize",
     onDelete: "RESTRICT",
   });
-  models.PrizeDomain.model.belongsTo(models.Domain.model, {
-    foreignKey: "idDomain",
+  //Prize relationship
+  models.Prize.model.hasMany(models.ExpoPrizeUser.model, {
+    foreignKey: "idPrize",
+    onDelete: "RESTRICT",
   });
   // Partner relationships
   models.Partner.model.belongsTo(models.Image.model, {

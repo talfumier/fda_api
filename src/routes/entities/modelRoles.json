@@ -63,10 +63,6 @@
     "role": ["organisation"],
     "idRole": [5, 6, 7]
   },
-  "PrizeDomain": {
-    "role": ["organisation"],
-    "idRole": [5, 6, 7]
-  },
   "Role": {
     "role": ["admin"],
     "idRole": [6, 7]
