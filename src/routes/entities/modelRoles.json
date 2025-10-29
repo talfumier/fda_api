@@ -11,6 +11,10 @@
     "role": ["organisation"],
     "idRole": [5, 6, 7]
   },
+  "File": {
+    "role": ["organisation"],
+    "idRole": [5, 6, 7]
+  },
   "Domain": {
     "role": ["organisation"],
     "idRole": [5, 6, 7]

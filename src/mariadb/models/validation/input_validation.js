@@ -42,12 +42,11 @@ export function validateBookingOeuvre(data, cs = "post") {
 }
 export function validateDoc(data, cs = "post") {
   const schema = Joi.object({
-    standalone: Joi.number().integer().valid(0, 1).allow(null),
-    name_fr: Joi.string().required(),
-    name_en: Joi.string().required(),
-    desc_fr: Joi.string().allow(null),
-    desc_en: Joi.string().allow(null),
-    url: Joi.string().allow(null),
+    // standalone: Joi.number().integer().valid(0, 1).allow(null),
+    short: Joi.string().allow(null, ""),
+    desc_fr: Joi.string().allow(null, ""),
+    desc_en: Joi.string().allow(null, ""),
+    idFile: Joi.number().integer().allow(null),
   });
   return makeValidator(schema, data, cs);
 }
@@ -90,6 +89,16 @@ export function validateExpo(data, cs = "post") {
 export function validateImage(data, cs = "post") {
   const schema = Joi.object({
     idImage: Joi.number().required(),
+    fileName: Joi.string().required(),
+    fileSize: Joi.number().allow(null),
+    fileLastModified: Joi.date(),
+    url: Joi.string().required(),
+  });
+  return makeValidator(schema, data, cs);
+}
+export function validateFile(data, cs = "post") {
+  const schema = Joi.object({
+    idFile: Joi.number().required(),
     fileName: Joi.string().required(),
     fileSize: Joi.number().allow(null),
     fileLastModified: Joi.date(),
