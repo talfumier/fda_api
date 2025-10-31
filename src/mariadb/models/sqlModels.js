@@ -85,7 +85,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         short: DataTypes.STRING,
         desc_fr: DataTypes.STRING, //up to 255 car long
         desc_en: DataTypes.STRING,
-        idFile: {type: DataTypes.INTEGER, defaultValue: null},
+        idFile: {type: DataTypes.STRING, defaultValue: null},
       },
       {tableName: "tdoc", timestamps: true}
     ),
@@ -97,7 +97,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
       "File",
       {
         idFile: {
-          type: DataTypes.INTEGER,
+          type: DataTypes.STRING,
           primaryKey: true,
           autoIncrement: false,
         },

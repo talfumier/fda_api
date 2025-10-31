@@ -46,7 +46,7 @@ export function validateDoc(data, cs = "post") {
     short: Joi.string().allow(null, ""),
     desc_fr: Joi.string().allow(null, ""),
     desc_en: Joi.string().allow(null, ""),
-    idFile: Joi.number().integer().allow(null),
+    idFile: Joi.string().allow(null, ""),
   });
   return makeValidator(schema, data, cs);
 }
@@ -98,7 +98,7 @@ export function validateImage(data, cs = "post") {
 }
 export function validateFile(data, cs = "post") {
   const schema = Joi.object({
-    idFile: Joi.number().required(),
+    idFile: Joi.string().required(),
     fileName: Joi.string().required(),
     fileSize: Joi.number().allow(null),
     fileLastModified: Joi.date(),
