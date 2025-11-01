@@ -170,8 +170,10 @@ router.delete(
     const {modelName, id} = req.params;
     let cond = userIsAuthorized(req.user.idRole, modelName);
     if (!cond[0]) return res.send(cond[1]);
-    const {error} = validateIntegerId(id);
-    if (error) return res.send(new BadRequest(error.details[0].message));
+    if (modelName !== "File") {
+      const {error} = validateIntegerId(id);
+      if (error) return res.send(new BadRequest(error.details[0].message));
+    }
     const {model} = getModels(req.db, modelName);
 
     const data = await model.findByPk(id);

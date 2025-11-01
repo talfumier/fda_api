@@ -72,19 +72,46 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.Doc = {
     validate: val.validateDoc,
-    master: ["name_fr", "name_en"],
+    master: ["short"],
     model: sequelize.define(
       "Doc",
       {
-        idDoc: {type: DataTypes.INTEGER, primaryKey: true, autoIncrement: true},
-        standalone: DataTypes.BOOLEAN,
-        name_fr: DataTypes.STRING,
-        name_en: DataTypes.STRING,
-        desc_fr: DataTypes.TEXT,
-        desc_en: DataTypes.TEXT,
-        url: DataTypes.STRING,
+        idDoc: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true,
+        },
+        // standalone: DataTypes.BOOLEAN,
+        short: DataTypes.STRING,
+        desc_fr: DataTypes.STRING, //up to 255 car long
+        desc_en: DataTypes.STRING,
+        idFile: {type: DataTypes.STRING, defaultValue: null},
       },
       {tableName: "tdoc", timestamps: true}
+    ),
+  };
+  models.File = {
+    validate: val.validateFile,
+    master: ["idFile"],
+    model: sequelize.define(
+      "File",
+      {
+        idFile: {
+          type: DataTypes.STRING,
+          primaryKey: true,
+          autoIncrement: false,
+        },
+        fileName: DataTypes.STRING,
+        fileSize: DataTypes.INTEGER,
+        fileLastModified: DataTypes.DATE,
+        url: DataTypes.STRING,
+      },
+      {
+        tableName: "tfile",
+        timestamps: true,
+        createdAt: true,
+        updatedAt: false,
+      }
     ),
   };
   models.Domain = {
@@ -167,7 +194,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.ExpoImage = {
     validate: null,
-    master: ["idExpo", "idImage"],
+    master: ["idExpo", "idFile"],
     model: sequelize.define(
       "ExpoImage",
       {
@@ -177,7 +204,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
           autoIncrement: true,
         },
         idExpo: DataTypes.INTEGER,
-        idImage: DataTypes.INTEGER,
+        idFile: DataTypes.STRING,
       },
       {
         tableName: "texpo_image",
@@ -233,30 +260,6 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
       }
     ),
   };
-  models.Image = {
-    validate: val.validateImage,
-    master: ["idImage"],
-    model: sequelize.define(
-      "Image",
-      {
-        idImage: {
-          type: DataTypes.INTEGER,
-          primaryKey: true,
-          autoIncrement: false,
-        },
-        fileName: DataTypes.STRING,
-        fileSize: DataTypes.INTEGER,
-        fileLastModified: DataTypes.DATE,
-        url: DataTypes.STRING,
-      },
-      {
-        tableName: "timage",
-        timestamps: true,
-        createdAt: true,
-        updatedAt: false,
-      }
-    ),
-  };
   models.Media = {
     validate: val.validateMedia,
     master: ["media_fr", "media_en"],
@@ -277,7 +280,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.Oeuvre = {
     validate: val.validateOeuvre,
-    master: ["idImage"],
+    master: ["idFile"],
     model: sequelize.define(
       "Oeuvre",
       {
@@ -302,7 +305,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         height: DataTypes.INTEGER,
         depth: DataTypes.INTEGER,
         weight: DataTypes.INTEGER,
-        idImage: DataTypes.INTEGER,
+        idFile: DataTypes.STRING,
       },
       {tableName: "toeuvre", timestamps: true}
     ),
@@ -326,7 +329,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         country: DataTypes.STRING,
         resume_fr: DataTypes.TEXT,
         resume_en: DataTypes.TEXT,
-        idImage: DataTypes.INTEGER,
+        idFile: DataTypes.STRING,
         web1: DataTypes.STRING,
         web2: DataTypes.STRING,
         social1: DataTypes.STRING,
@@ -465,7 +468,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         country: DataTypes.STRING,
         resume_fr: DataTypes.TEXT,
         resume_en: DataTypes.TEXT,
-        idImage: DataTypes.INTEGER,
+        idFile: DataTypes.STRING,
         public_image: {type: DataTypes.BOOLEAN, defaultValue: 1},
         web1: DataTypes.STRING,
         web2: DataTypes.STRING,
@@ -549,8 +552,8 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
     foreignKey: "idRole",
     onDelete: "RESTRICT",
   });
-  models.User.model.belongsTo(models.Image.model, {
-    foreignKey: "idImage",
+  models.User.model.belongsTo(models.File.model, {
+    foreignKey: "idFile",
     onDelete: "RESTRICT",
   });
   models.User.model.hasMany(models.UserConn.model, {
@@ -634,8 +637,8 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
     foreignKey: "idUser",
     onDelete: "RESTRICT",
   });
-  models.Oeuvre.model.belongsTo(models.Image.model, {
-    foreignKey: "idImage",
+  models.Oeuvre.model.belongsTo(models.File.model, {
+    foreignKey: "idFile",
     onDelete: "RESTRICT",
   });
   // Expo relationships
@@ -649,7 +652,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   });
   models.Expo.model.hasMany(models.ExpoDoc.model, {
     foreignKey: "idExpo",
-    onDelete: "RESTRICT",
+    onDelete: "CASCADE",
   });
   models.Expo.model.hasMany(models.ExpoPartner.model, {
     foreignKey: "idExpo",
@@ -664,14 +667,23 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
     foreignKey: "idExpo",
     onDelete: "RESTRICT",
   });
-  models.ExpoImage.model.belongsTo(models.Image.model, {
-    foreignKey: "idImage",
+  models.ExpoImage.model.belongsTo(models.File.model, {
+    foreignKey: "idFile",
     onDelete: "CASCADE",
+  });
+  // Doc relationships
+  models.Doc.model.hasMany(models.ExpoDoc.model, {
+    foreignKey: "idDoc",
+    onDelete: "CASCADE",
+  });
+  models.Doc.model.belongsTo(models.File.model, {
+    foreignKey: "idFile",
+    onDelete: "RESTRICT",
   });
   // ExpoDoc relationships
   models.ExpoDoc.model.belongsTo(models.Expo.model, {
     foreignKey: "idExpo",
-    onDelete: "RESTRICT",
+    onDelete: "CASCADE",
   });
   models.ExpoDoc.model.belongsTo(models.Doc.model, {
     foreignKey: "idDoc",
@@ -705,8 +717,8 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
     onDelete: "RESTRICT",
   });
   // Partner relationships
-  models.Partner.model.belongsTo(models.Image.model, {
-    foreignKey: "idImage",
+  models.Partner.model.belongsTo(models.File.model, {
+    foreignKey: "idFile",
     onDelete: "RESTRICT",
   });
 
