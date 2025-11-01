@@ -45,8 +45,15 @@ router.post(
     const publicId = req.body.publicId;
     if (!publicId)
       return res.send(new BadRequest("Missing cloudinary publicId"));
+    const option = {};
+    if (
+      Object.keys(req.query).length > 0 &&
+      JSON.stringify(req.query).includes("raw")
+    )
+      option.resource_type = "raw";
     const result = await cloudinary.uploader.destroy(
-      `${environment.cloudinary_folder}/${publicId}`
+      `${environment.cloudinary_folder}/${publicId}`,
+      option
     );
     if (result.result === "ok")
       res.send(

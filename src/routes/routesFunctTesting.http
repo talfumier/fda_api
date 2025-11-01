@@ -1,4 +1,4 @@
-@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6IlRBTEZVTUlFUiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS50YWxmdW1pZXJAd2FuYWRvby5mciIsImlkUm9sZSI6NywiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc2MTc1NzA1OSwiZXhwIjoxNzYxNzkzMDU5fQ.gLoBSO1l9CC9HkQywSvhEmO68fMxJavat-YdiwE7R9k
+@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6IlRBTEZVTUlFUiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS50YWxmdW1pZXJAd2FuYWRvby5mciIsImlkUm9sZSI6NywiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc2MTkzMzQ2NSwiZXhwIjoxNzYxOTY5NDY1fQ.D_SOYvx53eGJtupcCdGn0voiln-5xNFEoxeYyhhYjgQ
 
 ### REST CLIENT EXTENSION TEST
 GET https://jsonplaceholder.typicode.com/posts/1
@@ -250,3 +250,13 @@ GET http://localhost:3000/api/sql-entities/noparams/admin_settings
 x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
+
+###
+POST http://localhost:3000/api/files/cloudinary-delete?option=raw
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+
+{  
+  "publicId":"591046306.pptx"
+}

@@ -86,16 +86,6 @@ export function validateExpo(data, cs = "post") {
   });
   return makeValidator(schema, data, cs);
 }
-export function validateImage(data, cs = "post") {
-  const schema = Joi.object({
-    idImage: Joi.number().required(),
-    fileName: Joi.string().required(),
-    fileSize: Joi.number().allow(null),
-    fileLastModified: Joi.date(),
-    url: Joi.string().required(),
-  });
-  return makeValidator(schema, data, cs);
-}
 export function validateFile(data, cs = "post") {
   const schema = Joi.object({
     idFile: Joi.string().required(),
@@ -132,7 +122,7 @@ export function validateOeuvre(data, cs = "post") {
     height: Joi.number().allow(null),
     depth: Joi.number().allow(null),
     weight: Joi.number().allow(null),
-    idImage: Joi.number().allow(null),
+    idFile: Joi.string().allow(null, ""),
   });
   return makeValidator(schema, data, cs);
 }
@@ -146,7 +136,7 @@ export function validatePartner(data, cs = "post") {
     country: Joi.string().allow(null, ""),
     resume_fr: Joi.string().allow(null, ""),
     resume_en: Joi.string().allow(null, ""),
-    idImage: Joi.number().integer().allow(null),
+    idFile: Joi.number().string().allow(null, ""),
     web1: Joi.string().allow(null),
     web2: Joi.string().allow(null),
     social1: Joi.string().allow(null),
@@ -213,7 +203,7 @@ export function validateUser(data, cs = "post") {
     country: Joi.string().allow(null),
     resume_fr: Joi.string().allow(null),
     resume_en: Joi.string().allow(null),
-    idImage: Joi.number().integer().allow(null),
+    idFile: Joi.string().integer().allow(null, ""),
     public_image: Joi.number().integer().valid(0, 1).allow(null), //default value 1 (true) set in sqlModels
     web1: Joi.string().allow(null),
     web2: Joi.string().allow(null),
