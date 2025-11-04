@@ -19,7 +19,9 @@ router.post(
   routeHandler(async (req, res) => {
     const options = {
       public_id: req.body.publicId,
-      folder: environment.cloudinary_folder,
+      folder: `${environment.cloudinary_folder}${
+        req.headers["x-app-origin"] === "prod" ? "/prod" : ""
+      }`,
       unique_filename: true,
       use_filename: true,
     };
@@ -52,7 +54,9 @@ router.post(
     )
       option.resource_type = "raw";
     const result = await cloudinary.uploader.destroy(
-      `${environment.cloudinary_folder}/${publicId}`,
+      `${environment.cloudinary_folder}${
+        req.headers["x-app-origin"] === "prod" ? "/prod" : ""
+      }/${publicId}`,
       option
     );
     if (result.result === "ok")

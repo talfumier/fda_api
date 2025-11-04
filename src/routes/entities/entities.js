@@ -49,7 +49,7 @@ router.post(
     const {modelName} = req.params;
     let cond = userIsAuthorized(req.user.idRole, modelName);
     if (!cond[0]) return res.send(cond[1]);
-    if (modelName === "User" || modelName === "Expo") {
+    if (["User", "Expo", "Partner", "Doc"].includes(modelName)) {
       //a user is created through the register route, only organisation can create it from this route
       //expo can only be created by organisation
       cond = userIsOrg(req, modelName);
@@ -64,7 +64,8 @@ router.post(
     }
     let data = null;
     let where = {};
-    if (master === null) master = Object.keys(req.body); //master = null for StatusTracking model
+    if (master === null || master !== "no-check")
+      master = Object.keys(req.body); //master = null for StatusTracking model
     master.map((fld) => {
       if (req.body[fld] !== undefined) where[fld] = req.body[fld];
     });
