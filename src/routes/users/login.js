@@ -34,8 +34,8 @@ router.post(
         const token = jwt.sign(
           {
             idUser: user.idUser,
-            lastName: user.lastName,
-            firstName: user.firstName,
+            // lastName: user.lastName,
+            // firstName: user.firstName,
             email: user.email,
             idRole: user.idRole,
             idStatus:status[0].idStatus,

@@ -92,7 +92,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.File = {
     validate: val.validateFile,
-    master: ["idFile"],
+    master: ["url"],
     model: sequelize.define(
       "File",
       {
@@ -280,7 +280,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.Oeuvre = {
     validate: val.validateOeuvre,
-    master: ["idFile"],
+    master: ["no-check"],
     model: sequelize.define(
       "Oeuvre",
       {

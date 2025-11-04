@@ -12,8 +12,8 @@
     "idRole": [5, 6, 7]
   },
   "File": {
-    "role": ["organisation"],
-    "idRole": [5, 6, 7]
+    "role": ["artist", "organisation"],
+    "idRole": [1, 5, 6, 7]
   },
   "Domain": {
     "role": ["organisation"],
@@ -46,10 +46,6 @@
   "ExpoPrizeUser": {
     "role": ["organisation"],
     "idRole": [5, 6, 7]
-  },
-  "Image": {
-    "role": ["artist", "organisation"],
-    "idRole": [1, 5, 6, 7]
   },
   "Media": {
     "role": ["organisation"],
@@ -84,11 +80,11 @@
     "idRole": [5, 6, 7]
   },
   "User": {
-    "role": ["artist", "organisation"],
+    "role": ["artist", "others", "organisation"],
     "idRole": [1, 3, 5, 6, 7]
   },
   "UserConn": {
-    "role": ["artist", "organisation"],
+    "role": ["artist", "others", "organisation"],
     "idRole": [1, 3, 5, 6, 7]
   },
   "UserExpoRole": {

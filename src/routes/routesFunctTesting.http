@@ -1,4 +1,4 @@
-@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJsYXN0TmFtZSI6IlRBTEZVTUlFUiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS50YWxmdW1pZXJAd2FuYWRvby5mciIsImlkUm9sZSI6NywiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc2MTkzMzQ2NSwiZXhwIjoxNzYxOTY5NDY1fQ.D_SOYvx53eGJtupcCdGn0voiln-5xNFEoxeYyhhYjgQ
+@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjYwLCJsYXN0TmFtZSI6Im1hcnRpbiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS5tYXJ0aW5Ad2FuYWRvby5mciIsImlkUm9sZSI6MSwiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc2MjI0NjI2NSwiZXhwIjoxNzYyMjgyMjY1fQ.IdC8mjySJwXRMKyw0MuUq25x4fIsPSFPnrnBiyS69Qk
 
 ### REST CLIENT EXTENSION TEST
 GET https://jsonplaceholder.typicode.com/posts/1
@@ -190,6 +190,15 @@ X-App-Origin: dev
   "idRole":2
 }
 ###
+PATCH http://localhost:3000/api/entities/Partner/4
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+
+{  
+  "address":"ccccc"
+}
+###
 POST http://localhost:3000/api/entities/Doc
 x-auth-token:{{user_token}}
 content-type: application/json
@@ -199,6 +208,16 @@ X-App-Origin: dev
   "short":"ccr",
   "desc_fr":"aa",
   "desc_en":"aa"
+}
+###
+POST http://localhost:3000/api/entities/Oeuvre
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+
+{  
+  "idUser":60,
+  "title_en":"cccc"
 }
 ###
 DELETE  http://localhost:3000/api/entities/Partner/2

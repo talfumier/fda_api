@@ -136,15 +136,15 @@ export function validatePartner(data, cs = "post") {
     country: Joi.string().allow(null, ""),
     resume_fr: Joi.string().allow(null, ""),
     resume_en: Joi.string().allow(null, ""),
-    idFile: Joi.number().string().allow(null, ""),
-    web1: Joi.string().allow(null),
-    web2: Joi.string().allow(null),
-    social1: Joi.string().allow(null),
-    social2: Joi.string().allow(null),
-    lastNameRep: Joi.string().allow(null),
-    firstNameRep: Joi.string().allow(null),
-    emailRep: Joi.string().email().allow(null),
-    phoneRep: Joi.string().allow(null),
+    idFile: Joi.string().allow(null, ""),
+    web1: Joi.string().allow(null, ""),
+    web2: Joi.string().allow(null, ""),
+    social1: Joi.string().allow(null, ""),
+    social2: Joi.string().allow(null, ""),
+    lastNameRep: Joi.string().allow(null, ""),
+    firstNameRep: Joi.string().allow(null, ""),
+    emailRep: Joi.string().email().allow(null, ""),
+    phoneRep: Joi.string().allow(null, ""),
   });
   return makeValidator(schema, data, cs);
 }
@@ -203,7 +203,7 @@ export function validateUser(data, cs = "post") {
     country: Joi.string().allow(null),
     resume_fr: Joi.string().allow(null),
     resume_en: Joi.string().allow(null),
-    idFile: Joi.string().integer().allow(null, ""),
+    idFile: Joi.string().allow(null, ""),
     public_image: Joi.number().integer().valid(0, 1).allow(null), //default value 1 (true) set in sqlModels
     web1: Joi.string().allow(null),
     web2: Joi.string().allow(null),
