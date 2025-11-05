@@ -49,9 +49,13 @@ router.post(
     const {modelName} = req.params;
     let cond = userIsAuthorized(req.user.idRole, modelName);
     if (!cond[0]) return res.send(cond[1]);
-    if (["User", "Expo", "Partner", "Doc"].includes(modelName)) {
+    if (
+      ["User", "Expo", "Partner", "Doc", "ExpoDoc", "UserExpoRole"].includes(
+        modelName
+      )
+    ) {
       //a user is created through the register route, only organisation can create it from this route
-      //expo can only be created by organisation
+      //expo ... can only be created by organisation
       cond = userIsOrg(req, modelName);
       if (!cond[0]) return res.send(cond[1]);
     }
