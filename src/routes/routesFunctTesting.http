@@ -271,6 +271,12 @@ content-type: application/json
 X-App-Origin: dev
 
 ###
+GET http://localhost:3000/api/sql-entities/noparams/list_public_expo
+x-auth-token:token-not-required
+content-type: application/json
+X-App-Origin: dev
+
+###
 POST http://localhost:3000/api/files/cloudinary-delete?option=raw
 x-auth-token:{{user_token}}
 content-type: application/json

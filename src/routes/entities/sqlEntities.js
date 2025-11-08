@@ -8,7 +8,7 @@ const router = express.Router();
 
 router.get(
   "/noparams/:stored_proc",
-  authHandler, //user must be authenticated
+  authHandler, //user must be authenticated except for public routes refer to authHandler.js
   routeHandler(async (req, res) => {
     const {stored_proc} = req.params;
     let dataArr = await req.db.query(`CALL ${stored_proc}()`, {
