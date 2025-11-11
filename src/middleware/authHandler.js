@@ -4,11 +4,6 @@ import {Unauthorized} from "../mariadb/models/validation/errors.js";
 
 export function authHandler(req, res, next) {
   const token = req.header("x-auth-token");
-  if (token === environment.public_token) {
-    //public routes shall not require any token
-    next();
-    return;
-  }
   if (!token)
     return res.send(new Unauthorized("Access denied. No token provided."));
   try {
