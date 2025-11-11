@@ -1,4 +1,5 @@
-@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjYwLCJsYXN0TmFtZSI6Im1hcnRpbiIsImZpcnN0TmFtZSI6IkhlbnJpIiwiZW1haWwiOiJoZW5yaS5tYXJ0aW5Ad2FuYWRvby5mciIsImlkUm9sZSI6MSwiaWRTdGF0dXMiOjIsImxhbmciOiJlbiIsImlhdCI6MTc2MjI0NjI2NSwiZXhwIjoxNzYyMjgyMjY1fQ.IdC8mjySJwXRMKyw0MuUq25x4fIsPSFPnrnBiyS69Qk
+@user_token=no-token-required
+
 
 ### REST CLIENT EXTENSION TEST
 GET https://jsonplaceholder.typicode.com/posts/1
@@ -260,6 +261,16 @@ x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
 ###
+GET http://localhost:3000/api/sql-entities/list_public_expo/:idStatus/12
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+###
+GET https://test.festivaldesarts.merville31.fr/api/sql-entities/list_public_expo/:idStatus/12
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+###
 GET http://localhost:3000/api/sql-entities/list_expo_prize_user/:idExpo/126
 x-auth-token:{{user_token}}
 content-type: application/json
@@ -267,6 +278,12 @@ X-App-Origin: dev
 ###
 GET http://localhost:3000/api/sql-entities/noparams/admin_settings
 x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+
+###
+GET http://localhost:3000/api/sql-entities/noparams/list_public_expo
+x-auth-token:token-not-required
 content-type: application/json
 X-App-Origin: dev
 

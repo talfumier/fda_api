@@ -26,6 +26,7 @@ const setEnv = () => {
     cloudinary_api_key: '${process.env.CLOUDINARY_APIKEY}',
     cloudinary_api_secret: '${process.env.CLOUDINARY_APISECRET}',    
     api_port:'${process.env.API_PORT}',
+    public_token: '${process.env.PUBLIC_TOKEN}',
     production: true,
   };`;
   writeFile(targetPath, configFile, (err) => {

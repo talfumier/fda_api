@@ -90,6 +90,23 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
       {tableName: "tdoc", timestamps: true}
     ),
   };
+  models.Type = {
+    validate: null,
+    master: ["type_fr", "type_en"],
+    model: sequelize.define(
+      "Type",
+      {
+        idType: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: false,
+        },
+        type_fr: DataTypes.STRING,
+        type_en: DataTypes.STRING,
+      },
+      {tableName: "ttype", timestamps: true}
+    ),
+  };
   models.File = {
     validate: val.validateFile,
     master: ["url"],
@@ -172,7 +189,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   };
   models.ExpoDoc = {
     validate: null,
-    master: ["idExpo", "idDoc"],
+    master: ["idExpo", "idDoc", "idType"],
     model: sequelize.define(
       "ExpoDoc",
       {
@@ -183,6 +200,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         },
         idExpo: DataTypes.INTEGER,
         idDoc: DataTypes.INTEGER,
+        idType: {type: DataTypes.INTEGER, defaultValue: 5}, // 5 >>> standard document
       },
       {
         tableName: "texpo_doc",
@@ -361,7 +379,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
     ),
   };
   models.Role = {
-    validate: val.validateRole,
+    validate: null,
     master: ["role_fr", "role_en"],
     model: sequelize.define(
       "Role",
@@ -380,7 +398,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
     ),
   };
   models.Status = {
-    validate: val.validateStatus,
+    validate: null,
     master: ["type", "title_fr", "title_en"],
     model: sequelize.define(
       "Status",
@@ -687,6 +705,10 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   });
   models.ExpoDoc.model.belongsTo(models.Doc.model, {
     foreignKey: "idDoc",
+    onDelete: "RESTRICT",
+  });
+  models.ExpoDoc.model.belongsTo(models.Type.model, {
+    foreignKey: "idType",
     onDelete: "RESTRICT",
   });
   // ExpoPartner relationships
