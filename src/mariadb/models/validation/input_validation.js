@@ -86,6 +86,20 @@ export function validateExpo(data, cs = "post") {
   });
   return makeValidator(schema, data, cs);
 }
+
+export function validateFaq(data, cs = "post") {
+  const schema = Joi.object({
+    idType: Joi.number().allow(null),
+    short_fr: Joi.string().allow(null, ""),
+    short_en: Joi.string().allow(null, ""),
+    question_en: Joi.string().allow(null, ""),
+    question_fr: Joi.string().allow(null, ""),
+    answer_en: Joi.string().allow(null, ""),
+    answer_fr: Joi.string().allow(null, ""),
+    idFile: Joi.string().allow(null, ""),
+  });
+  return makeValidator(schema, data, cs);
+}
 export function validateFile(data, cs = "post") {
   const schema = Joi.object({
     idFile: Joi.string().required(),
@@ -156,25 +170,25 @@ export function validatePrize(data, cs = "post") {
   });
   return makeValidator(schema, data, cs);
 }
-export function validateRole(data, cs = "post") {
-  const schema = Joi.object({
-    role_fr: Joi.string().required(),
-    role_en: Joi.string().required(),
-    account: Joi.number().integer().valid(0, 1),
-    roleExpo: Joi.number().integer().valid(0, 1),
-  });
-  return makeValidator(schema, data, cs);
-}
-export function validateStatus(data, cs = "post") {
-  const schema = Joi.object({
-    type: Joi.string().allow(null),
-    title_fr: Joi.string().required(),
-    title_en: Joi.string().required(),
-    createdAt: Joi.date().allow(null),
-    updatedAt: Joi.date().allow(null),
-  });
-  return makeValidator(schema, data, cs);
-}
+// export function validateRole(data, cs = "post") {
+//   const schema = Joi.object({
+//     role_fr: Joi.string().required(),
+//     role_en: Joi.string().required(),
+//     account: Joi.number().integer().valid(0, 1),
+//     roleExpo: Joi.number().integer().valid(0, 1),
+//   });
+//   return makeValidator(schema, data, cs);
+// }
+// export function validateStatus(data, cs = "post") {
+//   const schema = Joi.object({
+//     type: Joi.string().required(),
+//     title_fr: Joi.string().required(),
+//     title_en: Joi.string().required(),
+//     createdAt: Joi.date().allow(null),
+//     updatedAt: Joi.date().allow(null),
+//   });
+//   return makeValidator(schema, data, cs);
+// }
 export function validateTechnique(data, cs = "post") {
   const schema = Joi.object({
     tech_fr: Joi.string().required(),

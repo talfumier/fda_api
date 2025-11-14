@@ -42,6 +42,18 @@ router.get(
     res.send(new Success("Data retrieval successful", data));
   })
 );
+function getStatusTrackingBody(data, modelName) {
+  switch (modelName) {
+    case "Expo":
+      return {idExpo: data.idExpo, idStatus: 11}; //idStatus = 11 >>> pending
+    case "Booking":
+      return {idBooking: data.idBooking, idStatus: 7}; //idStatus = 7 >>> draft
+    case "BookingOeuvre":
+      return {idBookingOeuvre: data.idBookingOeuvre, idStatus: 14}; //idStatus = 14 >>> draft
+    case "Faq":
+      return {idFaq: data.idFaq, idStatus: 25}; //idStatus = 25 >>> draft
+  }
+}
 router.post(
   "/:modelName/",
   authHandler, //user must be authenticated
@@ -87,19 +99,10 @@ router.post(
       );
     }
     data = await model.create(req.body);
-    if (
-      modelName === "Expo" || //Create corresponding status in tstatus_tracking for the newly created objects
-      modelName === "Booking" ||
-      modelName === "BookingOeuvre"
-    ) {
+    if (["Expo", "Booking", "BookingOeuvre", "Faq"].includes(modelName)) {
+      //Create corresponding status in tstatus_tracking for the newly created objects
       const {StatusTracking} = getModels(req.db);
-      await StatusTracking.model.create(
-        modelName === "Expo"
-          ? {idExpo: data.idExpo, idStatus: 11} //idStatus = 11 >>> pending
-          : modelName === "Booking"
-          ? {idBooking: data.idBooking, idStatus: 7} //idStatus = 7 >>> draft
-          : {idBookingOeuvre: data.idBookingOeuvre, idStatus: 14} //idStatus = 14 >>> draft
-      );
+      await StatusTracking.model.create(getStatusTrackingBody(data, modelName));
     }
     if (modelName === "StatusTracking") {
       //user status change
