@@ -7,7 +7,7 @@ import {Success} from "../../mariadb/models/validation/success.js";
 const router = express.Router();
 
 router.get(
-  "/noparams/:stored_proc",
+  "/member/noparams/:stored_proc",
   authHandler, //user must be authenticated except for public routes refer to authHandler.js
   routeHandler(async (req, res) => {
     const {stored_proc} = req.params;
@@ -29,7 +29,7 @@ router.get(
   })
 );
 router.get(
-  "/:stored_proc/:params/:values",
+  "/member/:stored_proc/:params/:values",
   authHandler, //user must be authenticated
   routeHandler(async (req, res) => {
     const {stored_proc, params, values} = req.params;
@@ -63,7 +63,6 @@ router.get(
 );
 router.get(
   "/public/noparams/:stored_proc",
-  authHandler, //user must be authenticated
   routeHandler(async (req, res) => {
     const {stored_proc} = req.params;
     let dataArr = await req.db.query(`CALL ${stored_proc}()`, {

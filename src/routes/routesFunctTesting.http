@@ -266,6 +266,11 @@ x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
 ###
+###
+GET http://localhost:3000/api/sql-entities/public/noparams/public_faq_details
+content-type: application/json
+X-App-Origin: dev
+###
 GET https://test.festivaldesarts.merville31.fr/api/sql-entities/list_public_expo/:idStatus/12
 x-auth-token:{{user_token}}
 content-type: application/json
