@@ -99,10 +99,12 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         idType: {
           type: DataTypes.INTEGER,
           primaryKey: true,
-          autoIncrement: false,
+          autoIncrement: true,
         },
+        entity: DataTypes.STRING, //entity >>> doc, faq
         type_fr: DataTypes.STRING,
         type_en: DataTypes.STRING,
+        order: DataTypes.INTEGER,
       },
       {tableName: "ttype", timestamps: true}
     ),
@@ -278,6 +280,30 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
       }
     ),
   };
+
+  models.Faq = {
+    validate: val.validateFaq,
+    master: ["startDate", "endDate"],
+    model: sequelize.define(
+      "Faq",
+      {
+        idFaq: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true,
+        },
+        idType: DataTypes.INTEGER,
+        short_en: DataTypes.STRING,
+        short_fr: DataTypes.STRING,
+        question_en: DataTypes.STRING,
+        question_fr: DataTypes.STRING,
+        answer_fr: DataTypes.TEXT,
+        answer_en: DataTypes.TEXT,
+        idFile: DataTypes.STRING,
+      },
+      {tableName: "tfaq", timestamps: true}
+    ),
+  };
   models.Media = {
     validate: val.validateMedia,
     master: ["media_fr", "media_en"],
@@ -387,7 +413,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         idRole: {
           type: DataTypes.INTEGER,
           primaryKey: true,
-          autoIncrement: true,
+          autoIncrement: false,
         },
         role_fr: DataTypes.STRING,
         role_en: DataTypes.STRING,
@@ -406,7 +432,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         idStatus: {
           type: DataTypes.INTEGER,
           primaryKey: true,
-          autoIncrement: true,
+          autoIncrement: false,
         },
         type: DataTypes.STRING,
         title_fr: DataTypes.STRING,
@@ -449,6 +475,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         idExpo: {type: DataTypes.INTEGER, allowNull: true},
         idBookingOeuvre: {type: DataTypes.INTEGER, allowNull: true},
         idBooking: {type: DataTypes.INTEGER, allowNull: true},
+        idFaq: {type: DataTypes.INTEGER, allowNull: true},
       },
       {
         tableName: "tstatus_tracking",
@@ -741,6 +768,19 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   // Partner relationships
   models.Partner.model.belongsTo(models.File.model, {
     foreignKey: "idFile",
+    onDelete: "RESTRICT",
+  });
+  //Faq relationships
+  models.Faq.model.hasMany(models.StatusTracking.model, {
+    foreignKey: "idFaq",
+    onDelete: "CASCADE",
+  });
+  models.Faq.model.belongsTo(models.File.model, {
+    foreignKey: "idFile",
+    onDelete: "RESTRICT",
+  });
+  models.Faq.model.belongsTo(models.Type.model, {
+    foreignKey: "idType",
     onDelete: "RESTRICT",
   });
 
