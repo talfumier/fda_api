@@ -202,7 +202,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         },
         idExpo: DataTypes.INTEGER,
         idDoc: DataTypes.INTEGER,
-        idType: {type: DataTypes.INTEGER, defaultValue: 5}, // 5 >>> standard document
+        idType: {type: DataTypes.INTEGER, defaultValue: 1}, // 1 >>> standard document
       },
       {
         tableName: "texpo_doc",
