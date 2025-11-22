@@ -148,6 +148,7 @@ export function validatePartner(data, cs = "post") {
     zipCode: Joi.string().allow(null, ""),
     city: Joi.string().allow(null, ""),
     country: Joi.string().allow(null, ""),
+    phone: Joi.string().allow(null),
     resume_fr: Joi.string().allow(null, ""),
     resume_en: Joi.string().allow(null, ""),
     idFile: Joi.string().allow(null, ""),
