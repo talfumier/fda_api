@@ -371,6 +371,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         zipCode: DataTypes.STRING,
         city: DataTypes.STRING,
         country: DataTypes.STRING,
+        phone: DataTypes.STRING,
         resume_fr: DataTypes.TEXT,
         resume_en: DataTypes.TEXT,
         idFile: DataTypes.STRING,
