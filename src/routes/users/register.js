@@ -76,7 +76,7 @@ router.post(
       req.headers["x-app-origin"] === "test" ? "Test - " : ""
     }FestivalDesArts : ${title.toLowerCase()}`;
     sendBasicEmail(
-      emailRedirect("org", null, req.headers["x-app-origin"], req.body.role),
+      emailRedirect("org", null, req.headers["x-app-origin"], role.idRole),
       name,
       title,
       await textTranslate(
