@@ -110,18 +110,18 @@ router.post(
         const cond = userIsOrg(req, modelName);
         if (!cond[0]) return res.send(cond[1]);
         const statusId = req.body.idStatus;
+        const {model: mdl1} = getModels(req.db, "User");
+        const {idRole, email, lang} = await mdl1.findByPk(req.body.idUser);
+        const {model: mdl2} = getModels(req.db, "Role");
+        const {role_fr} = await mdl2.findByPk(idRole);
         let title = await textTranslate(
           `votre compte a été ${statusId === 2 ? "validé" : "désactivé"}`,
-          req.user.lang,
+          lang,
           "fr"
         );
         title = `${
           req.headers["x-app-origin"] === "test" ? "Test - " : ""
         }FestivalDesArts : ${title.toLowerCase()}`;
-        const {model: mdl1} = getModels(req.db, "User");
-        const {idRole, email} = await mdl1.findByPk(req.body.idUser);
-        const {model: mdl2} = getModels(req.db, "Role");
-        const {role_fr} = await mdl2.findByPk(idRole);
         sendBasicEmail(
           emailRedirect("user", email, req.headers["x-app-origin"]),
           // await textTranslate("do not reply", req.user.lang, "en"),
@@ -131,7 +131,7 @@ router.post(
             `Le compte avec l'identifiant ${email} et le rôle '${role_fr}' a été ${
               statusId === 2 ? "validé avec succès" : "désactivé"
             } !`,
-            req.user.lang,
+            lang,
             "fr"
           )
         );
