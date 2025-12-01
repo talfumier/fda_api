@@ -3,7 +3,6 @@ import {Sequelize} from "sequelize";
 import {environment} from "../config/environment.js";
 
 const tunnel_config = environment.tunnel_config;
-
 //creates a SSH tunnel between local PC on which the API is running and the remote OVH server (127.0.0.1:3307 >>> 127.0.0.1:3306)
 //used during development for connection with mariaDB fda_test on OVH server from the API on local PC
 export async function createSSHTunnel() {
@@ -48,6 +47,10 @@ export async function createSSHTunnel() {
 }
 //Connection to mariaDB fda_test using the above SSH tunnel
 //used during development for connection with mariaDB fda_test on OVH server from the API running on local PC
+const offset = -new Date().getTimezoneOffset(); // minutes
+const hours = Math.floor(offset / 60); // +2 or +1
+const formattedOffset =
+  (hours >= 0 ? "+" : "-") + String(Math.abs(hours)).padStart(2, "0") + ":00";
 export async function createSshConnection(dbName, sync = false) {
   // await createSSHTunnel();
   const conn = new Sequelize(
@@ -59,6 +62,11 @@ export async function createSshConnection(dbName, sync = false) {
       port: tunnel_config.source_port,
       dialect: "mysql",
       logging: false,
+      timezone: formattedOffset, //ensures mariaDB stores local date time
+      dialectOptions: {
+        dateStrings: true,
+        typeCast: true,
+      },
     }
   );
   try {
@@ -84,6 +92,11 @@ export async function createLocalConnection(dbName) {
         port: 3306,
         dialect: "mysql",
         logging: false,
+        timezone: formattedOffset,
+        dialectOptions: {
+          dateStrings: true,
+          typeCast: true,
+        },
       }
     );
     let flg = 0;

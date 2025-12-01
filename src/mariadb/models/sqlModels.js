@@ -168,6 +168,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         title_fr: DataTypes.STRING,
         desc_fr: DataTypes.TEXT,
         desc_en: DataTypes.TEXT,
+        openingDateTime: DataTypes.DATE,
         startDate: DataTypes.DATE,
         endDate: DataTypes.DATE,
         address: DataTypes.STRING,

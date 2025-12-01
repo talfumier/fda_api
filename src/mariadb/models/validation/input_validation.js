@@ -66,6 +66,7 @@ export function validateExpo(data, cs = "post") {
     title_fr: Joi.string().allow(null, ""),
     desc_en: Joi.string().allow(null, ""),
     desc_fr: Joi.string().allow(null, ""),
+    openingDateTime: Joi.date().allow(null),
     startDate: Joi.date().allow(null),
     endDate: Joi.date().allow(null),
     address: Joi.string().allow(null, ""),

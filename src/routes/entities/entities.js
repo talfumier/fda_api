@@ -106,34 +106,76 @@ router.post(
     }
     if (modelName === "StatusTracking") {
       //user status change
+      let title = null,
+        text = null,
+        recipientLang = null,
+        recipientEmail = null;
       if (Object.keys(req.body).includes("idUser")) {
         const cond = userIsOrg(req, modelName);
         if (!cond[0]) return res.send(cond[1]);
         const statusId = req.body.idStatus;
-        let title = await textTranslate(
-          `votre compte a été ${statusId === 2 ? "validé" : "désactivé"}`,
-          req.user.lang,
-          "fr"
-        );
+        const {model: mdl1} = getModels(req.db, "User");
+        const {idRole, email, lang} = await mdl1.findByPk(req.body.idUser);
+        recipientEmail = email;
+        recipientLang = lang;
+        const {model: mdl2} = getModels(req.db, "Role");
+        const {role_fr} = await mdl2.findByPk(idRole);
+        title = `votre compte a été ${statusId === 2 ? "validé" : "désactivé"}`;
+        text = `Le compte avec l'identifiant ${email} et le rôle '${role_fr}' a été ${
+          statusId === 2 ? "validé avec succès" : "désactivé"
+        } !`;
+      }
+      //booking status change
+      if (Object.keys(req.body).includes("idBooking")) {
+        const bookingUser = (
+          await req.db.query("CALL booking_user(:bookingID)", {
+            replacements: {bookingID: req.body.idBooking},
+          })
+        )[0];
+        recipientLang = bookingUser.lang;
+        recipientEmail = bookingUser.email;
+        switch (req.body.idStatus) {
+          case 9: //rejected
+            title = "votre inscription a été refusée";
+            text =
+              "Le comité de sélection a le regret de vous informer que votre inscription a été refusée.";
+            break;
+          case 10: //accepted
+            const dataArr = await req.db.query(
+              "CALL booking_status_change(:bookingID)",
+              {
+                replacements: {bookingID: req.body.idBooking},
+              }
+            );
+            title = "votre inscription a été validée";
+            text = `Votre inscription réf:${dataArr[0].idBooking} a été validée par le comité de sélection pour les oeuvres: `;
+            text =
+              text +
+              dataArr.reduce((acc, item, idx) => {
+                return (acc = `${acc}${idx > 0 ? "," : ""}${item.title_fr}`);
+              }, "") +
+              ".";
+            if (bookingUser.idRole && bookingUser.idRole !== 2)
+              //no financial contribution for guest artists
+              text =
+                text +
+                `Le montant de votre participation est de ${dataArr[0].price}€, à régler avant le ${dataArr[0].deadline}.`;
+            break;
+          case 27: //payment received
+            title = "le paiement de votre inscription a été reçu";
+            text = `Nous vous remercions pour le règlement de votre participation financière; votre inscription réf:${req.body.idBooking} est maintenant confirmée.`;
+        }
+      }
+      if (title && text) {
+        title = await textTranslate(title, recipientLang, "fr");
         title = `${
           req.headers["x-app-origin"] === "test" ? "Test - " : ""
         }FestivalDesArts : ${title.toLowerCase()}`;
-        const {model: mdl1} = getModels(req.db, "User");
-        const {idRole, email} = await mdl1.findByPk(req.body.idUser);
-        const {model: mdl2} = getModels(req.db, "Role");
-        const {role_fr} = await mdl2.findByPk(idRole);
         sendBasicEmail(
-          emailRedirect("user", email, req.headers["x-app-origin"]),
-          // await textTranslate("do not reply", req.user.lang, "en"),
+          emailRedirect("user", recipientEmail, req.headers["x-app-origin"]),
           "festivaldesarts",
           title,
-          await textTranslate(
-            `Le compte avec l'identifiant ${email} et le rôle '${role_fr}' a été ${
-              statusId === 2 ? "validé avec succès" : "désactivé"
-            } !`,
-            req.user.lang,
-            "fr"
-          )
+          await textTranslate(text, recipientLang, "fr")
         );
       }
     }
