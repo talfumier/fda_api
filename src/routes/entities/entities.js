@@ -135,10 +135,17 @@ router.post(
         recipientLang = bookingUser.lang;
         recipientEmail = bookingUser.email;
         switch (req.body.idStatus) {
+          case 8: //candidate
+            title = "votre inscription a été enregistrée";
+            text = `Nous vous confirmons que votre inscription réf:${bookingUser.idBooking} a bien été enregistrée.`;
+            if (!bookingUser.idRole || bookingUser.idRole !== 2)
+              text =
+                text +
+                `Elle sera traitée à partir du ${bookingUser.closureDateTime} par le comité de sélection qui ne manquera pas de revenir vers vous.`;
+            break;
           case 9: //rejected
             title = "votre inscription a été refusée";
-            text =
-              "Le comité de sélection a le regret de vous informer que votre inscription a été refusée.";
+            text = `Le comité de sélection a le regret de vous informer que votre inscription réf:${dataArr[0].idBooking} a été refusée par le comité de sélection.`;
             break;
           case 10: //accepted
             const dataArr = await req.db.query(
@@ -155,7 +162,7 @@ router.post(
                 return (acc = `${acc}${idx > 0 ? "," : ""}${item.title_fr}`);
               }, "") +
               ".";
-            if (bookingUser.idRole && bookingUser.idRole !== 2)
+            if (!bookingUser.idRole || bookingUser.idRole !== 2)
               //no financial contribution for guest artists
               text =
                 text +
