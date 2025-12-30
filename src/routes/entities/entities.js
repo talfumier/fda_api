@@ -1,4 +1,5 @@
 import express from "express";
+import {readFile, unlink} from "fs/promises";
 import {routeHandler} from "../../middleware/routeHandler.js";
 import {authHandler} from "../../middleware/authHandler.js";
 import {getModels} from "../../mariadb/models/sqlModels.js";
@@ -16,6 +17,7 @@ import {
 } from "../../utilityFunctions.js";
 import {sendBasicEmail} from "../../mailjet/sendEmail.js";
 import {textTranslate, emailRedirect} from "../../utilityFunctions.js";
+import {createPDFFromTemplate} from "./pdf/pdfFunctions.js";
 
 const router = express.Router();
 
@@ -126,6 +128,7 @@ router.post(
         } !`;
       }
       //booking status change
+      let attachments = null;
       if (Object.keys(req.body).includes("idBooking")) {
         const bookingUser = (
           await req.db.query("CALL booking_user(:bookingID)", {
@@ -154,14 +157,19 @@ router.post(
                 replacements: {bookingID: req.body.idBooking},
               }
             );
+            const {outputPath, fileName} = await createPDFFromTemplate(dataArr);
+            const fileBuffer = await readFile(outputPath);
+            const base64Content = fileBuffer.toString("base64");
+            attachments = [
+              {
+                ContentType: "application/pdf",
+                Filename: fileName,
+                Base64Content: base64Content,
+                outputPath,
+              },
+            ];
             title = "votre inscription a été validée";
-            text = `Votre inscription réf:${dataArr[0].idBooking} a été validée par le comité de sélection pour les oeuvres: `;
-            text =
-              text +
-              dataArr.reduce((acc, item, idx) => {
-                return (acc = `${acc}${idx > 0 ? "," : ""}${item.title_fr}`);
-              }, "") +
-              ".";
+            text = `Votre inscription réf: ${dataArr[0].idBooking} a été validée par le comité de sélection (voir le détail des oeuvres sélectionnées dans le fichier joint). `;
             if (!bookingUser.idRole || bookingUser.idRole !== 2)
               //no financial contribution for guest artists
               text =
@@ -182,8 +190,12 @@ router.post(
           emailRedirect("user", recipientEmail, req.headers["x-app-origin"]),
           "festivaldesarts",
           title,
-          await textTranslate(text, recipientLang, "fr")
+          await textTranslate(text, recipientLang, "fr"),
+          req.headers["x-app-origin"] !== "dev" && //Cc to sender
+            Object.keys(req.body).includes("idBooking"),
+          attachments
         );
+        if (attachments) await unlink(attachments[0].outputPath);
       }
     }
     if (modelName === "User") data.pwd = undefined;

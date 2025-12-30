@@ -13,28 +13,40 @@ export function sendBasicEmail(
   name,
   subject,
   htmlPart,
+  cc = false, //sender receives a copy in its inbox when set to true
+  attachments = null,
   res = null,
   callback_success = null
 ) {
+  let msgBody = {
+    From: {
+      Email: environment.mail_jet_sender,
+      Name: name,
+    },
+    To: [
+      {
+        Email: recipient,
+        Name: recipient,
+      },
+    ],
+    Subject: subject,
+    HTMLPart: htmlPart,
+  };
+  if (cc)
+    msgBody = {
+      ...msgBody,
+      Cc: [
+        {
+          Email: environment.mail_jet_sender,
+          Name: environment.mail_jet_sender,
+        },
+      ],
+    };
+  if (attachments) msgBody = {...msgBody, Attachments: attachments};
   mailjet
     .post("send", {version: "v3.1"})
     .request({
-      Messages: [
-        {
-          From: {
-            Email: environment.mail_jet_sender,
-            Name: name,
-          },
-          To: [
-            {
-              Email: recipient,
-              Name: recipient,
-            },
-          ],
-          Subject: subject,
-          HTMLPart: htmlPart,
-        },
-      ],
+      Messages: [msgBody],
     })
     .then((resolved) => {
       console.log({success: true, email: recipient});
