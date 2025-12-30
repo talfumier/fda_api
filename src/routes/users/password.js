@@ -95,6 +95,8 @@ router.post(
       name,
       title,
       html,
+      false, //Cc
+      null, //attachments
       res, //Success response sent by sendBasicEmail function
       `Email with reset instructions is on its way to '${user.email}'.`
     );

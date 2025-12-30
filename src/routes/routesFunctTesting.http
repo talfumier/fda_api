@@ -1,4 +1,4 @@
-@user_token=no-token-required
+@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJlbWFpbCI6ImhlbnJpLnRhbGZ1bWllckB3YW5hZG9vLmZyIiwiaWRSb2xlIjo3LCJpZFN0YXR1cyI6MiwibGFuZyI6ImVuIiwiaWF0IjoxNzY3MDgyMTA1LCJleHAiOjE3NjcxMTgxMDV9.gQ3mmp4YEH8M0JseNDztaSOMUCn8eAcca4PtJLfgXvo
 
 
 ### REST CLIENT EXTENSION TEST
@@ -178,6 +178,16 @@ X-App-Origin: dev
 {  
   "idStatus":2,
   "idUser":52
+}
+###
+POST http://localhost:3000/api/entities/StatusTracking
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+
+{  
+  "idStatus":10,
+  "idBooking":183
 }
 ###
 POST http://localhost:3000/api/entities/UserExpoRole
