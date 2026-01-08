@@ -3,6 +3,7 @@ import {QueryTypes} from "sequelize";
 import {authHandler} from "../../middleware/authHandler.js";
 import {routeHandler} from "../../middleware/routeHandler.js";
 import {Success} from "../../mariadb/models/validation/success.js";
+import {processSqlQueryData} from "./../../utilityFunctions.js";
 
 const router = express.Router();
 
@@ -14,18 +15,8 @@ router.get(
     let dataArr = await req.db.query(`CALL ${stored_proc}()`, {
       type: QueryTypes.SELECT,
     });
-    dataArr.map((data, idx) => {
-      if (idx !== dataArr.length - 1)
-        return Object.keys(data).map((key) => {
-          try {
-            data[key].pwd = undefined;
-          } catch (error) {}
-        });
-    });
-    dataArr = dataArr.map((data) => {
-      return Object.values(data);
-    });
-    res.send(new Success("Data retrieval successful", dataArr.slice(0, -1))); //filter out meta data from SQL
+    dataArr = processSqlQueryData(dataArr);
+    res.send(new Success("Data retrieval successful", dataArr)); //filter out meta data from SQL
   })
 );
 router.get(
@@ -47,18 +38,8 @@ router.get(
         replacements: sqlParams ? sqlParams : null,
       }
     );
-    dataArr.map((data, idx) => {
-      if (idx !== dataArr.length - 1)
-        return Object.keys(data).map((key) => {
-          try {
-            data[key].pwd = undefined;
-          } catch (error) {}
-        });
-    });
-    dataArr = dataArr.map((data) => {
-      return Object.values(data);
-    });
-    res.send(new Success("Data retrieval successful", dataArr.slice(0, -1))); //filter out meta data from SQL
+    dataArr = processSqlQueryData(dataArr);
+    res.send(new Success("Data retrieval successful", dataArr)); //filter out meta data from SQL
   })
 );
 router.get(
@@ -68,18 +49,8 @@ router.get(
     let dataArr = await req.db.query(`CALL ${stored_proc}()`, {
       type: QueryTypes.SELECT,
     });
-    dataArr.map((data, idx) => {
-      if (idx !== dataArr.length - 1)
-        return Object.keys(data).map((key) => {
-          try {
-            data[key].pwd = undefined;
-          } catch (error) {}
-        });
-    });
-    dataArr = dataArr.map((data) => {
-      return Object.values(data);
-    });
-    res.send(new Success("Data retrieval successful", dataArr.slice(0, -1))); //filter out meta data from SQL
+    dataArr = processSqlQueryData(dataArr);
+    res.send(new Success("Data retrieval successful", dataArr)); //filter out meta data from SQL
   })
 );
 router.get(
@@ -100,18 +71,8 @@ router.get(
         replacements: sqlParams ? sqlParams : null,
       }
     );
-    dataArr.map((data, idx) => {
-      if (idx !== dataArr.length - 1)
-        return Object.keys(data).map((key) => {
-          try {
-            data[key].pwd = undefined;
-          } catch (error) {}
-        });
-    });
-    dataArr = dataArr.map((data) => {
-      return Object.values(data);
-    });
-    res.send(new Success("Data retrieval successful", dataArr.slice(0, -1))); //filter out meta data from SQL
+    dataArr = processSqlQueryData(dataArr);
+    res.send(new Success("Data retrieval successful", dataArr)); //filter out meta data from SQL
   })
 );
 export default router;
