@@ -1,4 +1,4 @@
-@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJlbWFpbCI6ImhlbnJpLnRhbGZ1bWllckB3YW5hZG9vLmZyIiwiaWRSb2xlIjo3LCJpZFN0YXR1cyI6MiwibGFuZyI6ImVuIiwiaWF0IjoxNzY3MDgyMTA1LCJleHAiOjE3NjcxMTgxMDV9.gQ3mmp4YEH8M0JseNDztaSOMUCn8eAcca4PtJLfgXvo
+@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJlbWFpbCI6ImhlbnJpLnRhbGZ1bWllckB3YW5hZG9vLmZyIiwiaWRSb2xlIjo3LCJpZFN0YXR1cyI6MiwibGFuZyI6ImVuIiwiaWF0IjoxNzY3ODU5ODk4LCJleHAiOjE3Njc4OTU4OTh9.0vMqKWLfexbpMEFbxV4VO2tol_u1Q7Uv869mIykGbAk
 
 
 ### REST CLIENT EXTENSION TEST
@@ -311,3 +311,8 @@ X-App-Origin: dev
 {  
   "publicId":"591046306.pptx"
 }
+### 82;[0,0,27];0;1   82;[8,10,27];1;1
+GET http://localhost:3000/api/files/cloudinary-download-zip/export_catalogue/:idExpo,:idStatus,:showRoom,:screen/82;[8,10,27];1;1
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev

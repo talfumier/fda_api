@@ -8,6 +8,21 @@ import config from "./config/config.json" with {type: "json"};
 import {environment} from "./config/environment.js";
 import modelRoles from "./routes/entities/modelRoles.json" with {type: "json"};
 
+export function processSqlQueryData(dataArr){
+  dataArr.map((data, idx) => {
+      if (idx !== dataArr.length - 1)
+        return Object.keys(data).map((key) => {
+          try {
+            data[key].pwd = undefined;
+          } catch (error) {}
+        });
+    });
+  dataArr = dataArr
+    .map((data) => {
+      return Object.values(data);
+    }).slice(0, -1);
+  return dataArr;
+}
 export function emailRedirect(cs,email,x_app_origin,role=null) { 
   switch(cs){
     case 'user':
