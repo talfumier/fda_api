@@ -100,11 +100,21 @@ router.post(
         new BadRequest(`${modelName} id:'${id}' does already exist !`) //example: tbooking master=[idExpo, idUser] >>> ensure that a given idUser cannot have several bookings for the idExpo
       );
     }
-    data = await model.create(req.body);
+    try {
+      data = await model.create(req.body);
+    } catch (error) {
+      console.error("error at entities.js line 104:", error);
+    }
     if (["Expo", "Booking", "BookingOeuvre", "Faq"].includes(modelName)) {
       //Create corresponding status in tstatus_tracking for the newly created objects
       const {StatusTracking} = getModels(req.db);
-      await StatusTracking.model.create(getStatusTrackingBody(data, modelName));
+      try {
+        await StatusTracking.model.create(
+          getStatusTrackingBody(data, modelName)
+        );
+      } catch (error) {
+        console.error("error at entities.js line 112:", data, modelName, error);
+      }
     }
     if (modelName === "StatusTracking") {
       //user status change
