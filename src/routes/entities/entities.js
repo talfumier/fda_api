@@ -103,7 +103,10 @@ router.post(
     try {
       data = await model.create(req.body);
     } catch (error) {
-      console.error("error at entities.js line 104:", error);
+      console.error(
+        `error at entities.js line 104 (idUser:${req.user.idUser}):`,
+        error
+      );
     }
     if (["Expo", "Booking", "BookingOeuvre", "Faq"].includes(modelName)) {
       //Create corresponding status in tstatus_tracking for the newly created objects
