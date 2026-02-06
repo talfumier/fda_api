@@ -17,7 +17,7 @@ router.get(
     });
     dataArr = processSqlQueryData(dataArr);
     res.send(new Success("Data retrieval successful", dataArr)); //filter out meta data from SQL
-  })
+  }),
 );
 router.get(
   "/member/:stored_proc/:params/:values",
@@ -36,11 +36,11 @@ router.get(
       {
         type: QueryTypes.SELECT,
         replacements: sqlParams ? sqlParams : null,
-      }
+      },
     );
     dataArr = processSqlQueryData(dataArr);
     res.send(new Success("Data retrieval successful", dataArr)); //filter out meta data from SQL
-  })
+  }),
 );
 router.get(
   "/public/noparams/:stored_proc",
@@ -51,7 +51,7 @@ router.get(
     });
     dataArr = processSqlQueryData(dataArr);
     res.send(new Success("Data retrieval successful", dataArr)); //filter out meta data from SQL
-  })
+  }),
 );
 router.get(
   "/public/:stored_proc/:params/:values",
@@ -64,15 +64,19 @@ router.get(
         sqlParams[keys[idx]] = val;
       });
     }
-    let dataArr = await req.db.query(
-      `CALL ${stored_proc}(${params ? params : ""})`,
-      {
-        type: QueryTypes.SELECT,
-        replacements: sqlParams ? sqlParams : null,
-      }
-    );
-    dataArr = processSqlQueryData(dataArr);
-    res.send(new Success("Data retrieval successful", dataArr)); //filter out meta data from SQL
-  })
+    try {
+      let dataArr = await req.db.query(
+        `CALL ${stored_proc}(${params ? params : ""})`,
+        {
+          type: QueryTypes.SELECT,
+          replacements: sqlParams ? sqlParams : null,
+        },
+      );
+      dataArr = processSqlQueryData(dataArr);
+      res.send(new Success("Data retrieval successful", dataArr)); //filter out meta data from SQL
+    } catch (error) {
+      console.log(new Date(), error, stored_proc, params, sqlParams); //troubleshooting error raised in pm2 log
+    }
+  }),
 );
 export default router;
