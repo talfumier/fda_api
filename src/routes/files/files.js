@@ -9,6 +9,7 @@ import {BadRequest, NotFound} from "../../mariadb/models/validation/errors.js";
 import {Success} from "../../mariadb/models/validation/success.js";
 import {environment} from "../../config/environment.js";
 import {processSqlQueryData} from "./../../utilityFunctions.js";
+import {Parser} from "json2csv";
 
 const router = express.Router();
 
@@ -39,10 +40,10 @@ router.post(
       new Success(
         `File ${req.body.publicId} successfully uploaded to Cloudinary.`,
         result.secure_url,
-        true
-      )
+        true,
+      ),
     );
-  })
+  }),
 );
 router.post(
   "/cloudinary-delete",
@@ -61,14 +62,14 @@ router.post(
       `${environment.cloudinary_folder}${
         req.headers["x-app-origin"] === "prod" ? "/prod" : ""
       }/${publicId}`,
-      option
+      option,
     );
     if (result.result === "ok")
       res.send(
-        new Success(`File ${publicId} deleted from cloudinary.`, null, true)
+        new Success(`File ${publicId} deleted from cloudinary.`, null, true),
       );
     else res.send(new NotFound(`File ${publicId} not found on cloudinary.`));
-  })
+  }),
 );
 function groupDataByArtist(rows) {
   const artistsMap = new Map();
@@ -146,7 +147,7 @@ router.get(
     res.setHeader("Content-Type", "application/zip");
     res.setHeader(
       "Content-Disposition",
-      "attachment; filename=artists_export.zip"
+      "attachment; filename=artist_data_export.zip",
     );
     // Pipe archive to response
     archive.pipe(res);
@@ -158,7 +159,7 @@ router.get(
     // Process each artist
     for (const artist of artists) {
       const artistFolder = `${sanitizeFilename(
-        artist.lastName
+        artist.lastName,
       )}_${sanitizeFilename(artist.firstName)}`;
       // Add artist info as JSON
       const artistData = {
@@ -184,7 +185,7 @@ router.get(
         } catch (error) {
           console.error(
             `Failed to download profile picture for ${artist.firstName} ${artist.lastName}:`,
-            error.message
+            error.message,
           );
         }
       }
@@ -219,7 +220,7 @@ router.get(
             });
             const jpegUrl = convertCloudinaryToJpeg(
               artwork.oeuvre_url,
-              quality
+              quality,
             );
             const imageStream = await downloadFromCloudinary(jpegUrl);
             archive.append(imageStream, {
@@ -228,7 +229,7 @@ router.get(
           } catch (error) {
             console.error(
               `Failed to download artwork for ${artist.firstName} ${artist.lastName}:`,
-              error.message
+              error.message,
             );
           }
         }
@@ -236,7 +237,7 @@ router.get(
     }
     // Finalize the archive
     await archive.finalize();
-  })
+  }),
 );
 function convertCloudinaryToJpeg(url, quality = 90) {
   if (!url || !url.includes("cloudinary.com")) {
@@ -267,8 +268,8 @@ function downloadFromCloudinary(url) {
         if (response.statusCode !== 200) {
           reject(
             new Error(
-              `Failed to download: ${url}, status: ${response.statusCode}`
-            )
+              `Failed to download: ${url}, status: ${response.statusCode}`,
+            ),
           );
           return;
         }
@@ -283,4 +284,29 @@ function sanitizeFilename(filename) {
   if (!filename) return "unknown";
   return filename.replace(/[^a-z0-9_\-]/gi, "_").substring(0, 100);
 }
+
+router.get(
+  "/download-csv/:stored_proc/:filename",
+  authHandler, //user must be authenticated except for public routes refer to authHandler.js
+  routeHandler(async (req, res) => {
+    const {stored_proc, filename} = req.params;
+    let dataArr = await req.db.query(`CALL ${stored_proc}()`, {
+      type: QueryTypes.SELECT,
+    });
+    dataArr = processSqlQueryData(dataArr, false);
+    if (!dataArr || dataArr.length === 0) {
+      return res.status(204).send(); // no content
+    }
+    if (Array.isArray(dataArr) && Array.isArray(dataArr[0])) {
+      dataArr = dataArr[0];
+    }
+    const csv = new Parser().parse(dataArr);
+    res.setHeader("Content-Type", "text/csv; charset=utf-8");
+    res.setHeader(
+      "Content-Disposition",
+      `attachment; filename="${filename}.csv"`,
+    );
+    res.send("\uFEFF" + csv);
+  }),
+);
 export default router;
