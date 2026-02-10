@@ -8,50 +8,54 @@ import config from "./config/config.json" with {type: "json"};
 import {environment} from "./config/environment.js";
 import modelRoles from "./routes/entities/modelRoles.json" with {type: "json"};
 
-export function processSqlQueryData(dataArr){
+export function processSqlQueryData(dataArr, pwd = true) {
   dataArr.map((data, idx) => {
-      if (idx !== dataArr.length - 1)
-        return Object.keys(data).map((key) => {
-          try {
-            data[key].pwd = undefined;
-          } catch (error) {}
-        });
-    });
+    if (idx !== dataArr.length - 1)
+      return Object.keys(data).map((key) => {
+        try {
+          if (pwd) data[key].pwd = undefined;
+        } catch (error) {}
+      });
+  });
   dataArr = dataArr
     .map((data) => {
       return Object.values(data);
-    }).slice(0, -1);
+    })
+    .slice(0, -1);
   return dataArr;
 }
-export function emailRedirect(cs,email,x_app_origin,role=null) { 
-  switch(cs){
-    case 'user':
-    //organisation users must have a valid email address
-    //during test, when a mail is to be sent to a user not part of the organisation (it may be a fake email address),
-    //it needs to be redirected to the connected organisation user running the tests or  
-    //if the route doesn't require authentication to the generic fda gmail address
-      if(role && role >=5) return email;  //role is available when organisation user is actually authenticated
-      if(email.toLowerCase().includes('merville31.fr') || email.toLowerCase().includes('bonnet')) return email
-      switch(x_app_origin){
-        case 'dev':
-          return config.email_admin
-        case 'test':
-          return config.email_org.test
-        default:  //i.e production
-          return email
+export function emailRedirect(cs, email, x_app_origin, role = null) {
+  switch (cs) {
+    case "user":
+      //organisation users must have a valid email address
+      //during test, when a mail is to be sent to a user not part of the organisation (it may be a fake email address),
+      //it needs to be redirected to the connected organisation user running the tests or
+      //if the route doesn't require authentication to the generic fda gmail address
+      if (role && role >= 5) return email; //role is available when organisation user is actually authenticated
+      if (
+        email.toLowerCase().includes("merville31.fr") ||
+        email.toLowerCase().includes("bonnet")
+      )
+        return email;
+      switch (x_app_origin) {
+        case "dev":
+          return config.email_admin;
+        case "test":
+          return config.email_org.test;
+        default: //i.e production
+          return email;
       }
-      break
-    case 'org':
-      if(role >=6) return config.email_admin
-      switch(x_app_origin){
-        case 'dev':
-          return config.email_admin
-        case 'test':
-          return config.email_org.test
-        case 'prod':
-          return config.email_org.prod
+      break;
+    case "org":
+      if (role >= 6) return config.email_admin;
+      switch (x_app_origin) {
+        case "dev":
+          return config.email_admin;
+        case "test":
+          return config.email_org.test;
+        case "prod":
+          return config.email_org.prod;
       }
-
   }
 }
 export function userIsAdmin(req) {
@@ -62,27 +66,33 @@ export function userIsAdmin(req) {
     ];
   return [true, null];
 }
-export function userIsOrg(req,modelName) {
+export function userIsOrg(req, modelName) {
   if (req.user.idRole >= 5) return [true, null];
   return [
     false,
     new Unauthorized(
-      `Access to data model ${modelName} denied >>> your account must have 'organisation' or 'admin' privileges !`
+      `Access to data model ${modelName} denied >>> your account must have 'organisation' or 'admin' privileges !`,
     ),
   ];
 }
 export function userIsAuthorized(userIdRole, modelName) {
-  if (modelRoles[modelName].idRole.indexOf(userIdRole)!==-1) return [true, null];
+  if (modelRoles[modelName].idRole.indexOf(userIdRole) !== -1)
+    return [true, null];
   return [
     false,
     new Unauthorized(
-      `Access to data model ${modelName} denied >>> your account does not hold required privileges !`
+      `Access to data model ${modelName} denied >>> your account does not hold required privileges !`,
     ),
   ];
 }
 export function userIsOwner(req, email, modelName) {
   if (email !== req.user.email)
-    return [false, new Unauthorized(`Access to data model ${modelName} denied >>> account 'owner' privileges required  !`)];
+    return [
+      false,
+      new Unauthorized(
+        `Access to data model ${modelName} denied >>> account 'owner' privileges required  !`,
+      ),
+    ];
   return [true, null];
 }
 export const JoiObjectIdSchema = Joi.string()
@@ -164,11 +174,11 @@ export async function setTimestampFields(conn, dbName) {
     try {
       await conn.query(sql);
       console.log(
-        `✅ table ${tbl.table_name} in mariaDB ${dbName} update operation successful !`
+        `✅ table ${tbl.table_name} in mariaDB ${dbName} update operation successful !`,
       );
     } catch (error) {
       console.log(
-        `❌ table ${tbl.table_name} in mariaDB ${dbName} update operation failed : ${error} !`
+        `❌ table ${tbl.table_name} in mariaDB ${dbName} update operation failed : ${error} !`,
       );
     }
   }
