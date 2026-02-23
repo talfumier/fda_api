@@ -13,7 +13,7 @@ function makeValidator(schema, data, cs = "post", tblName = null) {
       let patchSchema = schema.fork(keys.required, (field) => field.required());
       if (keys.optional.length >= 1)
         patchSchema = patchSchema.fork(keys.optional, (field) =>
-          field.optional()
+          field.optional(),
         );
       return patchSchema.validate(data);
     default:
@@ -68,7 +68,10 @@ export function validateExpo(data, cs = "post") {
     desc_fr: Joi.string().allow(null, ""),
     openingDateTime: Joi.date().allow(null),
     startDate: Joi.date().allow(null),
+    openingTimes_fr: Joi.string().allow(null, ""),
+    openingTimes_en: Joi.string().allow(null, ""),
     endDate: Joi.date().allow(null),
+    building: Joi.string().allow(null, ""),
     address: Joi.string().allow(null, ""),
     zipCode: Joi.string().allow(null, ""),
     city: Joi.string().allow(null, ""),
@@ -76,6 +79,7 @@ export function validateExpo(data, cs = "post") {
     gpsLat: Joi.string().allow(null, ""),
     gpsLong: Joi.string().allow(null, ""),
     closureDateTime: Joi.date().allow(null),
+    responseDate: Joi.date().allow(null),
     depotDateTime_open: Joi.date().allow(null),
     depotDateTime_close: Joi.date().allow(null),
     collectionDateTime_open: Joi.date().allow(null),
