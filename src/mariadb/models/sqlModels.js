@@ -26,7 +26,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         },
         orgExcluded: DataTypes.INTEGER, //1 >>> only artist, guest and jury roles are visible at account creation, 0 >>> all roles visible
       },
-      {tableName: "tadmin", timestamps: true}
+      {tableName: "tadmin", timestamps: true},
     ),
   };
   models.Booking = {
@@ -47,7 +47,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         price: {type: DataTypes.INTEGER, defaultValue: 0},
         terms: {type: DataTypes.INTEGER, defaultValue: 0}, //terms & conditions 0 >>> not accepted, 1 >>> accepted
       },
-      {tableName: "tbooking", timestamps: true}
+      {tableName: "tbooking", timestamps: true},
     ),
   };
   models.BookingOeuvre = {
@@ -67,7 +67,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         showRoom: DataTypes.BOOLEAN,
         screen: DataTypes.BOOLEAN,
       },
-      {tableName: "tbooking_oeuvre", timestamps: true}
+      {tableName: "tbooking_oeuvre", timestamps: true},
     ),
   };
   models.Doc = {
@@ -87,7 +87,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         desc_en: DataTypes.STRING,
         idFile: {type: DataTypes.STRING, defaultValue: null},
       },
-      {tableName: "tdoc", timestamps: true}
+      {tableName: "tdoc", timestamps: true},
     ),
   };
   models.Type = {
@@ -106,7 +106,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         type_en: DataTypes.STRING,
         order: DataTypes.INTEGER,
       },
-      {tableName: "ttype", timestamps: true}
+      {tableName: "ttype", timestamps: true},
     ),
   };
   models.File = {
@@ -130,7 +130,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         timestamps: true,
         createdAt: true,
         updatedAt: false,
-      }
+      },
     ),
   };
   models.Domain = {
@@ -148,7 +148,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         domain_en: DataTypes.STRING,
         order: DataTypes.INTEGER,
       },
-      {tableName: "tdomain", timestamps: true}
+      {tableName: "tdomain", timestamps: true},
     ),
   };
   models.Expo = {
@@ -170,7 +170,10 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         desc_en: DataTypes.TEXT,
         openingDateTime: DataTypes.DATE,
         startDate: DataTypes.DATE,
+        openingTimes_fr: DataTypes.STRING, //opening times for days in range [startDate,endDate]
+        openingTimes_en: DataTypes.STRING,
         endDate: DataTypes.DATE,
+        building: DataTypes.STRING,
         address: DataTypes.STRING,
         zipCode: DataTypes.STRING,
         city: DataTypes.STRING,
@@ -178,6 +181,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         gpsLat: DataTypes.STRING,
         gpsLong: DataTypes.STRING,
         closureDateTime: DataTypes.DATE,
+        responseDate: DataTypes.DATE, //response to candidates
         depotDateTime_open: DataTypes.DATE,
         depotDateTime_close: DataTypes.DATE,
         collectionDateTime_open: DataTypes.DATE,
@@ -187,7 +191,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         priceShowRoom: {type: DataTypes.INTEGER, defaultValue: 0},
         priceScreen: {type: DataTypes.INTEGER, defaultValue: 0},
       },
-      {tableName: "texpo", timestamps: true}
+      {tableName: "texpo", timestamps: true},
     ),
   };
   models.ExpoDoc = {
@@ -210,7 +214,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         timestamps: true,
         createdAt: true,
         updatedAt: false,
-      }
+      },
     ),
   };
   models.ExpoImage = {
@@ -232,7 +236,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         timestamps: true,
         createdAt: true,
         updatedAt: false,
-      }
+      },
     ),
   };
   models.ExpoPartner = {
@@ -254,7 +258,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         timestamps: true,
         createdAt: true,
         updatedAt: false,
-      }
+      },
     ),
   };
   models.ExpoPrizeUser = {
@@ -278,7 +282,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         timestamps: true,
         createdAt: true,
         updatedAt: false,
-      }
+      },
     ),
   };
 
@@ -302,7 +306,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         answer_en: DataTypes.TEXT,
         idFile: DataTypes.STRING,
       },
-      {tableName: "tfaq", timestamps: true}
+      {tableName: "tfaq", timestamps: true},
     ),
   };
   models.Media = {
@@ -320,7 +324,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         media_en: DataTypes.STRING,
         order: DataTypes.INTEGER,
       },
-      {tableName: "tmedia", timestamps: true}
+      {tableName: "tmedia", timestamps: true},
     ),
   };
   models.Oeuvre = {
@@ -352,7 +356,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         weight: DataTypes.INTEGER,
         idFile: DataTypes.STRING,
       },
-      {tableName: "toeuvre", timestamps: true}
+      {tableName: "toeuvre", timestamps: true},
     ),
   };
   models.Partner = {
@@ -385,7 +389,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         emailRep: DataTypes.STRING,
         phoneRep: DataTypes.STRING,
       },
-      {tableName: "tpartner", timestamps: true}
+      {tableName: "tpartner", timestamps: true},
     ),
   };
   models.Prize = {
@@ -403,7 +407,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         prize_en: DataTypes.STRING,
         order: DataTypes.INTEGER,
       },
-      {tableName: "tprize", timestamps: true}
+      {tableName: "tprize", timestamps: true},
     ),
   };
   models.Role = {
@@ -422,7 +426,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         account: DataTypes.BOOLEAN,
         roleExpo: DataTypes.BOOLEAN,
       },
-      {tableName: "trole", timestamps: true}
+      {tableName: "trole", timestamps: true},
     ),
   };
   models.Status = {
@@ -440,7 +444,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         title_fr: DataTypes.STRING,
         title_en: DataTypes.STRING,
       },
-      {tableName: "tstatus", timestamps: true}
+      {tableName: "tstatus", timestamps: true},
     ),
   };
   models.Tech = {
@@ -458,7 +462,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         tech_en: DataTypes.STRING,
         order: DataTypes.INTEGER,
       },
-      {tableName: "ttechnique", timestamps: true}
+      {tableName: "ttechnique", timestamps: true},
     ),
   };
   models.StatusTracking = {
@@ -484,7 +488,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         timestamps: true,
         createdAt: true,
         updatedAt: false,
-      }
+      },
     ),
   };
   models.User = {
@@ -528,7 +532,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
       {
         tableName: "tuser",
         timestamps: true,
-      }
+      },
     ),
   };
   models.UserConn = {
@@ -551,7 +555,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         timestamps: true,
         createdAt: "in",
         updatedAt: false,
-      }
+      },
     ),
   };
   models.UserExpoRole = {
@@ -574,7 +578,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         timestamps: true,
         createdAt: true,
         updatedAt: false,
-      }
+      },
     ),
   };
   // StatusTracking relationships

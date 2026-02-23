@@ -26,13 +26,14 @@ const setEnv = () => {
     cloudinary_api_key: '${process.env.CLOUDINARY_APIKEY}',
     cloudinary_api_secret: '${process.env.CLOUDINARY_APISECRET}',    
     api_port:'${process.env.API_PORT}',
+    prod_in_dev:false,
     production: true,
   };`;
   writeFile(targetPath, configFile, (err) => {
     if (err) console.error(err);
     else
       console.log(
-        `API environment.js file generated correctly at ${targetPath} \n`
+        `API environment.js file generated correctly at ${targetPath} \n`,
       );
   });
 };

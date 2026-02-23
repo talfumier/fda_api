@@ -14,7 +14,13 @@ const dbConnections = environment.production
       await createLocalConnection(environment.sql_test_db_name),
       await createLocalConnection(environment.sql_prod_db_name),
     ]
-  : [await createSshConnection(environment.sql_test_db_name)];
+  : [
+      await createSshConnection(
+        environment.prod_in_dev
+          ? environment.sql_prod_db_name //production data in dev
+          : environment.sql_test_db_name,
+      ),
+    ];
 n = dbConnections.length;
 if (n >= 1)
   dbConnections.map(async (conn) => {
@@ -44,6 +50,6 @@ app.listen(port, () => {
   return console.log(
     `[API]: ${
       environment.production ? "production" : "development"
-    } server is listening on port ${port} 🚀`
+    } server is listening on port ${port} 🚀`,
   );
 });
