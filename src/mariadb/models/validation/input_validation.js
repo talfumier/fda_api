@@ -37,6 +37,7 @@ export function validateBookingOeuvre(data, cs = "post") {
     idOeuvre: Joi.number().integer(),
     showRoom: Joi.number().integer().valid(0, 1).allow(null),
     screen: Joi.number().integer().valid(0, 1).allow(null),
+    catalogue: Joi.number().integer().valid(0, 1).allow(null),
   });
   return makeValidator(schema, data, cs);
 }
