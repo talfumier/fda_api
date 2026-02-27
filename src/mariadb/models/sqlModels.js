@@ -66,6 +66,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         selected: DataTypes.BOOLEAN,
         showRoom: DataTypes.BOOLEAN,
         screen: DataTypes.BOOLEAN,
+        catalogue: {type: DataTypes.BOOLEAN, defaultValue: false},
       },
       {tableName: "tbooking_oeuvre", timestamps: true},
     ),
