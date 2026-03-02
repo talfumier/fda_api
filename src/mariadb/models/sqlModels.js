@@ -100,7 +100,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         idType: {
           type: DataTypes.INTEGER,
           primaryKey: true,
-          autoIncrement: true,
+          autoIncrement: false,
         },
         entity: DataTypes.STRING, //entity >>> doc, faq
         type_fr: DataTypes.STRING,

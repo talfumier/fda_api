@@ -9,7 +9,7 @@ export async function createPDFFromTemplate(data) {
   const templatePath = join(
     __dirname,
     "template",
-    `template_single_${data[0].lang}.pdf`
+    `template_single_${data[0].lang}.pdf`,
   );
   const existingPdfBytes = await readFile(templatePath);
   const pdfDoc = await PDFDocument.load(existingPdfBytes);
@@ -58,7 +58,7 @@ export async function createPDFFromTemplate(data) {
       size: 10,
       font: fontBold,
       color: rgb(0, 0, 0),
-    }
+    },
   );
   firstPage.drawText(
     `${
@@ -70,16 +70,25 @@ export async function createPDFFromTemplate(data) {
       size: 10,
       font: fontBold,
       color: rgb(0, 0, 0),
-    }
+    },
   );
   // Draw table
-  await drawSelectionTable(
+  const {page: finalPage, finalY} = await drawSelectionTable(
     firstPage,
     pdfDoc,
     data,
     height - parseInt(data[0].lang === "en" ? 320 : 300),
     font,
-    fontBold
+    fontBold,
+  );
+  drawLabelWithSuper(
+    finalPage,
+    30,
+    finalY - 10,
+    font,
+    "",
+    "(1)",
+    `${data[0].lang === "en" ? "Proposed art work for the official exhibion catalogue." : "Oeuvre proposée pour le catalogue officiel de l'exposition."}`,
   );
   // Save the modified PDF
   const pdfBytes = await pdfDoc.save();
@@ -95,7 +104,7 @@ function getCloudinaryResizedUrl(url, width, height, crop = "fill") {
     // Add transformations: convert to JPG, resize, and crop
     return url.replace(
       "/upload/",
-      `/upload/f_jpg,c_${crop},w_${width},h_${height},g_auto,q_auto/`
+      `/upload/f_jpg,c_${crop},w_${width},h_${height},g_auto,q_auto/`,
     );
   }
   return url;
@@ -152,14 +161,29 @@ function drawBooleanIndicator(page, value, x, y) {
     });
   }
 }
-
+function drawLabelWithSuper(page, x, y, font, before, sup, after) {
+  const size = 9;
+  const supSize = 6.5;
+  const supRaise = 3; // tweak (2.5–4 usually)
+  // draw before
+  page.drawText(before, {x, y, size, font});
+  const beforeW = font.widthOfTextAtSize(before, size);
+  // draw superscript
+  page.drawText(sup, {
+    x: x + beforeW,
+    y: y + supRaise,
+    size: supSize,
+    font,
+  });
+  if (after) page.drawText(after, {x: x + beforeW + 10, y, size, font});
+}
 async function drawSelectionTable(
   page,
   pdfDoc,
   artworks,
   startY,
   font,
-  fontBold
+  fontBold,
 ) {
   const x = 30;
   let currentY = startY;
@@ -184,7 +208,7 @@ async function drawSelectionTable(
   const artworkHeaderText = artworks[0].lang === "en" ? "Art work" : "Oeuvre";
   const artworkHeaderWidth = fontBold.widthOfTextAtSize(
     artworkHeaderText,
-    headerFontSize
+    headerFontSize,
   );
   page.drawText(artworkHeaderText, {
     x: x + (columnWidths[0] - artworkHeaderWidth) / 2,
@@ -226,7 +250,7 @@ async function drawSelectionTable(
           artwork.url,
           imageSize,
           imageSize,
-          "fill"
+          "fill",
         );
         const response = await fetch(imgUrl);
         const imgBytes = await response.arrayBuffer();
@@ -246,17 +270,29 @@ async function drawSelectionTable(
       artwork[`title_${artwork.lang}`],
       titleWidth - 15,
       font,
-      9
+      9,
     );
     let textY = currentY - 20;
+    let i = 0;
     titleLines.slice(0, 3).forEach((line) => {
+      if (i === 0 && artwork.catalogue)
+        drawLabelWithSuper(
+          page,
+          cellX + imageWidth + 5,
+          textY,
+          font,
+          "",
+          "(1)",
+          "",
+        );
       page.drawText(line, {
-        x: cellX + imageWidth + 5,
+        x: cellX + imageWidth + 15,
         y: textY,
         size: 9,
         font,
       });
       textY -= 11;
+      i += 1;
     });
     cellX += columnWidths[0];
     // Calculate vertical center of the row
@@ -266,7 +302,7 @@ async function drawSelectionTable(
       page,
       artwork.showRoom,
       cellX + (columnWidths[1] - 8) / 2, // Horizontally center (8 is approx width of indicator)
-      rowCenterY
+      rowCenterY,
     );
     cellX += columnWidths[1];
     // Column 3: On screen (vertically and horizontally centered)
@@ -274,7 +310,7 @@ async function drawSelectionTable(
       page,
       artwork.screen,
       cellX + (columnWidths[2] - 8) / 2, // Horizontally center
-      rowCenterY
+      rowCenterY,
     );
     cellX += columnWidths[3];
     // Column 4: Depot (vertically and horizontally centered)
