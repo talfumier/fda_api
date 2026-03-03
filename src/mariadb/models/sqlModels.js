@@ -1,4 +1,5 @@
 import * as val from "./validation/input_validation.js";
+import {DataTypes} from "sequelize";
 
 let modelCache = new WeakMap();
 export function getModels(sequelize, id = null) {
@@ -573,6 +574,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         idUser: DataTypes.INTEGER,
         idExpo: DataTypes.INTEGER,
         idRole: DataTypes.INTEGER, //expo related roles
+        intro: DataTypes.STRING, //introductory text
       },
       {
         tableName: "tuser_expo_role",
