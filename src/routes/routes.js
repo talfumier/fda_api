@@ -9,6 +9,7 @@ import password from "./users/password.js";
 import entities from "./entities//entities.js";
 import sqlEntities from "./entities/sqlEntities.js";
 import files from "./files/files.js";
+import download from "../routes/entities/pdf/catalogue/download.js";
 import {invalidPathHandler} from "../middleware/invalidPathHandler.js";
 import {errorHandler} from "../middleware/errorHandler.js";
 
@@ -22,7 +23,7 @@ export function routes(app) {
         "https://festivaldesarts.merville31.fr",
       ],
       allowedHeaders: ["Content-Type", "X-Auth-Token", "X-App-Origin"],
-    })
+    }),
   );
 
   app.use(selectDb); // Middleware to select test or prod database per request based on x-app-origin header
@@ -39,6 +40,8 @@ export function routes(app) {
 
   app.use("/api/entities", entities);
   app.use("/api/sql-entities", sqlEntities);
+
+  app.use("/api/catalogue", download);
 
   app.use(invalidPathHandler); //invalid path handler middleware > eventually triggerered when none of the routes matches
 
