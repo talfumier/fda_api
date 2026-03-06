@@ -60,7 +60,7 @@ router.get(
     const sqlParams = {};
     if (params) {
       const keys = params.replaceAll(":", "").split(",");
-      values.split(",").map((val, idx) => {
+      values.split(";").map((val, idx) => {
         sqlParams[keys[idx]] = val;
       });
     }

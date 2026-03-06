@@ -1,4 +1,4 @@
-@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJlbWFpbCI6ImhlbnJpLnRhbGZ1bWllckB3YW5hZG9vLmZyIiwiaWRSb2xlIjo3LCJpZFN0YXR1cyI6MiwibGFuZyI6ImVuIiwiaWF0IjoxNzY3ODU5ODk4LCJleHAiOjE3Njc4OTU4OTh9.0vMqKWLfexbpMEFbxV4VO2tol_u1Q7Uv869mIykGbAk
+@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjEsImVtYWlsIjoiaGVucmkudGFsZnVtaWVyQHdhbmFkb28uZnIiLCJpZFJvbGUiOjcsImlkU3RhdHVzIjoyLCJsYW5nIjoiZW4iLCJpYXQiOjE3NzI2NDI2NDEsImV4cCI6MTc3MjY1MzQ0MX0.okVmstweTAQhT2YsADCNFKSJtmpiVZsoA1MoIdclZxY
 
 
 ### REST CLIENT EXTENSION TEST
@@ -315,4 +315,9 @@ X-App-Origin: dev
 GET http://localhost:3000/api/files/cloudinary-download-zip/export_catalogue/:idExpo,:idStatus,:showRoom,:screen/82;[8,10,27];1;1
 x-auth-token:{{user_token}}
 content-type: application/json
+X-App-Origin: dev
+
+### PDF CATALOGUE
+GET http://localhost:3000/api/catalogue
+content-type: application/pdf
 X-App-Origin: dev
