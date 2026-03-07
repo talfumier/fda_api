@@ -28,7 +28,7 @@ router.get(
     const {model} = getModels(req.db, modelName);
     const data = await model.findAll({attributes: {exclude: ["pwd"]}});
     res.send(new Success("Data retrieval successful", data));
-  })
+  }),
 );
 router.get(
   "/:modelName/:id",
@@ -42,7 +42,7 @@ router.get(
       return res.send(new BadRequest(`${modelName} id:${id} not found !`));
     if (modelName === "User") data.pwd = undefined;
     res.send(new Success("Data retrieval successful", data));
-  })
+  }),
 );
 function getStatusTrackingBody(data, modelName) {
   switch (modelName) {
@@ -65,7 +65,7 @@ router.post(
     if (!cond[0]) return res.send(cond[1]);
     if (
       ["User", "Expo", "Partner", "Doc", "ExpoDoc", "UserExpoRole"].includes(
-        modelName
+        modelName,
       )
     ) {
       //a user is created through the register route, only organisation can create it from this route
@@ -97,7 +97,7 @@ router.post(
     if (data && modelName !== "StatusTracking") {
       id = data[`id${modelName}`];
       return res.send(
-        new BadRequest(`${modelName} id:'${id}' does already exist !`) //example: tbooking master=[idExpo, idUser] >>> ensure that a given idUser cannot have several bookings for the idExpo
+        new BadRequest(`${modelName} id:'${id}' does already exist !`), //example: tbooking master=[idExpo, idUser] >>> ensure that a given idUser cannot have several bookings for the idExpo
       );
     }
     try {
@@ -105,7 +105,7 @@ router.post(
     } catch (error) {
       console.error(
         `error at entities.js line 104 (idUser:${req.user.idUser}):`,
-        error
+        error,
       );
     }
     if (["Expo", "Booking", "BookingOeuvre", "Faq"].includes(modelName)) {
@@ -113,7 +113,7 @@ router.post(
       const {StatusTracking} = getModels(req.db);
       try {
         await StatusTracking.model.create(
-          getStatusTrackingBody(data, modelName)
+          getStatusTrackingBody(data, modelName),
         );
       } catch (error) {
         console.error("error at entities.js line 112:", data, modelName, error);
@@ -161,14 +161,14 @@ router.post(
             break;
           case 9: //rejected
             title = "votre inscription a été refusée";
-            text = `Le comité de sélection a le regret de vous informer que votre inscription réf:${dataArr[0].idBooking} a été refusée par le comité de sélection.`;
+            text = `Le comité de sélection a le regret de vous informer que votre inscription réf:${bookingUser.idBooking} a été refusée par le comité de sélection.`;
             break;
           case 10: //accepted
             const dataArr = await req.db.query(
               "CALL booking_status_change(:bookingID)",
               {
                 replacements: {bookingID: req.body.idBooking},
-              }
+              },
             );
             const {outputPath, fileName} = await createPDFFromTemplate(dataArr);
             const fileBuffer = await readFile(outputPath);
@@ -206,7 +206,7 @@ router.post(
           await textTranslate(text, recipientLang, "fr"),
           req.headers["x-app-origin"] !== "dev" && //Cc to sender
             Object.keys(req.body).includes("idBooking"),
-          attachments
+          attachments,
         );
         if (attachments) await unlink(attachments[0].outputPath);
       }
@@ -214,9 +214,9 @@ router.post(
     if (modelName === "User") data.pwd = undefined;
     id = data[`id${modelName}`];
     res.send(
-      new Success(`${modelName} id:${id} successfully created !`, data, true)
+      new Success(`${modelName} id:${id} successfully created !`, data, true),
     );
-  })
+  }),
 );
 router.patch(
   "/:modelName/:id",
@@ -241,9 +241,9 @@ router.patch(
     await data.update(req.body);
     if (modelName === "User") data.pwd = undefined;
     res.send(
-      new Success(`${modelName} id:${id} successfully updated !`, data, true)
+      new Success(`${modelName} id:${id} successfully updated !`, data, true),
     );
-  })
+  }),
 );
 router.delete(
   "/:modelName/:id",
@@ -266,8 +266,8 @@ router.delete(
       if (!cond)
         return res.send(
           new Unauthorized(
-            `Access to ${modelName} id:'${id}' for deletion denied >>> your account does not hold required privileges !`
-          )
+            `Access to ${modelName} id:'${id}' for deletion denied >>> your account does not hold required privileges !`,
+          ),
         );
     }
     try {
@@ -277,19 +277,19 @@ router.delete(
         new Success(
           `${modelName} id:'${id}' and associated records (if any) successfully deleted !`,
           null,
-          true
-        )
+          true,
+        ),
       );
     } catch (error) {
       //related records prevent entity deletion
       if (error.original.errno === 1451)
         return res.send(
           new Conflict(
-            `${modelName} id:'${id}' cannot be deleted due to child records in linked tables !`
-          )
+            `${modelName} id:'${id}' cannot be deleted due to child records in linked tables !`,
+          ),
         );
       else throw error;
     }
-  })
+  }),
 );
 export default router;
