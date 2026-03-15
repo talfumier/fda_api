@@ -484,6 +484,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         idBookingOeuvre: {type: DataTypes.INTEGER, allowNull: true},
         idBooking: {type: DataTypes.INTEGER, allowNull: true},
         idFaq: {type: DataTypes.INTEGER, allowNull: true},
+        createdAt: {type: DataTypes.DATE(3)},
       },
       {
         tableName: "tstatus_tracking",
