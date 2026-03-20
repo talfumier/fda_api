@@ -286,13 +286,22 @@ function sanitizeFilename(filename) {
 }
 
 router.get(
-  "/download-csv/:stored_proc/:filename",
+  "/download-csv/:stored_proc/:idExpo/:filename",
   authHandler, //user must be authenticated except for public routes refer to authHandler.js
   routeHandler(async (req, res) => {
-    const {stored_proc, filename} = req.params;
-    let dataArr = await req.db.query(`CALL ${stored_proc}()`, {
-      type: QueryTypes.SELECT,
-    });
+    const {stored_proc, idExpo, filename} = req.params;
+    let dataArr = [];
+    if (idExpo === "-1")
+      //all idExpo
+      dataArr = await req.db.query(`CALL ${stored_proc}()`, {
+        type: QueryTypes.SELECT,
+      });
+    else
+      //given idExpo
+      dataArr = await req.db.query(`CALL ${stored_proc}(:idExpo)`, {
+        type: QueryTypes.SELECT,
+        replacements: {idExpo},
+      });
     dataArr = processSqlQueryData(dataArr, false);
     if (!dataArr || dataArr.length === 0) {
       return res.status(204).send(); // no content
@@ -302,10 +311,7 @@ router.get(
     }
     const csv = new Parser().parse(dataArr);
     res.setHeader("Content-Type", "text/csv; charset=utf-8");
-    res.setHeader(
-      "Content-Disposition",
-      `attachment; filename="${filename}.csv"`,
-    );
+    res.setHeader("Content-Disposition", `attachment; filename="${filename}"`);
     res.send("\uFEFF" + csv);
   }),
 );
