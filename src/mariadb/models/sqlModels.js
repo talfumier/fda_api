@@ -232,6 +232,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         },
         idExpo: DataTypes.INTEGER,
         idFile: DataTypes.STRING,
+        dest: {type: DataTypes.STRING, defaultValue: "home"}, //expo pictures destination > home page, expo awards tab
       },
       {
         tableName: "texpo_image",
