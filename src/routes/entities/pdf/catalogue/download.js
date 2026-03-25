@@ -11,11 +11,14 @@ router.post(
   routeHandler(async (req, res) => {
     let browser;
     try {
-      const url = `${req.body.source}/public/catalogue_print?params=${req.body.params}&paramsValues=${req.body.paramsValues}`;
+      const url = `${req.body.source}/member/catalogue_print?params=${req.body.params}&paramsValues=${req.body.paramsValues}`;
 
       browser = await chromium.launch();
-      const page = await browser.newPage();
 
+      const page = await browser.newPage();
+      page.on("console", (msg) => {
+        console.log("Chromium headless log:", msg.text());
+      });
       page.on("requestfailed", (req) => {
         const u = req.url();
         if (u.includes("cloudinary") || req.resourceType() === "image") {
@@ -27,8 +30,12 @@ router.post(
           );
         }
       });
+      await page.addInitScript((token) => {
+        window.__AUTH__ = token;
+      }, req.token);
 
       const resp = await page.goto(url, {waitUntil: "domcontentloaded"});
+
       console.log("Front status:", resp?.status(), "URL:", page.url());
       // Force lazy images to load
       await page.evaluate(() => window.scrollTo(0, document.body.scrollHeight));
@@ -89,7 +96,7 @@ router.post(
       console.error(e);
       res
         .status(500)
-        .send("Error in API downlaod.js > catalague PDF generation");
+        .send("Error in API download.js > catalague PDF generation");
     } finally {
       if (browser) await browser.close();
     }

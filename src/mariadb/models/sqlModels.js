@@ -170,8 +170,12 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         title_fr: DataTypes.STRING,
         desc_fr: DataTypes.TEXT,
         desc_en: DataTypes.TEXT,
+        text_fr: DataTypes.TEXT,
+        text_en: DataTypes.TEXT,
         desc_after_fr: DataTypes.TEXT, //text field after expo has closed
         desc_after_en: DataTypes.TEXT,
+        text_after_fr: DataTypes.TEXT, //text field after expo has closed
+        text_after_en: DataTypes.TEXT,
         openingDateTime: DataTypes.DATE,
         startDate: DataTypes.DATE,
         openingTimes_fr: DataTypes.STRING, //opening times for days in range [startDate,endDate]

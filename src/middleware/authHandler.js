@@ -7,6 +7,7 @@ export function authHandler(req, res, next) {
   if (!token)
     return res.send(new Unauthorized("Access denied. No token provided."));
   try {
+    req.token = token;
     const decoded = jwt.verify(token, environment.sha256);
     req.user = decoded;
     next(); //passing req with its user properties to the next middleware function
