@@ -321,3 +321,6 @@ X-App-Origin: dev
 GET http://localhost:3000/api/catalogue
 content-type: application/pdf
 X-App-Origin: dev
+
+### SEO - SITEMAP
+GET http://localhost:3000/api/seo/sitemap.xml
