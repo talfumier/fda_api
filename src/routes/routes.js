@@ -42,7 +42,7 @@ export function routes(app) {
   app.use("/api/entities", entities);
   app.use("/api/sql-entities", sqlEntities);
 
-  app.use("/api/catalogue", download);
+  app.use("/api/downloadPDF", download);
 
   app.use("/api/seo", sitemap); //Search Engine Optimisation
 
