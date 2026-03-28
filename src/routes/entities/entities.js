@@ -1,5 +1,4 @@
 import express from "express";
-import {readFile, unlink} from "fs/promises";
 import {routeHandler} from "../../middleware/routeHandler.js";
 import {authHandler} from "../../middleware/authHandler.js";
 import {getModels} from "../../mariadb/models/sqlModels.js";
@@ -17,7 +16,8 @@ import {
 } from "../../utilityFunctions.js";
 import {sendBasicEmail} from "../../mailjet/sendEmail.js";
 import {textTranslate, emailRedirect} from "../../utilityFunctions.js";
-import {createPDFFromTemplate} from "./pdf/pdfFunctions.js";
+import {generatePDF} from "./pdf/pdfFunctions.js";
+import {getMasterUrl} from "../users/password.js";
 
 const router = express.Router();
 
@@ -164,30 +164,39 @@ router.post(
             text = `Le comité de sélection a le regret de vous informer que votre inscription réf:${bookingUser.idBooking} a été refusée par le comité de sélection.`;
             break;
           case 10: //accepted
-            const dataArr = await req.db.query(
-              "CALL booking_status_change(:bookingID)",
-              {
-                replacements: {bookingID: req.body.idBooking},
-              },
+            const fileBuffer = await generatePDF(
+              getMasterUrl(req.headers["x-app-origin"]),
+              `member/email_attacht_print/${recipientLang}`,
+              "idBooking",
+              bookingUser.idBooking,
+              req.token,
             );
-            const {outputPath, fileName} = await createPDFFromTemplate(dataArr);
-            const fileBuffer = await readFile(outputPath);
             const base64Content = fileBuffer.toString("base64");
+            const pdfSizeBytes = fileBuffer.length;
+            const base64SizeBytes = Buffer.byteLength(
+              fileBuffer.toString("base64"),
+              "utf8",
+            );
+            console.log(
+              "PDF binary size MB:",
+              (pdfSizeBytes / 1024 / 1024).toFixed(2),
+              "PDF base64 size MB:",
+              (base64SizeBytes / 1024 / 1024).toFixed(2),
+            );
             attachments = [
               {
                 ContentType: "application/pdf",
-                Filename: fileName,
+                Filename: `${bookingUser.lastName}_${bookingUser.firstName}_${bookingUser.idBooking}.pdf`,
                 Base64Content: base64Content,
-                outputPath,
               },
             ];
             title = "votre inscription a été validée";
-            text = `Votre inscription réf: ${dataArr[0].idBooking} a été validée par le comité de sélection (voir le détail des oeuvres sélectionnées dans le fichier joint). `;
+            text = `Votre inscription réf: ${bookingUser.idBooking} a été validée par le comité de sélection (voir le détail des oeuvres sélectionnées dans le fichier joint). `;
             if (!bookingUser.idRole || bookingUser.idRole !== 2)
               //no financial contribution for guest artists
               text =
                 text +
-                `Le montant de votre participation est de ${dataArr[0].price}€, à régler avant le ${dataArr[0].deadline}.`;
+                `Le montant de votre participation est de ${bookingUser.price}€, à régler avant le ${bookingUser.deadline}.`;
             break;
           case 27: //payment received
             title = "le paiement de votre inscription a été reçu";
@@ -208,7 +217,6 @@ router.post(
             Object.keys(req.body).includes("idBooking"),
           attachments,
         );
-        if (attachments) await unlink(attachments[0].outputPath);
       }
     }
     if (modelName === "User") data.pwd = undefined;

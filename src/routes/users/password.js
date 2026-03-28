@@ -20,8 +20,7 @@ import {
 } from "../../utilityFunctions.js";
 
 const router = express.Router();
-
-function getMasterUrl(cs) {
+export function getMasterUrl(cs) {
   switch (cs) {
     case "dev":
       return environment.front_url_dev;
@@ -53,7 +52,7 @@ router.post(
     const resetToken = randomBytes(256).toString("hex");
     const hash = await bcrypt.hash(
       resetToken,
-      parseInt(environment.salt_rounds)
+      parseInt(environment.salt_rounds),
     );
     const data = await Token.create({
       userId: user.idUser,
@@ -81,12 +80,12 @@ router.post(
         <span>
           Ce lien est utilisable jusqu'à ${format(
             data.createdAt.getTime() + 300e3,
-            "HH:mm:ss"
+            "HH:mm:ss",
           )}.
         </span>
       </div>`,
       lang,
-      "fr"
+      "fr",
     );
     html = html.replace("999999999", link).replace(/"/g, "");
     sendBasicEmail(
@@ -98,9 +97,9 @@ router.post(
       false, //Cc
       null, //attachments
       res, //Success response sent by sendBasicEmail function
-      `Email with reset instructions is on its way to '${user.email}'.`
+      `Email with reset instructions is on its way to '${user.email}'.`,
     );
-  })
+  }),
 );
 //process password reset following "forgot password" request
 router.patch(
@@ -120,20 +119,20 @@ router.patch(
     const isValid = await bcrypt.compare(req.params.resetToken, token.token);
     if (!isValid)
       return res.send(
-        new Unauthorized("Invalid or expired password reset token.")
+        new Unauthorized("Invalid or expired password reset token."),
       );
     user.pwd = await bcrypt.hash(
       req.body.pwd,
-      parseInt(environment.salt_rounds)
+      parseInt(environment.salt_rounds),
     );
     await user.save();
     res.send(
       new Success(
         `Password successfully reset for '${user.email}'.`,
         null,
-        true
-      )
+        true,
+      ),
     );
-  })
+  }),
 );
 export default router;
