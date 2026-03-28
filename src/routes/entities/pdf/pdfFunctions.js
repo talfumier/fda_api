@@ -1,13 +1,17 @@
 import {chromium} from "playwright";
-export async function generatePDF(source, url, params, paramsValues, token) {
+export async function generatePDF(
+  source,
+  url,
+  params,
+  paramsValues,
+  header,
+  token,
+) {
   let browser;
   try {
     let finalUrl = `${source}/${url}`;
     if (params) {
-      if (
-        finalUrl.includes("catalogue_print") ||
-        finalUrl.includes("deposit_collection_print")
-      )
+      if (finalUrl.includes("catalogue_print"))
         finalUrl = `${finalUrl}?params=${params}&paramsValues=${paramsValues}`;
       else finalUrl = `${finalUrl}?${params}=${paramsValues}`;
     }
@@ -73,7 +77,7 @@ export async function generatePDF(source, url, params, paramsValues, token) {
       displayHeaderFooter: true,
       headerTemplate: `
         <div style="font-size:9px;width:100%;padding:0 12mm;color:#666;">
-          Catalogue – Exposition
+          ${header}
         </div>`,
       footerTemplate: `
         <div style="font-size:9px;width:100%;padding:0 12mm;color:#666;text-align:right;">
