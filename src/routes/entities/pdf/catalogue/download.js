@@ -15,6 +15,7 @@ router.post(
         req.body.url,
         req.body.params,
         req.body.paramsValues,
+        req.body.header,
         req.token,
       );
 
