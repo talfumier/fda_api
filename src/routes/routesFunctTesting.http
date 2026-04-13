@@ -1,4 +1,4 @@
-@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjEsImVtYWlsIjoiaGVucmkudGFsZnVtaWVyQHdhbmFkb28uZnIiLCJpZFJvbGUiOjcsImlkU3RhdHVzIjoyLCJsYW5nIjoiZW4iLCJpYXQiOjE3NzI2NDI2NDEsImV4cCI6MTc3MjY1MzQ0MX0.okVmstweTAQhT2YsADCNFKSJtmpiVZsoA1MoIdclZxY
+@user_token=eyJhbGciOiJIUzI1NiIsInR5cCI6IkpXVCJ9.eyJpZFVzZXIiOjQ0LCJlbWFpbCI6ImhlbnJpLnRhbGZ1bWllckB3YW5hZG9vLmZyIiwiaWRSb2xlIjo3LCJpZFN0YXR1cyI6MiwibGFuZyI6ImVuIiwiaWF0IjoxNzc2MDY4NTMwLCJleHAiOjE3NzYxMDQ1MzB9.e4zwAs7Eh_Z890VO7tQBYMuYeJrWyv2JGITyquCzJfA
 
 
 ### REST CLIENT EXTENSION TEST
@@ -286,7 +286,7 @@ x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
 ###
-GET http://localhost:3000/api/sql-entities/list_expo_prize_user/:idExpo/126
+GET http://localhost:3000/api/sql-entities/member/list_images_expo/:idExpo,:dest/131,home
 x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
@@ -324,3 +324,19 @@ X-App-Origin: dev
 
 ### SEO - SITEMAP
 GET http://localhost:3000/api/seo/sitemap.xml
+
+
+### EXPOLOCATION
+PATCH http://localhost:3000/api/entities/ExpoLocation/2
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev
+
+{  
+  "occupied":0
+}
+###
+POST http://localhost:3000/api/sql-entities/member/create_expo_location/:idExpo/131
+x-auth-token:{{user_token}}
+content-type: application/json
+X-App-Origin: dev

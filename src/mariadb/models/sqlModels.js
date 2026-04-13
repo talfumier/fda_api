@@ -46,6 +46,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         vernissage: DataTypes.BOOLEAN,
         lunch: DataTypes.BOOLEAN,
         price: {type: DataTypes.INTEGER, defaultValue: 0},
+        idExpoLoc: DataTypes.INTEGER,
         terms: {type: DataTypes.INTEGER, defaultValue: 0}, //terms & conditions 0 >>> not accepted, 1 >>> accepted
       },
       {tableName: "tbooking", timestamps: true},
@@ -267,6 +268,30 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         timestamps: true,
         createdAt: true,
         updatedAt: false,
+      },
+    ),
+  };
+  models.ExpoLocation = {
+    validate: null,
+    master: ["idExpo", "idLoc"],
+    model: sequelize.define(
+      "ExpoLocation",
+      {
+        idExpoLoc: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true,
+        },
+        idExpo: DataTypes.INTEGER,
+        idLoc: DataTypes.STRING, //records A to E and 1 to 100 generated at expo validation in Master.vue
+        order: {type: DataTypes.INTEGER, default: -1},
+        occupied: {type: DataTypes.INTEGER, defaultValue: 0}, //0: available position, 1: already assigned to a booking
+      },
+      {
+        tableName: "texpo_location",
+        timestamps: true,
+        createdAt: true,
+        updatedAt: true,
       },
     ),
   };
@@ -665,6 +690,10 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
     foreignKey: "idExpo",
     onDelete: "RESTRICT",
   });
+  models.Booking.model.belongsTo(models.ExpoLocation.model, {
+    foreignKey: "idExpoLoc",
+    onDelete: "RESTRICT",
+  });
   models.Booking.model.hasMany(models.BookingOeuvre.model, {
     foreignKey: "idBooking",
     onDelete: "CASCADE",
@@ -720,6 +749,10 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
     foreignKey: "idExpo",
     onDelete: "RESTRICT",
   });
+  models.Expo.model.hasMany(models.ExpoLocation.model, {
+    foreignKey: "idExpo",
+    onDelete: "CASCADE",
+  });
   models.Expo.model.hasMany(models.ExpoPrizeUser.model, {
     foreignKey: "idExpo",
     onDelete: "RESTRICT",
@@ -762,6 +795,11 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   });
   models.ExpoPartner.model.belongsTo(models.Partner.model, {
     foreignKey: "idPartner",
+    onDelete: "RESTRICT",
+  });
+  // ExpoLocation relationships
+  models.ExpoLocation.model.belongsTo(models.Expo.model, {
+    foreignKey: "idExpo",
     onDelete: "RESTRICT",
   });
   // ExpoPrizeUser  relationships
