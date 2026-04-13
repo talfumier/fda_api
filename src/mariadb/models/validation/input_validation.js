@@ -24,6 +24,7 @@ export function validateBooking(data, cs = "post") {
   const schema = Joi.object({
     idExpo: Joi.number().integer(),
     idUser: Joi.number().integer(),
+    idExpoLoc: Joi.number().integer().allow(null),
     vernissage: Joi.number().integer().valid(0, 1).allow(null),
     lunch: Joi.number().integer().valid(0, 1).allow(null),
     price: Joi.number().integer().allow(null),

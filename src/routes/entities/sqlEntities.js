@@ -79,4 +79,22 @@ router.get(
     }
   }),
 );
+router.post(
+  "/member/:stored_proc/:params/:values",
+  authHandler,
+  routeHandler(async (req, res) => {
+    const {stored_proc, params, values} = req.params;
+    const sqlParams = {};
+    if (params) {
+      const keys = params.replaceAll(":", "").split(",");
+      values.split(",").forEach((val, idx) => {
+        sqlParams[keys[idx]] = val;
+      });
+    }
+    await req.db.query(`CALL ${stored_proc}(${params ? params : ""})`, {
+      replacements: sqlParams,
+    });
+    res.send(new Success("Insert successful"));
+  }),
+);
 export default router;
