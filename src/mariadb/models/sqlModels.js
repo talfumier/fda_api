@@ -295,6 +295,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
       },
     ),
   };
+
   models.ExpoPrizeUser = {
     validate: null,
     master: ["idExpo", "idPrize", "idUser"],
@@ -316,6 +317,28 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         timestamps: true,
         createdAt: true,
         updatedAt: false,
+      },
+    ),
+  };
+  models.ExpoComment = {
+    validate: null,
+    master: ["idExpo"],
+    model: sequelize.define(
+      "ExpoComment",
+      {
+        idExpoComment: {
+          type: DataTypes.INTEGER,
+          primaryKey: true,
+          autoIncrement: true,
+        },
+        idExpo: DataTypes.INTEGER,
+        text: DataTypes.STRING,
+        name: DataTypes.STRING,
+        email: DataTypes.STRING,
+      },
+      {
+        tableName: "texpo_comment",
+        timestamps: true,
       },
     ),
   };
@@ -516,6 +539,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         idBookingOeuvre: {type: DataTypes.INTEGER, allowNull: true},
         idBooking: {type: DataTypes.INTEGER, allowNull: true},
         idFaq: {type: DataTypes.INTEGER, allowNull: true},
+        idExpoComment: {type: DataTypes.INTEGER, allowNull: true},
         createdAt: {type: DataTypes.DATE(3)},
       },
       {
@@ -542,7 +566,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         firstName: DataTypes.STRING,
         public_name: {type: DataTypes.BOOLEAN, defaultValue: 1},
         pseudo: DataTypes.STRING,
-        public_pseudo: {type: DataTypes.BOOLEAN, defaultValue: 0},
+        public_pseudo: {type: DataTypes.BOOLEAN, defaultValue: 1},
         email: DataTypes.STRING,
         public_email: {type: DataTypes.BOOLEAN, defaultValue: 0},
         phone: DataTypes.STRING,
@@ -628,6 +652,10 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   });
   models.Booking.model.hasMany(models.StatusTracking.model, {
     foreignKey: "idBooking",
+    onDelete: "CASCADE",
+  });
+  models.ExpoComment.model.hasMany(models.StatusTracking.model, {
+    foreignKey: "idExpoComment",
     onDelete: "CASCADE",
   });
   // User relationships
@@ -753,6 +781,10 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
     foreignKey: "idExpo",
     onDelete: "CASCADE",
   });
+  models.Expo.model.hasMany(models.ExpoComment.model, {
+    foreignKey: "idExpo",
+    onDelete: "CASCADE",
+  });
   models.Expo.model.hasMany(models.ExpoPrizeUser.model, {
     foreignKey: "idExpo",
     onDelete: "RESTRICT",
@@ -765,6 +797,11 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
   models.ExpoImage.model.belongsTo(models.File.model, {
     foreignKey: "idFile",
     onDelete: "CASCADE",
+  });
+  // ExpoComment relationships
+  models.ExpoComment.model.belongsTo(models.Expo.model, {
+    foreignKey: "idExpo",
+    onDelete: "RESTRICT",
   });
   // Doc relationships
   models.Doc.model.hasMany(models.ExpoDoc.model, {
