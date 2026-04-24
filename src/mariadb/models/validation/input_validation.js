@@ -219,7 +219,7 @@ export function validateUser(data, cs = "post") {
     firstName: Joi.string().allow(null),
     public_name: Joi.number().integer().valid(0, 1).allow(null), //default value 1 (true) set in sqlModels
     pseudo: Joi.string().allow(null),
-    public_pseudo: Joi.number().integer().valid(0, 1).allow(null), //default value 0 (false) set in sqlModels
+    public_pseudo: Joi.number().integer().valid(0, 1).allow(null), //default value 1 (true) set in sqlModels
     email: Joi.string().email().required(),
     public_email: Joi.number().integer().valid(0, 1).allow(null), //default value 0 (false) set in sqlModels
     phone: Joi.string().allow(null),
