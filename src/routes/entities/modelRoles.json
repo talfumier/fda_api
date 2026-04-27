@@ -59,6 +59,10 @@
     "role": ["organisation"],
     "idRole": [5, 6, 7]
   },
+  "ExpoComment": {
+    "role": ["organisation"],
+    "idRole": [5, 6, 7]
+  },
   "Media": {
     "role": ["organisation"],
     "idRole": [5, 6, 7]
