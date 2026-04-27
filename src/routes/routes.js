@@ -11,6 +11,7 @@ import sqlEntities from "./entities/sqlEntities.js";
 import files from "./files/files.js";
 import download from "../routes/entities/pdf/catalogue/download.js";
 import sitemap from "./seo/sitemap.js";
+import comment from "./comments/comment.js";
 import {invalidPathHandler} from "../middleware/invalidPathHandler.js";
 import {errorHandler} from "../middleware/errorHandler.js";
 
@@ -43,6 +44,8 @@ export function routes(app) {
   app.use("/api/sql-entities", sqlEntities);
 
   app.use("/api/downloadPDF", download);
+
+  app.use("/api/comments", comment);
 
   app.use("/api/seo", sitemap); //Search Engine Optimisation
 

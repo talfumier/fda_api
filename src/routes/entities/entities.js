@@ -120,11 +120,11 @@ router.post(
       }
     }
     if (modelName === "StatusTracking") {
-      //user status change
       let title = null,
         text = null,
         recipientLang = null,
         recipientEmail = null;
+      //user status change
       if (Object.keys(req.body).includes("idUser")) {
         const cond = userIsOrg(req, modelName);
         if (!cond[0]) return res.send(cond[1]);
@@ -203,6 +203,32 @@ router.post(
             text = `Nous vous remercions pour le règlement de votre participation financière; votre inscription réf:${req.body.idBooking} est maintenant confirmée.`;
         }
       }
+      //expo comment status change
+      if (Object.keys(req.body).includes("idExpoComment")) {
+        const cond = userIsOrg(req, modelName);
+        if (!cond[0]) return res.send(cond[1]);
+        const comment = (
+          await req.db.query("CALL expo_comment(:expoCommentID)", {
+            replacements: {expoCommentID: req.body.idExpoComment},
+          })
+        )[0];
+        recipientLang = comment.lang;
+        recipientEmail = comment.email;
+        switch (req.body.idStatus) {
+          case 28: //candidate >>> done in comment.js at comment creation (no user authentication)
+            title = "votre avis a bien été reçu";
+            text = `Votre avis ref.${comment.idExpoComment} avec le texte "${comment.text}" et la note ${comment.rating}/5 a été transmis à l'organisation pour validation.
+              Il devrait être mis en ligne prochainement.`;
+            break;
+          case 30: //rejected
+            title = "votre avis a été refusé";
+            text = `Le comité d'organisation a le regret de vous informer que votre avis réf. ${comment.idExpoComment} a été refusé.`;
+            break;
+          case 29: //published
+            title = "votre avis a été publié";
+            text = `Le comité d'organisation a le plaisir de vous informer que votre avis réf. ${comment.idExpoComment} a été publié; il est maintenant visible sur le site.`;
+        }
+      }
       if (title && text) {
         title = await textTranslate(title, recipientLang, "fr");
         title = `${
@@ -214,7 +240,8 @@ router.post(
           title,
           await textTranslate(text, recipientLang, "fr"),
           req.headers["x-app-origin"] !== "dev" && //Cc to sender
-            Object.keys(req.body).includes("idBooking"),
+            (Object.keys(req.body).includes("idBooking") ||
+              Object.keys(req.body).includes("idExpoComment")),
           attachments,
         );
       }

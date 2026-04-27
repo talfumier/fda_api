@@ -340,3 +340,18 @@ POST http://localhost:3000/api/sql-entities/member/create_expo_location/:idExpo/
 x-auth-token:{{user_token}}
 content-type: application/json
 X-App-Origin: dev
+
+### COMMENTS
+POST http://localhost:3000/api/comments
+content-type: application/json
+X-App-Origin: dev
+
+{  
+  "lastName": "eee",
+  "firstName": "eeee",
+  "email": "henri.talfumier@gmail.com",
+  "rating": 0,
+  "text": "eeee1",
+  "idExpo": 131,
+  "lang":"fr"
+}

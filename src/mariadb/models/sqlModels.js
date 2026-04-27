@@ -284,7 +284,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         },
         idExpo: DataTypes.INTEGER,
         idLoc: DataTypes.STRING, //records A to E and 1 to 100 generated at expo validation in Master.vue
-        order: {type: DataTypes.INTEGER, default: -1},
+        order: {type: DataTypes.INTEGER, defaultValue: -1},
         occupied: {type: DataTypes.INTEGER, defaultValue: 0}, //0: available position, 1: already assigned to a booking
       },
       {
@@ -332,8 +332,11 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
           autoIncrement: true,
         },
         idExpo: DataTypes.INTEGER,
+        rating: {type: DataTypes.INTEGER, defaultValue: 0},
         text: DataTypes.STRING,
-        name: DataTypes.STRING,
+        lastName: DataTypes.STRING,
+        firstName: DataTypes.STRING,
+        lang: DataTypes.STRING,
         email: DataTypes.STRING,
       },
       {
