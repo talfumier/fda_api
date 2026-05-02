@@ -336,6 +336,7 @@ export const defineSqlModels = (sequelize, DataTypes, sync = false) => {
         text: DataTypes.STRING,
         lastName: DataTypes.STRING,
         firstName: DataTypes.STRING,
+        public_name: {type: DataTypes.BOOLEAN, defaultValue: 1},
         lang: DataTypes.STRING,
         email: DataTypes.STRING,
       },
