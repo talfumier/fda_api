@@ -13,6 +13,8 @@ router.get(
       {key: "home", priority: 1.0},
       {key: "catalogue", priority: 1.0},
       {key: "jury_awards", priority: 0.8},
+      {key: "golden_book", priority: 0.8},
+      {key: "past_events", priority: 0.8},
       {key: "contact", priority: 0.7},
       {key: "legal", priority: 0.6},
     ];
